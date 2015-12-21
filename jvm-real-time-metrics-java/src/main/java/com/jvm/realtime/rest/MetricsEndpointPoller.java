@@ -56,10 +56,12 @@ public class MetricsEndpointPoller implements DataPoller {
     private String getApplicationMetricsEndpoint(Container container) {
         ObjectMapper mapper = new ObjectMapper();
 
+        // TODO: Get the container port from the object .ports().get(0).publicport
         try {
             String jsonString = mapper.writeValueAsString(container);
             JsonNode rootNode = mapper.readTree(new StringReader(jsonString));
             JsonNode portNode = rootNode.get("Ports").get(0).get("PublicPort");
+
             return portNode.asText();
 
         } catch (IOException e) {
