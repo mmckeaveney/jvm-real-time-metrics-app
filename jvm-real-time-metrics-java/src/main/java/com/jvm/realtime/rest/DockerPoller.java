@@ -31,8 +31,8 @@ public class DockerPoller implements DataPoller {
     @Autowired
     public DockerPoller(SimpMessagingTemplate websocket) {
         this.dockerClient = DefaultDockerClient.builder()
-                .uri(URI.create("https://" + Config.dockerHost + ":2376"))
-                .dockerCertificates(sslAuth(Config.dockerCertsPath))
+                .uri(URI.create("http://" + Config.dockerHost + ":2376"))
+//                .dockerCertificates(sslAuth(Config.dockerCertsPath))
                 .build();
         this.currentContainers = Collections.emptyList();
         this.websocket = websocket;

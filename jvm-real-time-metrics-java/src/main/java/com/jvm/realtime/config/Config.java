@@ -12,7 +12,7 @@ public class Config {
     @Autowired
     private RealTimeDataClient realTimeDataClient;
 
-    public static final String dockerHost = "192.168.99.100";
+    public static final String dockerHost = "localhost";
     public static final String dockerCertsPath = "/Users/martinmckeaveney/.docker/machine/certs";
 
 }
