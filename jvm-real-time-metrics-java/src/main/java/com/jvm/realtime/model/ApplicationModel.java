@@ -10,14 +10,20 @@ public class ApplicationModel {
     @JsonProperty("appName")
     private String appName;
 
-    @JsonProperty("metrics")
-    private Map<String, Object> metrics;
+    @JsonProperty("actuatorMetrics")
+    private Map<String, Object> actuatorMetrics;
 
-    public ApplicationModel(String appName, Map metrics) {
-        this.appName = appName;
-        this.metrics = metrics;
+    @JsonProperty("publicPort")
+    private Integer publicPort;
+
+    public ApplicationModel() {
     }
 
+    public ApplicationModel(String appName, Map<String, Object> metrics, Integer publicPort) {
+        this.appName = appName;
+        this.actuatorMetrics = metrics;
+        this.publicPort = publicPort;
+    }
 
     public String getAppName() {
         return appName;
@@ -27,12 +33,20 @@ public class ApplicationModel {
         this.appName = appName;
     }
 
-    public Map<String, Object> getMetrics() {
-        return metrics;
+    public Map<String, Object> getActuatorMetrics() {
+        return actuatorMetrics;
     }
 
-    public void setMetrics(Map<String, Object> metrics) {
-        this.metrics = metrics;
+    public void setActuatorMetrics(Map<String, Object> actuatorMetrics) {
+        this.actuatorMetrics = actuatorMetrics;
+    }
+
+    public Integer getPublicPort() {
+        return publicPort;
+    }
+
+    public void setPublicPort(Integer publicPort) {
+        this.publicPort = publicPort;
     }
 
     @Override
@@ -41,11 +55,12 @@ public class ApplicationModel {
         if (o == null || getClass() != o.getClass()) return false;
         ApplicationModel that = (ApplicationModel) o;
         return Objects.equal(appName, that.appName) &&
-                Objects.equal(metrics, that.metrics);
+                Objects.equal(actuatorMetrics, that.actuatorMetrics) &&
+                Objects.equal(publicPort, that.publicPort);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(appName, metrics);
+        return Objects.hashCode(appName, actuatorMetrics, publicPort);
     }
 }

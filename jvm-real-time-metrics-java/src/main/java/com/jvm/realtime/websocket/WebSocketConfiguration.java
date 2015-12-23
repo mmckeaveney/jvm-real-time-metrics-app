@@ -2,6 +2,7 @@ package com.jvm.realtime.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -10,12 +11,11 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfigurer {
 
-    private static final String MESSAGE_PREFIX = "/jvmrt";
+    public static final String MESSAGE_PREFIX = "/jvmrt";
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/metricspoll").withSockJS();
-        registry.addEndpoint("/dockerpoll").withSockJS();
     }
 
     @Override

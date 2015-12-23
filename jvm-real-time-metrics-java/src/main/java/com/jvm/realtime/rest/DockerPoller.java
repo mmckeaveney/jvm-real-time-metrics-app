@@ -1,8 +1,6 @@
 package com.jvm.realtime.rest;
 
 import com.jvm.realtime.config.Config;
-import com.jvm.realtime.model.DockerContainerModel;
-import com.jvm.realtime.websocket.WebSocketConfiguration;
 import com.spotify.docker.client.*;
 import com.spotify.docker.client.messages.Container;
 import org.slf4j.Logger;
@@ -48,8 +46,6 @@ public class DockerPoller implements DataPoller {
 
     }
 
-    @MessageMapping("/jvmrt")
-    @SendTo("/jvmrt/dockerpoll")
     private List<Container> fetchCurrentContainers() {
         try {
             setCurrentContainers(this.dockerClient.listContainers());
