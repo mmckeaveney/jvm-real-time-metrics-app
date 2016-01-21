@@ -12,10 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.ConnectException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -39,24 +42,37 @@ public class MetricsEndpointPoller implements DataPoller {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-               retrieveActuatorMetricsFromDockerHosts();
+                retrieveActuatorMetricsFromDockerHosts();
             }
         }, new Date(), 3000);
     }
 
     private void retrieveActuatorMetricsFromDockerHosts() {
+        Set<ApplicationModel> currentApplicationModels = new HashSet<>();
+
         for (Container container : this.dockerPoller.getCurrentContainers()) {
 
             ApplicationModel currentAppModel = getApplicationMetaData(container);
 
             // Do the HTTP request to get metrics from spring boot actuator.
             String metricsUrl = String.format("http://%s:%s/metrics", Config.dockerHost, currentAppModel.getPublicPort());
-            Map metricsMap = restTemplate.getForObject(metricsUrl, Map.class);
-            currentAppModel.setActuatorMetrics(metricsMap);
 
-            websocket.convertAndSend(WebSocketConfiguration.MESSAGE_PREFIX + "/metricsUpdate", currentAppModel);
+            try {
+                Map metricsMap = restTemplate.getForObject(metricsUrl, Map.class);
+                currentAppModel.setActuatorMetrics(metricsMap);
+                currentApplicationModels.add(currentAppModel);
+            } catch (RestClientException e) {
+                LOGGER.error("Error connecting to docker host at " + metricsUrl, e);
+            }
 
         }
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+        LOGGER.info("Application snapshots being transmitted over websocket");
+        websocket.convertAndSend(WebSocketConfiguration.MESSAGE_PREFIX + "/metricsUpdate", currentApplicationModels);
+        LOGGER.info("Application snapshots transmitted over websocket at " + sdf.format(cal.getTime()));
     }
 
     private ApplicationModel getApplicationMetaData(Container container) {
