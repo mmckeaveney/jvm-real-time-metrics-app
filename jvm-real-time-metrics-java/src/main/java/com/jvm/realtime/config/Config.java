@@ -14,4 +14,6 @@ public class Config {
     public static final String dockerHost = "localhost";
     public static final String dockerCertsPath = "/Users/martinmckeaveney/.docker/machine/certs";
 
+
+
 }

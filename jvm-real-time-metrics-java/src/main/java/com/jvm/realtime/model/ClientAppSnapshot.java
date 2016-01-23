@@ -2,10 +2,14 @@ package com.jvm.realtime.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
+import org.springframework.data.annotation.Id;
 
 import java.util.Map;
 
-public class ApplicationModel {
+public class ClientAppSnapshot {
+
+    @Id
+    private String id;
 
     @JsonProperty("appName")
     private String appName;
@@ -16,13 +20,22 @@ public class ApplicationModel {
     @JsonProperty("publicPort")
     private Integer publicPort;
 
-    public ApplicationModel() {
+    public ClientAppSnapshot() {
     }
 
-    public ApplicationModel(String appName, Map<String, Object> metrics, Integer publicPort) {
+    public ClientAppSnapshot(String id, String appName, Map<String, Object> actuatorMetrics, Integer publicPort) {
+        this.id = id;
         this.appName = appName;
-        this.actuatorMetrics = metrics;
+        this.actuatorMetrics = actuatorMetrics;
         this.publicPort = publicPort;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getAppName() {
@@ -53,14 +66,25 @@ public class ApplicationModel {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ApplicationModel that = (ApplicationModel) o;
-        return Objects.equal(appName, that.appName) &&
+        ClientAppSnapshot that = (ClientAppSnapshot) o;
+        return Objects.equal(id, that.id) &&
+                Objects.equal(appName, that.appName) &&
                 Objects.equal(actuatorMetrics, that.actuatorMetrics) &&
                 Objects.equal(publicPort, that.publicPort);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(appName, actuatorMetrics, publicPort);
+        return Objects.hashCode(id, appName, actuatorMetrics, publicPort);
+    }
+
+    @Override
+    public String toString() {
+        return "ClientAppSnapshot{" +
+                "id=" + id +
+                ", appName='" + appName + '\'' +
+                ", actuatorMetrics=" + actuatorMetrics +
+                ", publicPort=" + publicPort +
+                '}';
     }
 }
