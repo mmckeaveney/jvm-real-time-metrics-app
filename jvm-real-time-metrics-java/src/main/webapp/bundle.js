@@ -32100,7 +32100,10 @@
 	            return _react2['default'].createElement(
 	                'div',
 	                { className: 'chart-container', style: style },
-	                _react2['default'].createElement(_reactHighchartsBundleHighcharts2['default'], { config: this.props.chartConfig })
+	                _react2['default'].createElement(_reactHighchartsBundleHighcharts2['default'], { config: this.props.chartConfig }),
+	                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Last Week', secondary: true }),
+	                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Last Month', secondary: true }),
+	                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Last 6 Months', secondary: true })
 	            );
 	        }
 	    }]);

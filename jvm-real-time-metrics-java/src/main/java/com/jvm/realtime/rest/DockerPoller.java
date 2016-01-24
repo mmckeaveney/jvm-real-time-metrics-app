@@ -1,6 +1,9 @@
 package com.jvm.realtime.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jvm.realtime.config.Config;
+import com.jvm.realtime.model.ClientAppSnapshot;
 import com.spotify.docker.client.*;
 import com.spotify.docker.client.messages.Container;
 import org.slf4j.Logger;
@@ -9,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.*;
@@ -20,7 +25,6 @@ public class DockerPoller implements DataPoller {
     private DockerClient dockerClient;
     private List<Container> currentContainers;
     private final SimpMessagingTemplate websocket;
-
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DockerPoller.class);
 
@@ -40,8 +44,31 @@ public class DockerPoller implements DataPoller {
             public void run() {
                 fetchCurrentContainers();
             }
-        }, new Date(), 180000);
+        }, 0, 180000);
 
+    }
+
+    public ClientAppSnapshot getDockerApplicationMetaData(Container container) {
+        ObjectMapper mapper = new ObjectMapper();
+        ClientAppSnapshot currentAppModel = new ClientAppSnapshot();
+
+        try {
+            String jsonString = mapper.writeValueAsString(container);
+            JsonNode rootNode = mapper.readTree(new StringReader(jsonString));
+
+            Integer publicPort = rootNode.get("Ports").get(0).get("PublicPort").asInt();
+            String appName = rootNode.get("Image").asText();
+
+            currentAppModel.setPublicPort(publicPort);
+            currentAppModel.setAppName(appName);
+
+            return currentAppModel;
+
+        } catch (IOException e) {
+            LOGGER.error("Error parsing JSON", e);
+        }
+
+        return null;
     }
 
     private List<Container> fetchCurrentContainers() {
