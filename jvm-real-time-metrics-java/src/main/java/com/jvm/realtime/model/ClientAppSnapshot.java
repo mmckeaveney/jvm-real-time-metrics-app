@@ -20,14 +20,22 @@ public class ClientAppSnapshot {
     @JsonProperty("publicPort")
     private Integer publicPort;
 
+    @JsonProperty("timeStamp")
+    private Long timeStamp;
+
     public ClientAppSnapshot() {
     }
 
-    public ClientAppSnapshot(String id, String appName, Map<String, Object> actuatorMetrics, Integer publicPort) {
+    public ClientAppSnapshot(String id,
+                             String appName,
+                             Map<String, Object> actuatorMetrics,
+                             Integer publicPort,
+                             Long timeStamp) {
         this.id = id;
         this.appName = appName;
         this.actuatorMetrics = actuatorMetrics;
         this.publicPort = publicPort;
+        this.timeStamp = timeStamp;
     }
 
     public String getId() {
@@ -62,6 +70,14 @@ public class ClientAppSnapshot {
         this.publicPort = publicPort;
     }
 
+    public Long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,21 +86,23 @@ public class ClientAppSnapshot {
         return Objects.equal(id, that.id) &&
                 Objects.equal(appName, that.appName) &&
                 Objects.equal(actuatorMetrics, that.actuatorMetrics) &&
-                Objects.equal(publicPort, that.publicPort);
+                Objects.equal(publicPort, that.publicPort) &&
+                Objects.equal(timeStamp, that.timeStamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, appName, actuatorMetrics, publicPort);
+        return Objects.hashCode(id, appName, actuatorMetrics, publicPort, timeStamp);
     }
 
     @Override
     public String toString() {
         return "ClientAppSnapshot{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", appName='" + appName + '\'' +
                 ", actuatorMetrics=" + actuatorMetrics +
                 ", publicPort=" + publicPort +
+                ", timeStamp=" + timeStamp +
                 '}';
     }
 }

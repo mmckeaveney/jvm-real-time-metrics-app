@@ -61,6 +61,7 @@ public class DockerPoller implements DataPoller {
 
             currentAppModel.setPublicPort(publicPort);
             currentAppModel.setAppName(appName);
+            currentAppModel.setTimeStamp(System.currentTimeMillis());
 
             return currentAppModel;
 

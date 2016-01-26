@@ -61,9 +61,10 @@ public class MetricsEndpointPoller implements DataPoller {
                 Map<String, Object> metricsMap = restTemplate.getForObject(metricsUrl, Map.class);
                 Map<String, Object> formattedMetricsMap = new HashMap<>();
 
-                // Mongo doesn't accept dots in map keys, this stream simply removes them.
-                metricsMap.entrySet().stream()
-                        .map(metric -> formattedMetricsMap.put(metric.getKey().replace(".", ""), metric.getValue()));
+                // Mongo doesn't accept dots in map keys, this loop simply removes them.
+                for (Map.Entry<String, Object> metric: metricsMap.entrySet()) {
+                    formattedMetricsMap.put(metric.getKey().replace(".", ""), metric.getValue());
+                }
 
                 currentAppModel.setActuatorMetrics(formattedMetricsMap);
 
