@@ -44,7 +44,7 @@ public class DockerPoller implements DataPoller {
             public void run() {
                 fetchCurrentContainers();
             }
-        }, 0, 180000);
+        }, 0, 60000);
 
     }
 

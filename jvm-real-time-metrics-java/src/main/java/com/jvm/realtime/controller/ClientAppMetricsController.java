@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 @RestController
+@RequestMapping(value = "/api")
 public class ClientAppMetricsController {
 
     @Autowired
