@@ -15,19 +15,22 @@ public class RealTimeDataClient implements InitializingBean {
     private final DockerPoller dockerPoller;
     private final MetricsEndpointPoller metricsEndpointPoller;
     private final TimeSeriesMetricsPoller timeSeriesMetricsPoller;
+    private final EventPoller eventPoller;
 
     @Autowired
     public RealTimeDataClient(DockerPoller dockerPoller,
                               MetricsEndpointPoller metricsEndpointPoller,
-                              TimeSeriesMetricsPoller timeSeriesMetricsPoller) {
+                              TimeSeriesMetricsPoller timeSeriesMetricsPoller,
+                              EventPoller eventPoller) {
         this.dockerPoller = dockerPoller;
         this.metricsEndpointPoller = metricsEndpointPoller;
         this.timeSeriesMetricsPoller = timeSeriesMetricsPoller;
+        this.eventPoller = eventPoller;
 
     }
 
     public void beginCollecting() {
-        this.dataCollectors = Sets.newHashSet(dockerPoller, metricsEndpointPoller, timeSeriesMetricsPoller);
+        this.dataCollectors = Sets.newHashSet(dockerPoller, metricsEndpointPoller, timeSeriesMetricsPoller, eventPoller);
 
         for (DataPoller poller : this.dataCollectors) {
             poller.poll();

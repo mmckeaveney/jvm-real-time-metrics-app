@@ -1,9 +1,11 @@
 package com.jvm.realtime.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.dockerjava.api.model.Event;
 import com.google.common.base.Objects;
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
 import java.util.Map;
 
 public class ClientAppSnapshot {
@@ -23,19 +25,20 @@ public class ClientAppSnapshot {
     @JsonProperty("timeStamp")
     private Long timeStamp;
 
+    @JsonProperty("applicationEvents")
+    private List<Event> applicationEvents;
+
     public ClientAppSnapshot() {
     }
 
-    public ClientAppSnapshot(String id,
-                             String appName,
-                             Map<String, Object> actuatorMetrics,
-                             Integer publicPort,
-                             Long timeStamp) {
+    public ClientAppSnapshot(String id, String appName, Map<String, Object> actuatorMetrics, Integer publicPort,
+                             Long timeStamp, List<Event> applicationEvents) {
         this.id = id;
         this.appName = appName;
         this.actuatorMetrics = actuatorMetrics;
         this.publicPort = publicPort;
         this.timeStamp = timeStamp;
+        this.applicationEvents = applicationEvents;
     }
 
     public String getId() {
@@ -78,6 +81,14 @@ public class ClientAppSnapshot {
         this.timeStamp = timeStamp;
     }
 
+    public List<Event> getApplicationEvents() {
+        return applicationEvents;
+    }
+
+    public void setApplicationEvents(List<Event> applicationEvents) {
+        this.applicationEvents = applicationEvents;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,22 +98,12 @@ public class ClientAppSnapshot {
                 Objects.equal(appName, that.appName) &&
                 Objects.equal(actuatorMetrics, that.actuatorMetrics) &&
                 Objects.equal(publicPort, that.publicPort) &&
-                Objects.equal(timeStamp, that.timeStamp);
+                Objects.equal(timeStamp, that.timeStamp) &&
+                Objects.equal(applicationEvents, that.applicationEvents);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, appName, actuatorMetrics, publicPort, timeStamp);
-    }
-
-    @Override
-    public String toString() {
-        return "ClientAppSnapshot{" +
-                "id='" + id + '\'' +
-                ", appName='" + appName + '\'' +
-                ", actuatorMetrics=" + actuatorMetrics +
-                ", publicPort=" + publicPort +
-                ", timeStamp=" + timeStamp +
-                '}';
+        return Objects.hashCode(id, appName, actuatorMetrics, publicPort, timeStamp, applicationEvents);
     }
 }

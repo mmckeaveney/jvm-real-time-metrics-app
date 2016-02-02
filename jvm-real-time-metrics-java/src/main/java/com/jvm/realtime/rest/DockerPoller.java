@@ -2,20 +2,24 @@ package com.jvm.realtime.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.Event;
+import com.github.dockerjava.api.model.Filters;
+import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.core.DockerClientConfig;
+import com.github.dockerjava.core.command.EventsResultCallback;
 import com.jvm.realtime.config.Config;
 import com.jvm.realtime.model.ClientAppSnapshot;
-import com.spotify.docker.client.*;
-import com.spotify.docker.client.messages.Container;
+import com.jvm.realtime.model.DockerEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.net.URI;
-import java.nio.file.Paths;
 import java.util.*;
 
 @Component
@@ -30,10 +34,11 @@ public class DockerPoller implements DataPoller {
 
     @Autowired
     public DockerPoller(SimpMessagingTemplate websocket) {
-        this.dockerClient = DefaultDockerClient.builder()
-                .uri(URI.create("http://" + Config.dockerHost + ":2376"))
-//                .dockerCertificates(sslAuth(Config.dockerCertsPath))
+        DockerClientConfig config = DockerClientConfig.createDefaultConfigBuilder()
+                .withVersion("1.18")
+                .withUri("http://" + Config.dockerHost + ":2376")
                 .build();
+        this.dockerClient = DockerClientBuilder.getInstance(config).build();
         this.currentContainers = Collections.emptyList();
         this.websocket = websocket;
     }
@@ -44,55 +49,34 @@ public class DockerPoller implements DataPoller {
             public void run() {
                 fetchCurrentContainers();
             }
-        }, 0, 60000);
+        }, 0, 20000);
 
     }
 
     public ClientAppSnapshot getDockerApplicationMetaData(Container container) {
-        ObjectMapper mapper = new ObjectMapper();
         ClientAppSnapshot currentAppModel = new ClientAppSnapshot();
 
-        try {
-            String jsonString = mapper.writeValueAsString(container);
-            JsonNode rootNode = mapper.readTree(new StringReader(jsonString));
+        Integer publicPort = container.getPorts()[0].getPublicPort();
+        String appName = container.getImage();
 
-            Integer publicPort = rootNode.get("Ports").get(0).get("PublicPort").asInt();
-            String appName = rootNode.get("Image").asText();
+        currentAppModel.setPublicPort(publicPort);
+        currentAppModel.setAppName(appName);
+        currentAppModel.setTimeStamp(System.currentTimeMillis());
 
-            currentAppModel.setPublicPort(publicPort);
-            currentAppModel.setAppName(appName);
-            currentAppModel.setTimeStamp(System.currentTimeMillis());
-
-            return currentAppModel;
-
-        } catch (IOException e) {
-            LOGGER.error("Error parsing JSON", e);
-        }
-
-        return null;
+        return currentAppModel;
     }
 
     private List<Container> fetchCurrentContainers() {
         try {
-            setCurrentContainers(this.dockerClient.listContainers());
-        } catch (InterruptedException | DockerException e) {
+            setCurrentContainers(this.dockerClient.listContainersCmd().exec());
+        } catch (Exception e) {
             LOGGER.error("Error when polling docker containers endpoint.", e);
         }
 
         return getCurrentContainers();
     }
 
-    private DockerCertificates sslAuth(String absoluteCertPath) {
 
-        DockerCertificates dockerAuth = null;
-
-        try {
-            dockerAuth = new DockerCertificates(Paths.get(absoluteCertPath));
-        } catch (DockerCertificateException e) {
-            LOGGER.error("Error authenticating docker machine with SSL.");
-        }
-        return dockerAuth;
-    }
 
     public DockerClient getDockerClient() {
         return dockerClient;

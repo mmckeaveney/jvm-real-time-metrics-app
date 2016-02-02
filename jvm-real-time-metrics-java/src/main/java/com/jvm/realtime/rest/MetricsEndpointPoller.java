@@ -1,10 +1,9 @@
 package com.jvm.realtime.rest;
 
+import com.github.dockerjava.api.model.Container;
 import com.jvm.realtime.config.Config;
 import com.jvm.realtime.model.ClientAppSnapshot;
-import com.jvm.realtime.persistence.ClientAppSnapshotRepository;
 import com.jvm.realtime.websocket.WebSocketConfiguration;
-import com.spotify.docker.client.messages.Container;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

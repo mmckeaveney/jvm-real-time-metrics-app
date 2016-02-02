@@ -61,9 +61,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.spotify</groupId>
-			<artifactId>docker-client</artifactId>
-			<version>2.7.7</version>
+			<groupId>com.github.docker-java</groupId>
+			<artifactId>docker-java</artifactId>
+			<version>2.1.2</version>
 		</dependency>
 
 		<dependency>
