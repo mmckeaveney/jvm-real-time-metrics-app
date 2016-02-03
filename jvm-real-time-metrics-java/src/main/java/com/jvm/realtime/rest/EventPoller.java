@@ -7,6 +7,7 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.command.EventsResultCallback;
 import com.jvm.realtime.config.Config;
+import com.jvm.realtime.model.DockerEvent;
 import com.jvm.realtime.persistence.EventRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,10 +62,14 @@ public class EventPoller implements DataPoller {
 
     private class EventsCallback extends EventsResultCallback {
         public void onNext(Event event) {
-            eventRepository.save(event);
+            DockerEvent currentEvent = new DockerEvent();
+            currentEvent.setStatus(event.getStatus());
+            currentEvent.setImage(event.getFrom());
+            currentEvent.setTime(event.getTime());
+            eventRepository.save(currentEvent);
             LOGGER.info("Received event : {} from image {} at {}",
-                    event.getStatus(),
-                    event.getFrom(),
+                    currentEvent.getStatus(),
+                    currentEvent.getImage(),
                     System.currentTimeMillis());
         }
     }

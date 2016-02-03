@@ -1,6 +1,7 @@
 package com.jvm.realtime.controller;
 
 import com.github.dockerjava.api.model.Event;
+import com.jvm.realtime.model.DockerEvent;
 import com.jvm.realtime.persistence.ClientAppSnapshotRepository;
 import com.jvm.realtime.persistence.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,12 @@ public class EventController {
     EventRepository eventRepository;
 
     @RequestMapping(value = "/events/all", method = RequestMethod.GET)
-    public List<Event> getAllEvents() {
+    public List<DockerEvent> getAllEvents() {
         return eventRepository.findAll();
     }
 
     @RequestMapping(value = "/events", method = RequestMethod.GET)
-    public List<Event> getEventsForApp(@RequestParam(value = "appName") String appName) {
-       return eventRepository.findByFrom(appName);
+    public List<DockerEvent> getEventsForApp(@RequestParam(value = "appName") String appName) {
+       return eventRepository.findByImage(appName);
     }
 }

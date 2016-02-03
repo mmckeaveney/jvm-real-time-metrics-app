@@ -2,13 +2,14 @@ package com.jvm.realtime.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
+import org.springframework.data.annotation.Id;
 
 public class DockerEvent {
 
+    @Id
+    private String id;
     @JsonProperty("status")
     private String status;
-    @JsonProperty("id")
-    private String id;
     @JsonProperty("from")
     private String image;
     @JsonProperty("time")
@@ -27,24 +28,44 @@ public class DockerEvent {
         this.timeNano = timeNano;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getStatus() {
         return status;
     }
 
-    public String getId() {
-        return id;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getImage() {
         return image;
     }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public Long getTime() {
         return time;
     }
 
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
     public Long getTimeNano() {
         return timeNano;
+    }
+
+    public void setTimeNano(Long timeNano) {
+        this.timeNano = timeNano;
     }
 
     @Override
