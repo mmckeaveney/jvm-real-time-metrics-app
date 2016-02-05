@@ -10,7 +10,7 @@ public class DockerEvent {
     private String id;
     @JsonProperty("status")
     private String status;
-    @JsonProperty("from")
+    @JsonProperty("image")
     private String image;
     @JsonProperty("time")
     private Long time;
