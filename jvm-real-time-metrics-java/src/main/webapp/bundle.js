@@ -101,6 +101,10 @@
 	
 	var _componentsLogin2 = _interopRequireDefault(_componentsLogin);
 	
+	var _componentsSettings = __webpack_require__(414);
+	
+	var _componentsSettings2 = _interopRequireDefault(_componentsSettings);
+	
 	var routes = _react2['default'].createElement(
 	    _reactRouter.Router,
 	    { history: (0, _historyLibCreateBrowserHistory2['default'])() },
@@ -109,8 +113,10 @@
 	        { path: '/', component: _componentsAppJs2['default'] },
 	        _react2['default'].createElement(_reactRouter.IndexRoute, { component: _componentsHomeDashboard2['default'] }),
 	        _react2['default'].createElement(_reactRouter.Route, { path: '/environment', component: _componentsEnvironmentDashboard2['default'] }),
+	        '// TODO: This is a routing hack, fix it',
 	        _react2['default'].createElement(_reactRouter.Route, { path: '/appdetail/frankblizzard/:image', component: _componentsClientAppDrilldown2['default'] }),
-	        _react2['default'].createElement(_reactRouter.Route, { path: '/alerts', component: _componentsAlertsDashboard2['default'] })
+	        _react2['default'].createElement(_reactRouter.Route, { path: '/alerts', component: _componentsAlertsDashboard2['default'] }),
+	        _react2['default'].createElement(_reactRouter.Route, { path: '/settings', component: _componentsSettings2['default'] })
 	    )
 	);
 	
@@ -56659,6 +56665,7 @@
 	        key: 'render',
 	        value: function render() {
 	
+	            // TODO: This is a routing hack, fix it
 	            var currentApp = _underscore2['default'].findWhere(this.props.clientApplications, {
 	                appName: 'frankblizzard/' + this.props.params.image
 	            });
@@ -57128,6 +57135,12 @@
 	
 	exports['default'] = RealTimeMetricsPanel;
 	module.exports = exports['default'];
+
+/***/ },
+/* 414 */
+/***/ function(module, exports) {
+
+	"use strict";
 
 /***/ }
 /******/ ]);

@@ -1,12 +1,18 @@
 package com.jvm.realtime.config;
 
+import com.jvm.realtime.client.JvmrtExceptionHandler;
 import com.jvm.realtime.data.RealTimeDataClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import javax.servlet.Filter;
+import org.springframework.context.annotation.FilterType;
+
 
 @Configuration
+@ComponentScan (
+    excludeFilters = @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE, value={JvmrtExceptionHandler.class})
+)
 public class Config {
 
     public static final String dockerHost = "localhost";

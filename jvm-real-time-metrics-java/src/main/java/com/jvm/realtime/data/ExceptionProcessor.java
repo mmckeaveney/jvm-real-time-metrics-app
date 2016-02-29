@@ -31,8 +31,11 @@ public class ExceptionProcessor {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String currentTime = sdf.format(cal.getTime());
 
-            LOGGER.info("Real time exception notification being transmitted over websocket at " + currentTime);
-            websocket.convertAndSend(WebSocketConfiguration.MESSAGE_PREFIX + "/exceptionUpdate", exceptionModel);
+        LOGGER.info("Exception data being saved at " + currentTime);
+        exceptionRepository.save(exceptionModel);
+
+        LOGGER.info("Real time exception notification being transmitted over websocket at " + currentTime);
+        websocket.convertAndSend(WebSocketConfiguration.MESSAGE_PREFIX + "/exceptionUpdate", exceptionModel);
 
     }
 
