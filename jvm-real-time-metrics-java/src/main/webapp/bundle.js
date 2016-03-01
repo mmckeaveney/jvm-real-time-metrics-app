@@ -85,15 +85,15 @@
 	
 	var _componentsHomeDashboard2 = _interopRequireDefault(_componentsHomeDashboard);
 	
-	var _componentsEnvironmentDashboard = __webpack_require__(404);
+	var _componentsEnvironmentDashboard = __webpack_require__(406);
 	
 	var _componentsEnvironmentDashboard2 = _interopRequireDefault(_componentsEnvironmentDashboard);
 	
-	var _componentsAlertsDashboard = __webpack_require__(410);
+	var _componentsAlertsDashboard = __webpack_require__(412);
 	
 	var _componentsAlertsDashboard2 = _interopRequireDefault(_componentsAlertsDashboard);
 	
-	var _componentsClientAppDrilldown = __webpack_require__(411);
+	var _componentsClientAppDrilldown = __webpack_require__(413);
 	
 	var _componentsClientAppDrilldown2 = _interopRequireDefault(_componentsClientAppDrilldown);
 	
@@ -101,7 +101,7 @@
 	
 	var _componentsLogin2 = _interopRequireDefault(_componentsLogin);
 	
-	var _componentsSettings = __webpack_require__(414);
+	var _componentsSettings = __webpack_require__(416);
 	
 	var _componentsSettings2 = _interopRequireDefault(_componentsSettings);
 	
@@ -24319,7 +24319,7 @@
 	var _Login2 = _interopRequireDefault(_Login);
 	
 	// CSS
-	__webpack_require__(402);
+	__webpack_require__(404);
 	
 	// Component for the main Container Div of the application.
 	
@@ -31157,7 +31157,7 @@
 	
 	var _WhatsNew2 = _interopRequireDefault(_WhatsNew);
 	
-	var _Favourites = __webpack_require__(397);
+	var _Favourites = __webpack_require__(399);
 	
 	var _Favourites2 = _interopRequireDefault(_Favourites);
 	
@@ -31166,7 +31166,7 @@
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
 	// CSS
-	__webpack_require__(393);
+	__webpack_require__(395);
 	
 	// Component for the main home dashboard of the application.
 	
@@ -31273,8 +31273,12 @@
 	
 	var _EventPanel2 = _interopRequireDefault(_EventPanel);
 	
+	var _ExceptionPanel = __webpack_require__(394);
+	
+	var _ExceptionPanel2 = _interopRequireDefault(_ExceptionPanel);
+	
 	// CSS
-	__webpack_require__(393);
+	__webpack_require__(395);
 	
 	var WhatsNew = (function (_React$Component) {
 	    _inherits(WhatsNew, _React$Component);
@@ -31295,61 +31299,7 @@
 	                    _MaterialPanel2['default'],
 	                    { title: 'Latest', subtitle: 'The Latest From Your Environment' },
 	                    _react2['default'].createElement(_EventPanel2['default'], { appName: 'All' }),
-	                    _react2['default'].createElement(
-	                        _MaterialPanel2['default'],
-	                        { title: 'Exceptions' },
-	                        _react2['default'].createElement(
-	                            _materialUiLibTableTable2['default'],
-	                            { selectable: false },
-	                            _react2['default'].createElement(
-	                                _materialUiLibTableTableHeader2['default'],
-	                                { displaySelectAll: false,
-	                                    adjustForCheckbox: false },
-	                                _react2['default'].createElement(
-	                                    _materialUiLibTableTableRow2['default'],
-	                                    null,
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableHeaderColumn2['default'],
-	                                        null,
-	                                        'Application'
-	                                    ),
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableHeaderColumn2['default'],
-	                                        null,
-	                                        'Exception'
-	                                    ),
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableHeaderColumn2['default'],
-	                                        null,
-	                                        'Time'
-	                                    )
-	                                )
-	                            ),
-	                            _react2['default'].createElement(
-	                                _materialUiLibTableTableBody2['default'],
-	                                { displayRowCheckbox: false },
-	                                _react2['default'].createElement(
-	                                    _materialUiLibTableTableRow2['default'],
-	                                    null,
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableRowColumn2['default'],
-	                                        null,
-	                                        'App'
-	                                    ),
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableRowColumn2['default'],
-	                                        null,
-	                                        'SQLException'
-	                                    ),
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableRowColumn2['default'],
-	                                        null,
-	                                        '2 hours ago'
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    ),
+	                    _react2['default'].createElement(_ExceptionPanel2['default'], { appName: 'All' }),
 	                    _react2['default'].createElement(
 	                        _MaterialPanel2['default'],
 	                        { title: 'Alerts' },
@@ -35005,6 +34955,10 @@
 	
 	var _utilsWebSocket2 = _interopRequireDefault(_utilsWebSocket);
 	
+	var _utilsTimeDelta = __webpack_require__(393);
+	
+	var _utilsTimeDelta2 = _interopRequireDefault(_utilsTimeDelta);
+	
 	var EventPanel = (function (_React$Component) {
 	    _inherits(EventPanel, _React$Component);
 	
@@ -35046,39 +35000,8 @@
 	            });
 	        }
 	    }, {
-	        key: 'calculateTimeDelta',
-	        value: function calculateTimeDelta(since) {
-	            var date = new Date(since);
-	            var seconds = Math.floor(new Date().getTime() / 1000 - date);
-	
-	            var interval = Math.floor(seconds / 31536000);
-	
-	            if (interval >= 1) {
-	                return interval + " years ago";
-	            }
-	            interval = Math.floor(seconds / 2592000);
-	            if (interval >= 1) {
-	                return interval + " months ago";
-	            }
-	            interval = Math.floor(seconds / 86400);
-	            if (interval >= 1) {
-	                return interval + " days ago";
-	            }
-	            interval = Math.floor(seconds / 3600);
-	            if (interval >= 1) {
-	                return interval + " hours ago";
-	            }
-	            interval = Math.floor(seconds / 60);
-	            if (interval >= 1) {
-	                return interval + " minutes ago";
-	            }
-	            return Math.floor(seconds) + " seconds ago";
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
-	
 	            var eventsMarkup;
 	            if (this.state.events) {
 	                eventsMarkup = _underscore2['default'].map(this.state.events, function (event) {
@@ -35098,7 +35021,7 @@
 	                        _react2['default'].createElement(
 	                            _materialUiLibTableTableRowColumn2['default'],
 	                            null,
-	                            _this2.calculateTimeDelta(event.time)
+	                            _utilsTimeDelta2['default'].calculateTimeDelta(event.time)
 	                        )
 	                    );
 	                });
@@ -54513,15 +54436,293 @@
 
 /***/ },
 /* 393 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var TimeDelta = (function () {
+	    function TimeDelta() {
+	        _classCallCheck(this, TimeDelta);
+	    }
+	
+	    _createClass(TimeDelta, null, [{
+	        key: "calculateTimeDelta",
+	        value: function calculateTimeDelta(since) {
+	            var date = new Date(since);
+	            var seconds = Math.floor(new Date().getTime() / 1000 - date);
+	
+	            var interval = Math.floor(seconds / 31536000);
+	
+	            if (interval > 1) {
+	                return interval + " years ago";
+	            } else if (interval == 1) {
+	                return interval + " year ago";
+	            }
+	            interval = Math.floor(seconds / 2592000);
+	            if (interval > 1) {
+	                return interval + " months ago";
+	            } else if (interval == 1) {
+	                return interval + " month ago";
+	            }
+	            interval = Math.floor(seconds / 86400);
+	            if (interval > 1) {
+	                return interval + " days ago";
+	            } else if (interval == 1) {
+	                return interval + " day ago";
+	            }
+	            interval = Math.floor(seconds / 3600);
+	            if (interval > 1) {
+	                return interval + " hours ago";
+	            } else if (interval == 1) {
+	                return interval + " hour ago";
+	            }
+	            interval = Math.floor(seconds / 60);
+	            if (interval > 1) {
+	                return interval + " minutes ago";
+	            } else if (interval == 1) {
+	                return interval + " minute ago";
+	            }
+	            return Math.floor(seconds) + " seconds ago";
+	        }
+	    }]);
+	
+	    return TimeDelta;
+	})();
+	
+	exports["default"] = TimeDelta;
+	module.exports = exports["default"];
+
+/***/ },
+/* 394 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _underscore = __webpack_require__(311);
+	
+	var _underscore2 = _interopRequireDefault(_underscore);
+	
+	var _materialUiLibTableTable = __webpack_require__(295);
+	
+	var _materialUiLibTableTable2 = _interopRequireDefault(_materialUiLibTableTable);
+	
+	var _materialUiLibTableTableHeaderColumn = __webpack_require__(296);
+	
+	var _materialUiLibTableTableHeaderColumn2 = _interopRequireDefault(_materialUiLibTableTableHeaderColumn);
+	
+	var _materialUiLibTableTableRow = __webpack_require__(297);
+	
+	var _materialUiLibTableTableRow2 = _interopRequireDefault(_materialUiLibTableTableRow);
+	
+	var _materialUiLibTableTableHeader = __webpack_require__(298);
+	
+	var _materialUiLibTableTableHeader2 = _interopRequireDefault(_materialUiLibTableTableHeader);
+	
+	var _materialUiLibTableTableRowColumn = __webpack_require__(307);
+	
+	var _materialUiLibTableTableRowColumn2 = _interopRequireDefault(_materialUiLibTableTableRowColumn);
+	
+	var _materialUiLibTableTableBody = __webpack_require__(308);
+	
+	var _materialUiLibTableTableBody2 = _interopRequireDefault(_materialUiLibTableTableBody);
+	
+	var _MaterialPanel = __webpack_require__(284);
+	
+	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
+	
+	var _actionsAppActions = __webpack_require__(312);
+	
+	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
+	
+	var _materialUiLibCircularProgress = __webpack_require__(270);
+	
+	var _materialUiLibCircularProgress2 = _interopRequireDefault(_materialUiLibCircularProgress);
+	
+	var _jquery = __webpack_require__(326);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _utilsWebSocket = __webpack_require__(327);
+	
+	var _utilsWebSocket2 = _interopRequireDefault(_utilsWebSocket);
+	
+	var _utilsTimeDelta = __webpack_require__(393);
+	
+	var _utilsTimeDelta2 = _interopRequireDefault(_utilsTimeDelta);
+	
+	var ExceptionPanel = (function (_React$Component) {
+	    _inherits(ExceptionPanel, _React$Component);
+	
+	    function ExceptionPanel(props) {
+	        _classCallCheck(this, ExceptionPanel);
+	
+	        _get(Object.getPrototypeOf(ExceptionPanel.prototype), 'constructor', this).call(this, props);
+	        this.state = {
+	            exceptions: []
+	        };
+	    }
+	
+	    _createClass(ExceptionPanel, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.getLatestExceptions(this.props.appName);
+	            _utilsWebSocket2['default'].register([{
+	                route: '/jvmrt/exceptionsUpdate',
+	                callback: this.getLatestExceptions(this.props.appName)
+	            }]);
+	        }
+	    }, {
+	        key: 'getLatestExceptions',
+	        value: function getLatestExceptions(criteria) {
+	            var _this = this;
+	
+	            var url;
+	            if (criteria == "All") {
+	                url = "http://localhost:8090/api/exception/all";
+	            } else {
+	                url = 'http://localhost:8090/api/exception/?appName=' + criteria;
+	            }
+	            _jquery2['default'].getJSON({ url: url,
+	                success: function success(exceptions) {
+	                    _this.setState({
+	                        exceptions: exceptions
+	                    });
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var exceptionsMarkup;
+	            if (this.state.exceptions) {
+	                exceptionsMarkup = _underscore2['default'].map(this.state.exceptions, function (exception) {
+	                    return _react2['default'].createElement(
+	                        _materialUiLibTableTableRow2['default'],
+	                        null,
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableRowColumn2['default'],
+	                            null,
+	                            exception.applicationName
+	                        ),
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableRowColumn2['default'],
+	                            null,
+	                            exception.exceptionType
+	                        ),
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableRowColumn2['default'],
+	                            null,
+	                            exception.exceptionClass
+	                        ),
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableRowColumn2['default'],
+	                            null,
+	                            exception.exceptionMethod
+	                        ),
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableRowColumn2['default'],
+	                            null,
+	                            _utilsTimeDelta2['default'].calculateTimeDelta(exception.time)
+	                        )
+	                    );
+	                });
+	            } else {
+	                exceptionsMarkup = _react2['default'].createElement(_materialUiLibCircularProgress2['default'], null);
+	            }
+	
+	            return _react2['default'].createElement(
+	                _MaterialPanel2['default'],
+	                { title: this.props.appName + ' Exceptions' },
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTable2['default'],
+	                    { selectable: false },
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableHeader2['default'],
+	                        { displaySelectAll: false,
+	                            adjustForCheckbox: false },
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableRow2['default'],
+	                            null,
+	                            _react2['default'].createElement(
+	                                _materialUiLibTableTableHeaderColumn2['default'],
+	                                null,
+	                                'Application'
+	                            ),
+	                            _react2['default'].createElement(
+	                                _materialUiLibTableTableHeaderColumn2['default'],
+	                                null,
+	                                'Exception'
+	                            ),
+	                            _react2['default'].createElement(
+	                                _materialUiLibTableTableHeaderColumn2['default'],
+	                                null,
+	                                'Class'
+	                            ),
+	                            _react2['default'].createElement(
+	                                _materialUiLibTableTableHeaderColumn2['default'],
+	                                null,
+	                                'Method'
+	                            ),
+	                            _react2['default'].createElement(
+	                                _materialUiLibTableTableHeaderColumn2['default'],
+	                                null,
+	                                'Time'
+	                            )
+	                        )
+	                    ),
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableBody2['default'],
+	                        { displayRowCheckbox: false },
+	                        exceptionsMarkup
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return ExceptionPanel;
+	})(_react2['default'].Component);
+	
+	exports['default'] = ExceptionPanel;
+	module.exports = exports['default'];
+
+/***/ },
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(394);
+	var content = __webpack_require__(396);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(396)(content, {});
+	var update = __webpack_require__(398)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -54538,10 +54739,10 @@
 	}
 
 /***/ },
-/* 394 */
+/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(395)();
+	exports = module.exports = __webpack_require__(397)();
 	// imports
 	
 	
@@ -54552,7 +54753,7 @@
 
 
 /***/ },
-/* 395 */
+/* 397 */
 /***/ function(module, exports) {
 
 	/*
@@ -54608,7 +54809,7 @@
 
 
 /***/ },
-/* 396 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -54862,7 +55063,7 @@
 
 
 /***/ },
-/* 397 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54901,7 +55102,7 @@
 	
 	var _materialUiLibFontIcon2 = _interopRequireDefault(_materialUiLibFontIcon);
 	
-	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(398);
+	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(400);
 	
 	var _materialUiLibSvgIconsNavigationClose2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationClose);
 	
@@ -54917,11 +55118,11 @@
 	
 	var _materialUiLibStylesColors2 = _interopRequireDefault(_materialUiLibStylesColors);
 	
-	var _reactHighchartsBundleHighcharts = __webpack_require__(399);
+	var _reactHighchartsBundleHighcharts = __webpack_require__(401);
 	
 	var _reactHighchartsBundleHighcharts2 = _interopRequireDefault(_reactHighchartsBundleHighcharts);
 	
-	var _Chart = __webpack_require__(400);
+	var _Chart = __webpack_require__(402);
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
 	
@@ -54930,8 +55131,8 @@
 	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
 	
 	// CSS
-	__webpack_require__(401);
-	__webpack_require__(393);
+	__webpack_require__(403);
+	__webpack_require__(395);
 	
 	var Favourites = (function (_React$Component) {
 	    _inherits(Favourites, _React$Component);
@@ -55020,7 +55221,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 398 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55047,7 +55248,7 @@
 	module.exports = NavigationClose;
 
 /***/ },
-/* 399 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	!function(t,e){ true?module.exports=e(__webpack_require__(3)):"function"==typeof define&&define.amd?define(["react"],e):"object"==typeof exports?exports.Highcharts=e(require("react")):t.Highcharts=e(t.react)}(this,function(t){return function(t){function e(n){if(i[n])return i[n].exports;var o=i[n]={exports:{},id:n,loaded:!1};return t[n].call(o.exports,o,o.exports,e),o.loaded=!0,o.exports}var i={};return e.m=t,e.c=i,e.p="",e(0)}([function(t,e,i){(function(e){"use strict";if(!n){e.HighchartsAdapter=i(4);var n=i(7)}t.exports=i(3)}).call(e,function(){return this}())},function(t,e,i){"use strict";var n=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var i=arguments[e];for(var n in i)Object.prototype.hasOwnProperty.call(i,n)&&(t[n]=i[n])}return t},o=i(2);if("undefined"==typeof Highcharts)throw Error('Starting with version 3 of react-highcharts, Highcharts is not bundled by default.  use "react-highcharts/dist/bundle/highcharts" instead, or include highcharts. ');t.exports=function(t,e){var i="Highcharts"+e,r=o.createClass({displayName:i,propTypes:{config:o.PropTypes.object.isRequired,isPureConfig:o.PropTypes.bool},renderChart:function(o){if(!o)throw new Error("Config must be specified for the "+i+" component");var r=o.chart;this.chart=new t[e](n({},o,{chart:n({},r,{renderTo:this.refs.chart})}))},shouldComponentUpdate:function(t){return this.props.isPureConfig&&this.props.config===t.config||this.renderChart(t.config),!0},getChart:function(){if(!this.chart)throw new Error("getChart() should not be called before the component is mounted");return this.chart},componentDidMount:function(){this.renderChart(this.props.config)},render:function(){var t=this.props;return t=n({},t,{ref:"chart"}),o.createElement("div",t)}});return r.Highcharts=t,r}},function(e,i){e.exports=t},function(t,e,i){"use strict";var n=i(1);t.exports=n(Highcharts,"Chart")},function(t,e){/**
@@ -55072,7 +55273,7 @@
 	t.hoverPoint=null)},importEvents:function(){if(!this.hasImportedEvents){var e,i=this,n=t(i.series.options.point,i.options),o=n.events;i.events=o;for(e in o)ge(i,e,o[e]);this.hasImportedEvents=!0}},setState:function(e,i){var n,o,r,s,a=this,l=ut(a.plotX),h=a.plotY,c=a.series,d=c.options.states,p=ke[c.type].marker&&c.options.marker,u=p&&!p.enabled,f=p&&p.states[e],g=f&&f.enabled===!1,m=c.stateMarkerGraphic,y=a.marker||{},x=c.chart,v=c.halo;e=e||$t,s=a.pointAttr[e]||c.pointAttr[e],e===a.state&&!i||a.selected&&e!==Qt||d[e]&&d[e].enabled===!1||e&&(g||u&&f.enabled===!1)||e&&y.states&&y.states[e]&&y.states[e].enabled===!1||(a.graphic?(n=p&&a.graphic.symbolName&&s.r,a.graphic.attr(t(s,n?{x:l-n,y:h-n,width:2*n,height:2*n}:{})),m&&m.hide()):(e&&f&&(n=f.radius,r=y.symbol||c.symbol,m&&m.currentSymbol!==r&&(m=m.destroy()),m?m[i?"animate":"attr"]({x:l-n,y:h-n}):r&&(c.stateMarkerGraphic=m=x.renderer.symbol(r,l-n,h-n,2*n,2*n).attr(s).add(c.markerGroup),m.currentSymbol=r)),m&&(m[e&&x.isInsidePlot(l,h,x.inverted)?"show":"hide"](),m.element.point=a)),o=d[e]&&d[e].halo,o&&o.size?(v||(c.halo=v=x.renderer.path().add(x.seriesGroup)),v.attr(ne({fill:Ce(a.color||c.color).setOpacity(o.opacity).get()},o.attributes))[i?"animate":"attr"]({d:a.haloPath(o.size)})):v&&v.attr({d:[]}),a.state=e)},haloPath:function(t){var e=this.series,i=e.chart,n=e.getPlotBox(),o=i.inverted;return i.renderer.symbols.circle(n.translateX+(o?e.yAxis.len-this.plotY:this.plotX)-t,n.translateY+(o?e.xAxis.len-this.plotX:this.plotY)-t,2*t,2*t)}}),ne(je.prototype,{onMouseOver:function(){var t=this,e=t.chart,i=e.hoverSeries;i&&i!==t&&i.onMouseOut(),t.options.events.mouseOver&&ye(t,"mouseOver"),t.setState(Jt),e.hoverSeries=t},onMouseOut:function(){var t=this,e=t.options,i=t.chart,n=i.tooltip,o=i.hoverPoint;i.hoverSeries=null,o&&o.onMouseOut(),t&&e.events.mouseOut&&ye(t,"mouseOut"),!n||e.stickyTracking||n.shared&&!t.noSharedTooltip||n.hide(),t.setState()},setState:function(t){var e,i=this,n=i.options,o=i.graph,r=n.states,s=n.lineWidth,a=0;if(t=t||$t,i.state!==t){if(i.state=t,r[t]&&r[t].enabled===!1)return;if(t&&(s=r[t].lineWidth||s+(r[t].lineWidthPlus||0)),o&&!o.dashstyle)for(e={"stroke-width":s},o.attr(e);i["zoneGraph"+a];)i["zoneGraph"+a].attr(e),a+=1}},setVisible:function(t,e){var i,n=this,o=n.chart,r=n.legendItem,s=o.options.chart.ignoreHiddenSeries,a=n.visible;n.visible=t=n.userOptions.visible=t===B?!a:t,i=t?"show":"hide",de(["group","dataLabelsGroup","markerGroup","tracker"],function(t){n[t]&&n[t][i]()}),(o.hoverSeries===n||(o.hoverPoint&&o.hoverPoint.series)===n)&&n.onMouseOut(),r&&o.legend.colorizeItem(n,t),n.isDirty=!0,n.options.stacking&&de(o.series,function(t){t.options.stacking&&t.visible&&(t.isDirty=!0)}),de(n.linkedSeries,function(e){e.setVisible(t,!1)}),s&&(o.isDirtyBox=!0),e!==!1&&o.redraw(),ye(n,i)},show:function(){this.setVisible(!0)},hide:function(){this.setVisible(!1)},select:function(t){var e=this;e.selected=t=t===B?!e.selected:t,e.checkbox&&(e.checkbox.checked=t),ye(e,t?"select":"unselect")},drawTracker:ni.drawTrackerGraph}),ne(lt,{Color:Ce,Point:Ve,Tick:E,Renderer:H,SVGElement:z,SVGRenderer:Pe,arrayMin:A,arrayMax:S,charts:Bt,dateFormat:Y,error:P,format:v,pathAnim:F,getOptions:I,hasBidiBug:Ot,isTouchDevice:Mt,setOptions:O,addEvent:ge,removeEvent:me,createElement:u,discardElement:C,css:p,each:de,map:fe,merge:t,splat:d,extendClass:f,pInt:e,svg:Dt,canvas:It,vml:!Dt&&!It,product:Xt,version:Wt})}()}])});
 
 /***/ },
-/* 400 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55111,7 +55312,7 @@
 	
 	var _materialUiLibFontIcon2 = _interopRequireDefault(_materialUiLibFontIcon);
 	
-	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(398);
+	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(400);
 	
 	var _materialUiLibSvgIconsNavigationClose2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationClose);
 	
@@ -55127,7 +55328,7 @@
 	
 	var _materialUiLibStylesColors2 = _interopRequireDefault(_materialUiLibStylesColors);
 	
-	var _reactHighchartsBundleHighcharts = __webpack_require__(399);
+	var _reactHighchartsBundleHighcharts = __webpack_require__(401);
 	
 	var _reactHighchartsBundleHighcharts2 = _interopRequireDefault(_reactHighchartsBundleHighcharts);
 	
@@ -55140,8 +55341,8 @@
 	var _underscore2 = _interopRequireDefault(_underscore);
 	
 	// CSS
-	__webpack_require__(401);
-	__webpack_require__(393);
+	__webpack_require__(403);
+	__webpack_require__(395);
 	
 	var Chart = (function (_React$Component) {
 	    _inherits(Chart, _React$Component);
@@ -55244,7 +55445,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 401 */
+/* 403 */
 /***/ function(module, exports) {
 
 	/**
@@ -55463,16 +55664,16 @@
 
 
 /***/ },
-/* 402 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(403);
+	var content = __webpack_require__(405);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(396)(content, {});
+	var update = __webpack_require__(398)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -55489,10 +55690,10 @@
 	}
 
 /***/ },
-/* 403 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(395)();
+	exports = module.exports = __webpack_require__(397)();
 	// imports
 	
 	
@@ -55503,7 +55704,7 @@
 
 
 /***/ },
-/* 404 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55526,11 +55727,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ClientApplications = __webpack_require__(405);
+	var _ClientApplications = __webpack_require__(407);
 	
 	var _ClientApplications2 = _interopRequireDefault(_ClientApplications);
 	
-	var _Chart = __webpack_require__(400);
+	var _Chart = __webpack_require__(402);
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
 	
@@ -55539,7 +55740,7 @@
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
 	// CSS
-	__webpack_require__(393);
+	__webpack_require__(395);
 	
 	// Component for the main home dashboard of the application.
 	
@@ -55599,7 +55800,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 405 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55622,7 +55823,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _altUtilsConnectToStores = __webpack_require__(406);
+	var _altUtilsConnectToStores = __webpack_require__(408);
 	
 	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
 	
@@ -55634,7 +55835,7 @@
 	
 	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 	
-	var _ClientApp = __webpack_require__(407);
+	var _ClientApp = __webpack_require__(409);
 	
 	var _ClientApp2 = _interopRequireDefault(_ClientApp);
 	
@@ -55642,7 +55843,7 @@
 	
 	var _utilsWebSocket2 = _interopRequireDefault(_utilsWebSocket);
 	
-	var _storesClientApplicationStore = __webpack_require__(408);
+	var _storesClientApplicationStore = __webpack_require__(410);
 	
 	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
 	
@@ -55651,7 +55852,7 @@
 	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
 	
 	// CSS
-	__webpack_require__(393);
+	__webpack_require__(395);
 	
 	var ClientApplications = (function (_React$Component) {
 	    _inherits(ClientApplications, _React$Component);
@@ -55725,7 +55926,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 406 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -55847,7 +56048,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 407 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55892,7 +56093,7 @@
 	
 	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
-	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(398);
+	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(400);
 	
 	var _materialUiLibSvgIconsNavigationClose2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationClose);
 	
@@ -55908,7 +56109,7 @@
 	
 	var _materialUiLibStylesColors2 = _interopRequireDefault(_materialUiLibStylesColors);
 	
-	var _Chart = __webpack_require__(400);
+	var _Chart = __webpack_require__(402);
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
 	
@@ -55949,7 +56150,7 @@
 	var _materialUiLibCardCardActions2 = _interopRequireDefault(_materialUiLibCardCardActions);
 	
 	// CSS
-	__webpack_require__(393);
+	__webpack_require__(395);
 	
 	var ClientApp = (function (_React$Component) {
 	    _inherits(ClientApp, _React$Component);
@@ -56050,7 +56251,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 408 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56077,7 +56278,7 @@
 	
 	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 	
-	var _altUtilsDecorators = __webpack_require__(409);
+	var _altUtilsDecorators = __webpack_require__(411);
 	
 	var _underscore = __webpack_require__(311);
 	
@@ -56113,7 +56314,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 409 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56223,7 +56424,7 @@
 	}
 
 /***/ },
-/* 410 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56262,7 +56463,7 @@
 	
 	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
-	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(398);
+	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(400);
 	
 	var _materialUiLibSvgIconsNavigationClose2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationClose);
 	
@@ -56278,12 +56479,12 @@
 	
 	var _materialUiLibStylesColors2 = _interopRequireDefault(_materialUiLibStylesColors);
 	
-	var _Chart = __webpack_require__(400);
+	var _Chart = __webpack_require__(402);
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
 	
 	// CSS
-	__webpack_require__(393);
+	__webpack_require__(395);
 	
 	var AlertsDashboard = (function (_React$Component) {
 	    _inherits(AlertsDashboard, _React$Component);
@@ -56555,7 +56756,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 411 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56580,7 +56781,7 @@
 	
 	var _reactRouter = __webpack_require__(161);
 	
-	var _altUtilsConnectToStores = __webpack_require__(406);
+	var _altUtilsConnectToStores = __webpack_require__(408);
 	
 	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
 	
@@ -56592,15 +56793,15 @@
 	
 	var _materialUiLibIconButton2 = _interopRequireDefault(_materialUiLibIconButton);
 	
-	var _materialUiLibSvgIconsNavigationArrowBack = __webpack_require__(412);
+	var _materialUiLibSvgIconsNavigationArrowBack = __webpack_require__(414);
 	
 	var _materialUiLibSvgIconsNavigationArrowBack2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationArrowBack);
 	
-	var _Chart = __webpack_require__(400);
+	var _Chart = __webpack_require__(402);
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
 	
-	var _storesClientApplicationStore = __webpack_require__(408);
+	var _storesClientApplicationStore = __webpack_require__(410);
 	
 	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
 	
@@ -56608,7 +56809,7 @@
 	
 	var _underscore2 = _interopRequireDefault(_underscore);
 	
-	var _RealTimeMetricsPanel = __webpack_require__(413);
+	var _RealTimeMetricsPanel = __webpack_require__(415);
 	
 	var _RealTimeMetricsPanel2 = _interopRequireDefault(_RealTimeMetricsPanel);
 	
@@ -56651,6 +56852,10 @@
 	var _EventPanel = __webpack_require__(310);
 	
 	var _EventPanel2 = _interopRequireDefault(_EventPanel);
+	
+	var _ExceptionPanel = __webpack_require__(394);
+	
+	var _ExceptionPanel2 = _interopRequireDefault(_ExceptionPanel);
 	
 	var ClientAppDrilldown = (function (_React$Component) {
 	    _inherits(ClientAppDrilldown, _React$Component);
@@ -56719,61 +56924,8 @@
 	                    ),
 	                    _react2['default'].createElement(
 	                        'div',
-	                        { className: 'col-lg-2 col-md-2 col-sm-2 col-xs-2' },
-	                        _react2['default'].createElement(
-	                            'div',
-	                            { className: 'panel panel-primary' },
-	                            _react2['default'].createElement(
-	                                'div',
-	                                { className: 'panel-heading' },
-	                                _react2['default'].createElement(
-	                                    'h3',
-	                                    { className: 'panel-title' },
-	                                    appName,
-	                                    ' Exceptions'
-	                                )
-	                            ),
-	                            _react2['default'].createElement(
-	                                'div',
-	                                { className: 'panel-body' },
-	                                _react2['default'].createElement(
-	                                    'table',
-	                                    { className: 'table' },
-	                                    _react2['default'].createElement(
-	                                        'tbody',
-	                                        null,
-	                                        _react2['default'].createElement(
-	                                            'tr',
-	                                            null,
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Exception'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Time'
-	                                            )
-	                                        ),
-	                                        _react2['default'].createElement(
-	                                            'tr',
-	                                            null,
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                'SQLException'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                '1 hour ago'
-	                                            )
-	                                        )
-	                                    )
-	                                )
-	                            )
-	                        )
+	                        { className: 'col-lg-5 col-md-5 col-sm-5 col-xs-5' },
+	                        _react2['default'].createElement(_ExceptionPanel2['default'], { appName: appName })
 	                    ),
 	                    _react2['default'].createElement(
 	                        'div',
@@ -56962,7 +57114,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 412 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56989,7 +57141,7 @@
 	module.exports = NavigationArrowBack;
 
 /***/ },
-/* 413 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57012,11 +57164,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _altUtilsConnectToStores = __webpack_require__(406);
+	var _altUtilsConnectToStores = __webpack_require__(408);
 	
 	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
 	
-	var _storesClientApplicationStore = __webpack_require__(408);
+	var _storesClientApplicationStore = __webpack_require__(410);
 	
 	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
 	
@@ -57137,7 +57289,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 414 */
+/* 416 */
 /***/ function(module, exports) {
 
 	"use strict";

@@ -3,7 +3,12 @@ package com.jvm.realtime.client;
 import com.jvm.realtime.model.ExceptionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.RestClientException;
@@ -13,34 +18,40 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.ConnectException;
 
 /**
  * A class that will be used to handle all uncaught exceptions and notify when one is thrown.
  */
+@Configuration
 @ControllerAdvice
+@EnableAutoConfiguration
 public class JvmrtExceptionHandler implements HandlerExceptionResolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JvmrtExceptionHandler.class);
+
     private RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private Environment environment;
 
     @ExceptionHandler(Exception.class)
     public ModelAndView resolveException(HttpServletRequest request,
                                          HttpServletResponse response,
                                          Object handler, Exception exception) {
 
-        String exceptionClass = exception.getStackTrace()[0].getClassName();
-        String exceptionMethod = exception.getStackTrace()[0].getMethodName();
+        String applicationName = environment.getProperty("docker.image.name");
         String exceptionMessage = exception.getMessage();
+        String exceptionMethod = exception.getStackTrace()[0].getMethodName();
+        String exceptionClass = exception.getStackTrace()[0].getClassName();
         String exceptionType = exception.getClass().getSimpleName();
-        String appName = exception.getClass().getPackage().getImplementationVersion();
+
+
         ExceptionModel thrownException = new ExceptionModel(
                 exceptionMessage,
-                appName,
+                applicationName,
                 exceptionMethod,
                 exceptionClass,
                 exceptionType,
-                System.currentTimeMillis()
+                System.currentTimeMillis() / 1000L
         );
 
         LOGGER.error("Uncaught Exception thrown of type {}. Sending to JVMRT Main app for processing", thrownException.toString());
