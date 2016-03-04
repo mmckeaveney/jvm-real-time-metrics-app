@@ -6,6 +6,7 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.command.EventsResultCallback;
 import com.jvm.realtime.config.Config;
+import com.jvm.realtime.config.ConfigurationProps;
 import com.jvm.realtime.model.DockerEvent;
 import com.jvm.realtime.persistence.EventRepository;
 import com.jvm.realtime.websocket.WebSocketConfiguration;
@@ -23,15 +24,17 @@ public class EventProcessor implements DataProcessor {
     private DockerClient dockerClient;
     private final EventRepository eventRepository;
     private final SimpMessagingTemplate websocket;
+    private ConfigurationProps configurationProps;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventProcessor.class);
 
     @Autowired
-    public EventProcessor(EventRepository eventRepository, SimpMessagingTemplate websocket) {
+    public EventProcessor(EventRepository eventRepository, SimpMessagingTemplate websocket, ConfigurationProps configurationProps) {
         //TODO: Settings and configurations page for changing docker hosts.
+        this.configurationProps = configurationProps;
         DockerClientConfig config = DockerClientConfig.createDefaultConfigBuilder()
                 .withVersion("1.18")
-                .withUri("http://" + Config.dockerHost + ":2376")
+                .withUri(String.format("http://%s:%s", configurationProps.getDockerHost() , configurationProps.getDockerPort()))
                 .build();
         this.dockerClient = DockerClientBuilder.getInstance(config).build();
         this.eventRepository = eventRepository;

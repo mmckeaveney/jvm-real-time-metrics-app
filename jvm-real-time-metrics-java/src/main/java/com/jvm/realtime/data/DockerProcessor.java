@@ -5,10 +5,12 @@ import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.jvm.realtime.config.Config;
+import com.jvm.realtime.config.ConfigurationProps;
 import com.jvm.realtime.model.ClientAppSnapshot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
@@ -21,14 +23,16 @@ public class DockerProcessor implements DataProcessor {
     private DockerClient dockerClient;
     private List<Container> currentContainers;
     private final SimpMessagingTemplate websocket;
+    private ConfigurationProps configurationProps;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DockerProcessor.class);
 
     @Autowired
-    public DockerProcessor(SimpMessagingTemplate websocket) {
+    public DockerProcessor(SimpMessagingTemplate websocket, ConfigurationProps configurationProps) {
+        this.configurationProps = configurationProps;
         DockerClientConfig config = DockerClientConfig.createDefaultConfigBuilder()
                 .withVersion("1.18")
-                .withUri("http://" + Config.dockerHost + ":2376")
+                .withUri(String.format("http://%s:%s", configurationProps.getDockerHost() , configurationProps.getDockerPort()))
                 .build();
         this.dockerClient = DockerClientBuilder.getInstance(config).build();
         this.currentContainers = Collections.emptyList();

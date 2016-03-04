@@ -2,6 +2,7 @@ package com.jvm.realtime.data;
 
 import com.github.dockerjava.api.model.Container;
 import com.jvm.realtime.config.Config;
+import com.jvm.realtime.config.ConfigurationProps;
 import com.jvm.realtime.model.ClientAppSnapshot;
 import com.jvm.realtime.websocket.WebSocketConfiguration;
 import org.slf4j.Logger;
@@ -21,14 +22,18 @@ public class MetricsEndpointProcessor implements DataProcessor {
     private RestTemplate restTemplate;
     private DockerProcessor dockerPoller;
     private final SimpMessagingTemplate websocket;
+    private ConfigurationProps configurationProps;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetricsEndpointProcessor.class);
 
     @Autowired
-    public MetricsEndpointProcessor(DockerProcessor dockerPoller, SimpMessagingTemplate websocket) {
+    public MetricsEndpointProcessor(DockerProcessor dockerPoller,
+                                    SimpMessagingTemplate websocket,
+                                    ConfigurationProps configurationProps) {
         this.restTemplate = new RestTemplate();
         this.dockerPoller = dockerPoller;
         this.websocket = websocket;
+        this.configurationProps = configurationProps;
     }
 
     public void poll() {
@@ -53,7 +58,7 @@ public class MetricsEndpointProcessor implements DataProcessor {
             ClientAppSnapshot currentAppModel = this.dockerPoller.getDockerApplicationMetaData(container);
 
             // Do the HTTP request to get metrics from spring boot actuator.
-            String metricsUrl = String.format("http://%s:%s/metrics", Config.dockerHost, currentAppModel.getPublicPort());
+            String metricsUrl = String.format("http://%s:%s/metrics", configurationProps.getDockerHost() , currentAppModel.getPublicPort());
 
 
             try {
