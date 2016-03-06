@@ -46,4 +46,15 @@ public class UserProcessor {
         }
         return new UserModel();
     }
+
+    public SettingsModel getSettingsForUser(String userId) {
+       return userRepository.findByUserId(userId).getUserSettings();
+    }
+
+    public SettingsModel changeUserSettings(String userId, SettingsModel settings) {
+        UserModel currentUser = userRepository.findByUserId(userId);
+        currentUser.setUserSettings(settings);
+        userRepository.save(currentUser);
+        return currentUser.getUserSettings();
+    }
 }

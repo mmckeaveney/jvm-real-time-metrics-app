@@ -1,6 +1,7 @@
 package com.jvm.realtime.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.springframework.data.annotation.Id;
 
@@ -14,18 +15,15 @@ public class DockerEvent {
     private String image;
     @JsonProperty("time")
     private Long time;
-    @JsonProperty("timeNano")
-    private Long timeNano;
 
     public DockerEvent() {
     }
 
-    public DockerEvent(String status, String id, String image, Long time, Long timeNano) {
+    public DockerEvent(String status, String image, Long time) {
+        this.id = image + status + time;
         this.status = status;
-        this.id = id;
         this.image = image;
         this.time = time;
-        this.timeNano = timeNano;
     }
 
     public String getId() {
@@ -60,39 +58,29 @@ public class DockerEvent {
         this.time = time;
     }
 
-    public Long getTimeNano() {
-        return timeNano;
-    }
-
-    public void setTimeNano(Long timeNano) {
-        this.timeNano = timeNano;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DockerEvent that = (DockerEvent) o;
-        return Objects.equal(status, that.status) &&
-                Objects.equal(id, that.id) &&
+        return Objects.equal(id, that.id) &&
+                Objects.equal(status, that.status) &&
                 Objects.equal(image, that.image) &&
-                Objects.equal(time, that.time) &&
-                Objects.equal(timeNano, that.timeNano);
+                Objects.equal(time, that.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(status, id, image, time, timeNano);
+        return Objects.hashCode(id, status, image, time);
     }
 
     @Override
     public String toString() {
-        return "DockerEvent{" +
-                "status='" + status + '\'' +
-                ", id='" + id + '\'' +
-                ", image='" + image + '\'' +
-                ", time=" + time +
-                ", timeNano=" + timeNano +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("status", status)
+                .add("image", image)
+                .add("time", time)
+                .toString();
     }
 }

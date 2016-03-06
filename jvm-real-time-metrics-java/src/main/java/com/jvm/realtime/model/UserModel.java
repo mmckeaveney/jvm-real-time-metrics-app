@@ -31,6 +31,46 @@ public class UserModel {
         this.alerts = alerts;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public SettingsModel getUserSettings() {
+        return userSettings;
+    }
+
+    public void setUserSettings(SettingsModel userSettings) {
+        this.userSettings = userSettings;
+    }
+
+    public Set<AlertModel> getAlerts() {
+        return alerts;
+    }
+
+    public void setAlerts(Set<AlertModel> alerts) {
+        this.alerts = alerts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

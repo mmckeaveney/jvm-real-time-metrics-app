@@ -1,11 +1,14 @@
 package com.jvm.realtime.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 public class SettingsModel {
 
+    @JsonProperty("dockerHost")
     private String dockerHost;
+    @JsonProperty("dockerPort")
     private int dockerPort;
     public enum Theme {
         DARK_THEME,

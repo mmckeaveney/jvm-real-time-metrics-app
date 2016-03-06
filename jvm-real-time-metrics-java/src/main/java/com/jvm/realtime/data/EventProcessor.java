@@ -65,10 +65,11 @@ public class EventProcessor implements DataProcessor {
 
     private class EventsCallback extends EventsResultCallback {
         public void onNext(Event event) {
-            DockerEvent currentEvent = new DockerEvent();
-            currentEvent.setStatus(event.getStatus());
-            currentEvent.setImage(event.getFrom());
-            currentEvent.setTime(event.getTime());
+            DockerEvent currentEvent = new DockerEvent(
+                    event.getStatus(),
+                    event.getFrom(),
+                    event.getTime()
+            );
             eventRepository.save(currentEvent);
             websocket.convertAndSend(WebSocketConfiguration.MESSAGE_PREFIX + "/eventsUpdate", currentEvent);
             LOGGER.info("Received event : {} from image {} at {}",
