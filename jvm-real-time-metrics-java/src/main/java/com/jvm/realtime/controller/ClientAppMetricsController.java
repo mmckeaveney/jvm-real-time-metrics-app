@@ -21,6 +21,18 @@ public class ClientAppMetricsController {
     @Autowired
     ClientAppSnapshotRepository clientAppSnapshotRepository;
 
+    @RequestMapping(value = "/clientapps/names/all", method = RequestMethod.GET)
+    public List<String> getAllClientApps() {
+        List<String> clientNames = new ArrayList<>();
+        List<ClientAppSnapshot> allClients = clientAppSnapshotRepository.findAll();
+        for (ClientAppSnapshot app : allClients) {
+            if (!clientNames.contains(app.getAppName())) {
+                clientNames.add(app.getAppName());
+            }
+        }
+        return clientNames;
+    }
+
     @RequestMapping(value = "/timeseries", method = RequestMethod.GET)
     public ClientAppTimeSeries getTimeSeriesDataForSingleApp(@RequestParam(value = "appName") String appName,
                                                      @RequestParam(value = "timeScale") String timeScale) {

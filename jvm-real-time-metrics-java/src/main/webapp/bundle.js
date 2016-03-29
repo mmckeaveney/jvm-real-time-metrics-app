@@ -89,7 +89,7 @@
 	
 	var _componentsAlertsDashboard2 = _interopRequireDefault(_componentsAlertsDashboard);
 	
-	var _componentsClientAppDrilldown = __webpack_require__(467);
+	var _componentsClientAppDrilldown = __webpack_require__(484);
 	
 	var _componentsClientAppDrilldown2 = _interopRequireDefault(_componentsClientAppDrilldown);
 	
@@ -97,7 +97,7 @@
 	
 	var _componentsLogin2 = _interopRequireDefault(_componentsLogin);
 	
-	var _componentsSettings = __webpack_require__(470);
+	var _componentsSettings = __webpack_require__(487);
 	
 	var _componentsSettings2 = _interopRequireDefault(_componentsSettings);
 	
@@ -42036,25 +42036,23 @@
 	        _classCallCheck(this, AppActions);
 	
 	        this.generateActions('updateLatestEvents');
+	        this.generateActions('saveAlert');
+	        this.generateActions('updateLatestAlerts');
 	        this.generateActions('updateLatestApplicationMetadata');
 	    }
 	
 	    _createClass(AppActions, [{
-	        key: 'getLatestEvents',
-	        value: function getLatestEvents(criteria) {
-	            var _this = this;
-	
-	            var url;
-	            if (criteria == "All") {
-	                url = "http://localhost:8090/api/events/all";
-	            } else {
-	                url = 'http://localhost:8090/api/events/?' + criteria;
-	            }
-	            _jquery2['default'].getJSON({ url: url,
-	                success: function success(events) {
-	                    _this.setState({
-	                        events: events
-	                    });
+	        key: 'fetchLatestAlerts',
+	        value: function fetchLatestAlerts() {
+	            var self = this;
+	            _jquery2['default'].ajax({
+	                dataType: "json",
+	                url: "http://localhost:8090/api/alerts/all",
+	                success: function success(alerts) {
+	                    self.actions.updateLatestAlerts(alerts);
+	                },
+	                error: function error(_error) {
+	                    console.log("Error retrieving alerts", _error);
 	                }
 	            });
 	        }
@@ -42096,8 +42094,8 @@
 	                        });
 	                    });
 	                },
-	                error: function error(_error) {
-	                    console.log("There was an issue getting timeSeries data", _error);
+	                error: function error(_error2) {
+	                    console.log("There was an issue getting timeSeries data", _error2);
 	                }
 	            });
 	        }
@@ -59995,10 +59993,10 @@
 	        value: function render() {
 	            var exceptionsMarkup;
 	            if (this.state.exceptions) {
-	                exceptionsMarkup = _underscore2['default'].map(this.state.exceptions, function (exception) {
+	                exceptionsMarkup = _underscore2['default'].map(this.state.exceptions, function (exception, index) {
 	                    return _react2['default'].createElement(
 	                        _materialUiLibTableTableRow2['default'],
-	                        null,
+	                        { key: index },
 	                        _react2['default'].createElement(
 	                            _materialUiLibTableTableRowColumn2['default'],
 	                            null,
@@ -64889,6 +64887,10 @@
 	
 	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
 	
+	var _materialUiLibCircularProgress = __webpack_require__(305);
+	
+	var _materialUiLibCircularProgress2 = _interopRequireDefault(_materialUiLibCircularProgress);
+	
 	// CSS
 	__webpack_require__(433);
 	
@@ -64924,11 +64926,7 @@
 	                        index: index });
 	                });
 	            } else {
-	                clientApps = _react2['default'].createElement(
-	                    'span',
-	                    null,
-	                    ' No docker client applications currently available at this time. '
-	                );
+	                clientApps = _react2['default'].createElement(_materialUiLibCircularProgress2['default'], null);
 	            }
 	
 	            return _react2['default'].createElement(
@@ -65513,9 +65511,53 @@
 	
 	var _materialUiLibStylesColors2 = _interopRequireDefault(_materialUiLibStylesColors);
 	
+	var _materialUiLibTableTable = __webpack_require__(333);
+	
+	var _materialUiLibTableTable2 = _interopRequireDefault(_materialUiLibTableTable);
+	
+	var _materialUiLibTableTableHeaderColumn = __webpack_require__(334);
+	
+	var _materialUiLibTableTableHeaderColumn2 = _interopRequireDefault(_materialUiLibTableTableHeaderColumn);
+	
+	var _materialUiLibTableTableRow = __webpack_require__(335);
+	
+	var _materialUiLibTableTableRow2 = _interopRequireDefault(_materialUiLibTableTableRow);
+	
+	var _materialUiLibTableTableHeader = __webpack_require__(336);
+	
+	var _materialUiLibTableTableHeader2 = _interopRequireDefault(_materialUiLibTableTableHeader);
+	
+	var _materialUiLibTableTableRowColumn = __webpack_require__(345);
+	
+	var _materialUiLibTableTableRowColumn2 = _interopRequireDefault(_materialUiLibTableTableRowColumn);
+	
+	var _materialUiLibTableTableBody = __webpack_require__(346);
+	
+	var _materialUiLibTableTableBody2 = _interopRequireDefault(_materialUiLibTableTableBody);
+	
 	var _Chart = __webpack_require__(440);
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
+	
+	var _MaterialPanel = __webpack_require__(321);
+	
+	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
+	
+	var _NewAlert = __webpack_require__(467);
+	
+	var _NewAlert2 = _interopRequireDefault(_NewAlert);
+	
+	var _altUtilsConnectToStores = __webpack_require__(462);
+	
+	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
+	
+	var _actionsAppActions = __webpack_require__(350);
+	
+	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
+	
+	var _storesAlertStore = __webpack_require__(483);
+	
+	var _storesAlertStore2 = _interopRequireDefault(_storesAlertStore);
 	
 	// CSS
 	__webpack_require__(433);
@@ -65524,271 +65566,136 @@
 	    _inherits(AlertsDashboard, _React$Component);
 	
 	    function AlertsDashboard(props) {
-	        _classCallCheck(this, AlertsDashboard);
+	        _classCallCheck(this, _AlertsDashboard);
 	
-	        _get(Object.getPrototypeOf(AlertsDashboard.prototype), 'constructor', this).call(this, props);
+	        _get(Object.getPrototypeOf(_AlertsDashboard.prototype), 'constructor', this).call(this, props);
+	        _actionsAppActions2['default'].fetchLatestAlerts();
 	    }
 	
 	    _createClass(AlertsDashboard, [{
+	        key: 'deleteAlert',
+	        value: function deleteAlert() {
+	            console.log("delete");
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this = this;
+	
 	            var styles = {
 	                fontWeight: "bold",
 	                textAlign: "center"
 	            };
 	
-	            var config = {
-	                title: {
-	                    text: this.props.title + " Metrics"
-	                },
-	                plotOptions: {
-	                    line: {
-	                        dataLabels: {
-	                            enabled: true
-	                        },
-	                        enableMouseTracking: false
-	                    }
-	                },
-	                xAxis: {
-	                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-	                },
-	                series: [{
-	                    name: 'CPU Usage',
-	                    data: [2900.9, 1000.5, 1060.4, 1290.2, 1440.0, 1760.0, 1350.6, 1480.5, 2160.4, 1940.1, 950.6, 540.4]
-	                }, {
-	                    name: 'Heap Space',
-	                    data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-	                }, {
-	                    name: 'Exceptions Thrown',
-	                    data: [29, 13, 10, 100, 50, 40, 30, 20, 10, 9, 8, 1, 10, 19, 15]
-	                }]
-	            };
+	            var alerts = this.props.alerts.map(function (alert, index) {
+	                return _react2['default'].createElement(
+	                    _materialUiLibTableTableRow2['default'],
+	                    { key: index },
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableRowColumn2['default'],
+	                        null,
+	                        alert.appName
+	                    ),
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableRowColumn2['default'],
+	                        null,
+	                        alert.metric
+	                    ),
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableRowColumn2['default'],
+	                        null,
+	                        alert.condition
+	                    ),
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableRowColumn2['default'],
+	                        null,
+	                        alert.criteria
+	                    ),
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableRowColumn2['default'],
+	                        null,
+	                        alert.user
+	                    ),
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableRowColumn2['default'],
+	                        null,
+	                        _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DELETE', onClick: _this.deleteAlert.bind(_this, _this.props) })
+	                    )
+	                );
+	            });
+	
 	            return _react2['default'].createElement(
 	                'div',
 	                { className: 'col-lg-12 col-md-12 col-sm-12 col-xs-12' },
 	                _react2['default'].createElement(
-	                    'div',
-	                    { className: 'panel panel-primary' },
+	                    _MaterialPanel2['default'],
+	                    { title: 'Alerts for User' },
 	                    _react2['default'].createElement(
-	                        'div',
-	                        { className: 'panel-heading' },
-	                        'Alert Settings'
-	                    ),
-	                    _react2['default'].createElement(
-	                        'div',
-	                        { className: 'panel-body' },
-	                        '/* ',
+	                        _materialUiLibTableTable2['default'],
+	                        { selectable: false },
 	                        _react2['default'].createElement(
-	                            'div',
-	                            { className: 'panel panel-primary' },
+	                            _materialUiLibTableTableHeader2['default'],
+	                            { displaySelectAll: false,
+	                                adjustForCheckbox: false },
 	                            _react2['default'].createElement(
-	                                'div',
-	                                { className: 'panel-heading' },
+	                                _materialUiLibTableTableRow2['default'],
+	                                null,
 	                                _react2['default'].createElement(
-	                                    'h3',
-	                                    { className: 'panel-title' },
-	                                    'Alert Thresholds for Martin McKeaveney'
-	                                )
-	                            ),
-	                            _react2['default'].createElement(
-	                                'div',
-	                                { className: 'panel-body' },
+	                                    _materialUiLibTableTableHeaderColumn2['default'],
+	                                    null,
+	                                    'Application'
+	                                ),
 	                                _react2['default'].createElement(
-	                                    'table',
-	                                    { className: 'table' },
-	                                    _react2['default'].createElement(
-	                                        'tbody',
-	                                        null,
-	                                        _react2['default'].createElement(
-	                                            'tr',
-	                                            null,
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Application'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Metrics'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Condition'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Criteria'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Users To Alert'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Actions'
-	                                            )
-	                                        ),
-	                                        _react2['default'].createElement(
-	                                            'tr',
-	                                            null,
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'ReactClient', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'CPU', style: { margin: "5px" }, secondary: true }),
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'HEAP', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DROPS BELOW', style: { margin: "5px" }, primary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: '10000', style: { margin: "5px" }, primary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Martin McKeaveney', style: { margin: "5px" }, secondary: true }),
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Ryan Wilson', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DELETE', style: { margin: "5px" }, primary: true })
-	                                            )
-	                                        ),
-	                                        _react2['default'].createElement(
-	                                            'tr',
-	                                            null,
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'JVClient', style: { margin: "5px" }, secondary: true }),
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'VBPS', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'UPTIME', style: { margin: "5px" }, secondary: true }),
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'THREADS', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'EXCEEDS', style: { margin: "5px" }, primary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: '10000', style: { margin: "5px" }, primary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Martin McKeaveney', style: { margin: "5px" }, secondary: true }),
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Mark O\'Sullivan', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DELETE', style: { margin: "5px" }, primary: true })
-	                                            )
-	                                        ),
-	                                        _react2['default'].createElement(
-	                                            'tr',
-	                                            null,
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'ReactClient', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'CPU', style: { margin: "5px" }, secondary: true }),
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'HEAP', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DROPS BELOW', style: { margin: "5px" }, primary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: '10000', style: { margin: "5px" }, primary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Martin McKeaveney', style: { margin: "5px" }, secondary: true }),
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Jeff Alvarado', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DELETE', style: { margin: "5px" }, primary: true })
-	                                            )
-	                                        ),
-	                                        _react2['default'].createElement(
-	                                            'tr',
-	                                            null,
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'ReactClient', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'CPU', style: { margin: "5px" }, secondary: true }),
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'HEAP', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DROPS BELOW', style: { margin: "5px" }, primary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: '10000', style: { margin: "5px" }, primary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Martin McKeaveney', style: { margin: "5px" }, secondary: true }),
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Amit Sharma', style: { margin: "5px" }, secondary: true })
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DELETE', style: { margin: "5px" }, primary: true })
-	                                            )
-	                                        )
-	                                    )
+	                                    _materialUiLibTableTableHeaderColumn2['default'],
+	                                    null,
+	                                    'Metrics'
+	                                ),
+	                                _react2['default'].createElement(
+	                                    _materialUiLibTableTableHeaderColumn2['default'],
+	                                    null,
+	                                    'Condition'
+	                                ),
+	                                _react2['default'].createElement(
+	                                    _materialUiLibTableTableHeaderColumn2['default'],
+	                                    null,
+	                                    'Criteria'
+	                                ),
+	                                _react2['default'].createElement(
+	                                    _materialUiLibTableTableHeaderColumn2['default'],
+	                                    null,
+	                                    'Users to Alert'
+	                                ),
+	                                _react2['default'].createElement(
+	                                    _materialUiLibTableTableHeaderColumn2['default'],
+	                                    null,
+	                                    'Actions'
 	                                )
 	                            )
 	                        ),
-	                        ' */'
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableBody2['default'],
+	                            { displayRowCheckbox: false },
+	                            alerts,
+	                            _react2['default'].createElement(_NewAlert2['default'], null)
+	                        )
 	                    )
 	                )
 	            );
 	        }
+	    }], [{
+	        key: 'getStores',
+	        value: function getStores(props) {
+	            return [_storesAlertStore2['default']];
+	        }
+	    }, {
+	        key: 'getPropsFromStores',
+	        value: function getPropsFromStores(props) {
+	            return _storesAlertStore2['default'].getState();
+	        }
 	    }]);
 	
+	    var _AlertsDashboard = AlertsDashboard;
+	    AlertsDashboard = (0, _altUtilsConnectToStores2['default'])(AlertsDashboard) || AlertsDashboard;
 	    return AlertsDashboard;
 	})(_react2['default'].Component);
 	
@@ -65819,47 +65726,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRouter = __webpack_require__(161);
-	
-	var _altUtilsConnectToStores = __webpack_require__(462);
-	
-	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
-	
 	var _materialUiLibRaisedButton = __webpack_require__(293);
 	
 	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
-	var _materialUiLibIconButton = __webpack_require__(298);
+	var _AlertDropdown = __webpack_require__(468);
 	
-	var _materialUiLibIconButton2 = _interopRequireDefault(_materialUiLibIconButton);
-	
-	var _materialUiLibSvgIconsNavigationArrowBack = __webpack_require__(468);
-	
-	var _materialUiLibSvgIconsNavigationArrowBack2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationArrowBack);
-	
-	var _Chart = __webpack_require__(440);
-	
-	var _Chart2 = _interopRequireDefault(_Chart);
-	
-	var _storesClientApplicationStore = __webpack_require__(464);
-	
-	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
-	
-	var _underscore = __webpack_require__(349);
-	
-	var _underscore2 = _interopRequireDefault(_underscore);
-	
-	var _RealTimeMetricsPanel = __webpack_require__(469);
-	
-	var _RealTimeMetricsPanel2 = _interopRequireDefault(_RealTimeMetricsPanel);
-	
-	var _actionsAppActions = __webpack_require__(350);
-	
-	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
-	
-	var _MaterialPanel = __webpack_require__(321);
-	
-	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
+	var _AlertDropdown2 = _interopRequireDefault(_AlertDropdown);
 	
 	var _materialUiLibTableTable = __webpack_require__(333);
 	
@@ -65885,264 +65758,141 @@
 	
 	var _materialUiLibTableTableBody2 = _interopRequireDefault(_materialUiLibTableTableBody);
 	
-	var _materialUiLibCardCardActions = __webpack_require__(326);
+	var _materialUiLibTextField = __webpack_require__(472);
 	
-	var _materialUiLibCardCardActions2 = _interopRequireDefault(_materialUiLibCardCardActions);
+	var _materialUiLibTextField2 = _interopRequireDefault(_materialUiLibTextField);
 	
-	var _EventPanel = __webpack_require__(348);
+	var _jquery = __webpack_require__(364);
 	
-	var _EventPanel2 = _interopRequireDefault(_EventPanel);
+	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _ExceptionPanel = __webpack_require__(432);
+	var _actionsAppActions = __webpack_require__(350);
 	
-	var _ExceptionPanel2 = _interopRequireDefault(_ExceptionPanel);
+	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 	
-	var ClientAppDrilldown = (function (_React$Component) {
-	    _inherits(ClientAppDrilldown, _React$Component);
+	var NewAlert = (function (_React$Component) {
+	    _inherits(NewAlert, _React$Component);
 	
-	    function ClientAppDrilldown(props) {
-	        _classCallCheck(this, ClientAppDrilldown);
+	    function NewAlert(props) {
+	        var _this = this;
 	
-	        _get(Object.getPrototypeOf(ClientAppDrilldown.prototype), 'constructor', this).call(this, props);
+	        _classCallCheck(this, NewAlert);
+	
+	        _get(Object.getPrototypeOf(NewAlert.prototype), 'constructor', this).call(this, props);
+	
+	        this.handleCriteriaChange = function (event) {
+	            _this.setState({
+	                criteria: event.target.value
+	            });
+	        };
+	
+	        this.state = {
+	            apps: [],
+	            metrics: ["gcps_marksweeptime", "gaugeresponsemetrics", "classes", "gcps_marksweepcount", "threadstotalStarted", "processors", "heapinit", "memfree", "systemloadaverage", "gcps_scavengetime", "mem", "counterstatus200metrics", "heap", "heapused", "instanceuptime", "gcps_scavengecount", "heapcommitted", "threads", "httpsessionsmax", "uptime", "classesloaded", "httpsessionsactive", "threadspeak", "classesunloaded", "threadsdaemon"],
+	            conditions: ["Less Than", "Greater Than"],
+	            criteria: null,
+	            users: []
+	        };
 	    }
 	
-	    _createClass(ClientAppDrilldown, [{
+	    _createClass(NewAlert, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            var _this2 = this;
+	
+	            _jquery2['default'].getJSON({ url: "http://localhost:8090/api/users/all",
+	                success: function success(users) {
+	                    _this2.setState({
+	                        users: users
+	                    });
+	                }
+	            });
+	
+	            _jquery2['default'].getJSON({ url: "http://localhost:8090/api/clientapps/names/all",
+	                success: function success(clientApps) {
+	                    _this2.setState({
+	                        apps: clientApps
+	                    });
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'saveAlert',
+	        value: function saveAlert() {
+	            var alert = {
+	                appName: this.refs.appName.props.data[0],
+	                metric: this.refs.metric.props.data[0],
+	                condition: this.refs.condition.props.data[0],
+	                criteria: this.refs.criteria.props.value,
+	                user: this.refs.user.props.data[0]
+	            };
+	            _jquery2['default'].ajax({
+	                url: 'http://localhost:8090/api/alerts/add',
+	                type: "POST",
+	                headers: {
+	                    'Accept': 'application/json',
+	                    'Content-Type': 'application/json'
+	                },
+	                data: JSON.stringify(alert),
+	                dataType: 'application/json',
+	                success: function success(alert) {
+	                    console.log(alert);
+	                    _actionsAppActions2['default'].saveAlert(alert);
+	                },
+	                error: function error(_error) {
+	                    console.log("error when saving alert", _error);
+	                }
+	            });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	
-	            // TODO: This is a routing hack, fix it
-	            var currentApp = _underscore2['default'].findWhere(_storesClientApplicationStore2['default'].getState().clientApplications, {
-	                appName: 'frankblizzard/' + this.props.params.image
-	            });
-	
-	            var actuatorMetrics = currentApp.actuatorMetrics;
-	            var appName = currentApp.appName;
-	
-	            var actuatorMarkup = _underscore2['default'].map(actuatorMetrics, function (value, key) {
-	                return _react2['default'].createElement(
-	                    'tr',
-	                    null,
-	                    _react2['default'].createElement(
-	                        'td',
-	                        null,
-	                        ' ',
-	                        key,
-	                        ' '
-	                    ),
-	                    _react2['default'].createElement(
-	                        'td',
-	                        null,
-	                        ' ',
-	                        value,
-	                        ' '
-	                    )
-	                );
-	            });
-	
 	            return _react2['default'].createElement(
-	                'div',
-	                { className: 'col-lg-12 col-md-12 col-sm-12 col-xs-12' },
+	                _materialUiLibTableTableRow2['default'],
+	                null,
 	                _react2['default'].createElement(
-	                    _MaterialPanel2['default'],
-	                    { title: appName + ' Details ',
-	                        subtitle: _react2['default'].createElement(
-	                            _reactRouter.Link,
-	                            { to: '/environment' },
-	                            'GO BACK',
-	                            _react2['default'].createElement(
-	                                _materialUiLibIconButton2['default'],
-	                                null,
-	                                ' ',
-	                                _react2['default'].createElement(_materialUiLibSvgIconsNavigationArrowBack2['default'], null),
-	                                ' '
-	                            )
-	                        ) },
-	                    _react2['default'].createElement(
-	                        'div',
-	                        { className: 'col-lg-5 col-md-5 col-sm-5 col-xs-5' },
-	                        _react2['default'].createElement(_EventPanel2['default'], { appName: appName })
-	                    ),
-	                    _react2['default'].createElement(
-	                        'div',
-	                        { className: 'col-lg-5 col-md-5 col-sm-5 col-xs-5' },
-	                        _react2['default'].createElement(_ExceptionPanel2['default'], { appName: appName })
-	                    ),
-	                    _react2['default'].createElement(
-	                        'div',
-	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
-	                        _react2['default'].createElement(
-	                            'div',
-	                            { className: 'panel panel-primary' },
-	                            _react2['default'].createElement(
-	                                'div',
-	                                { className: 'panel-heading' },
-	                                _react2['default'].createElement(
-	                                    'h3',
-	                                    { className: 'panel-title' },
-	                                    appName,
-	                                    ' Alerts'
-	                                )
-	                            ),
-	                            _react2['default'].createElement(
-	                                'div',
-	                                { className: 'panel-body' },
-	                                '/* ',
-	                                _react2['default'].createElement(
-	                                    'table',
-	                                    { className: 'table' },
-	                                    _react2['default'].createElement(
-	                                        'tbody',
-	                                        null,
-	                                        _react2['default'].createElement(
-	                                            'tr',
-	                                            null,
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Event'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Type'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Time'
-	                                            )
-	                                        ),
-	                                        _react2['default'].createElement(
-	                                            'tr',
-	                                            null,
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                'Updated to version 1.1'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                'Update/Release'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                '1 hour ago'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'See Alert', style: { margin: "5px" }, secondary: true })
-	                                            )
-	                                        )
-	                                    )
-	                                ),
-	                                ' */'
-	                            )
-	                        )
-	                    ),
-	                    _react2['default'].createElement(
-	                        'div',
-	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
-	                        _react2['default'].createElement(_RealTimeMetricsPanel2['default'], { appName: appName,
-	                            actuatorMetrics: actuatorMetrics })
-	                    ),
-	                    _react2['default'].createElement(
-	                        'div',
-	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
-	                        _react2['default'].createElement(
-	                            'div',
-	                            { className: 'panel panel-primary' },
-	                            _react2['default'].createElement(
-	                                'div',
-	                                { className: 'panel-heading' },
-	                                _react2['default'].createElement(
-	                                    'h3',
-	                                    { className: 'panel-title' },
-	                                    appName,
-	                                    ' Query Times'
-	                                )
-	                            ),
-	                            _react2['default'].createElement(
-	                                'div',
-	                                { className: 'panel-body' },
-	                                '/* ',
-	                                _react2['default'].createElement(
-	                                    'table',
-	                                    { className: 'table' },
-	                                    _react2['default'].createElement(
-	                                        'tbody',
-	                                        null,
-	                                        _react2['default'].createElement(
-	                                            'tr',
-	                                            null,
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Query Method'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Class'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'Execution Time'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'th',
-	                                                null,
-	                                                'How Long Ago'
-	                                            )
-	                                        ),
-	                                        _react2['default'].createElement(
-	                                            'tr',
-	                                            null,
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                'updateUserCredentials()'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                'UserDaoImpl'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                '200ms'
-	                                            ),
-	                                            _react2['default'].createElement(
-	                                                'td',
-	                                                null,
-	                                                '10 minutes ago'
-	                                            )
-	                                        )
-	                                    )
-	                                ),
-	                                ' */'
-	                            )
-	                        )
-	                    ),
-	                    _react2['default'].createElement(_Chart2['default'], { appName: appName }),
-	                    _react2['default'].createElement(
-	                        _materialUiLibCardCardActions2['default'],
-	                        null,
-	                        _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Add to Favourites', secondary: true })
-	                    )
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    _react2['default'].createElement(_AlertDropdown2['default'], { data: this.state.apps, ref: 'appName' })
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    _react2['default'].createElement(_AlertDropdown2['default'], { data: this.state.metrics, ref: 'metric' })
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    _react2['default'].createElement(_AlertDropdown2['default'], { data: this.state.conditions, ref: 'condition' })
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    _react2['default'].createElement(_materialUiLibTextField2['default'], {
+	                        ref: 'criteria',
+	                        value: this.state.criteria,
+	                        floatingLabelText: 'Alert Criteria',
+	                        onChange: this.handleCriteriaChange
+	                    })
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    _react2['default'].createElement(_AlertDropdown2['default'], { data: this.state.users, ref: 'user' })
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'ADD', onClick: this.saveAlert.bind(this, this.props) })
 	                )
 	            );
 	        }
 	    }]);
 	
-	    return ClientAppDrilldown;
+	    return NewAlert;
 	})(_react2['default'].Component);
 	
-	exports['default'] = ClientAppDrilldown;
+	exports['default'] = NewAlert;
 	module.exports = exports['default'];
 
 /***/ },
@@ -66151,39 +65901,79 @@
 
 	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
 	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var _react = __webpack_require__(3);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactAddonsPureRenderMixin = __webpack_require__(276);
+	var _materialUiLibRaisedButton = __webpack_require__(293);
 	
-	var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
+	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
-	var _svgIcon = __webpack_require__(304);
+	var _materialUiLibSelectField = __webpack_require__(469);
 	
-	var _svgIcon2 = _interopRequireDefault(_svgIcon);
+	var _materialUiLibSelectField2 = _interopRequireDefault(_materialUiLibSelectField);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _materialUiLibMenusMenuItem = __webpack_require__(451);
 	
-	var NavigationArrowBack = _react2.default.createClass({
-	  displayName: 'NavigationArrowBack',
+	var _materialUiLibMenusMenuItem2 = _interopRequireDefault(_materialUiLibMenusMenuItem);
 	
-	  mixins: [_reactAddonsPureRenderMixin2.default],
+	var AlertDropdown = (function (_React$Component) {
+	    _inherits(AlertDropdown, _React$Component);
 	
-	  render: function render() {
-	    return _react2.default.createElement(
-	      _svgIcon2.default,
-	      this.props,
-	      _react2.default.createElement('path', { d: 'M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z' })
-	    );
-	  }
-	});
+	    function AlertDropdown(props) {
+	        var _this = this;
 	
-	exports.default = NavigationArrowBack;
+	        _classCallCheck(this, AlertDropdown);
+	
+	        _get(Object.getPrototypeOf(AlertDropdown.prototype), 'constructor', this).call(this, props);
+	
+	        this.handleChange = function (event, index, value) {
+	            return _this.setState({ value: value });
+	        };
+	
+	        this.state = {
+	            value: 0,
+	            data: null
+	        };
+	    }
+	
+	    _createClass(AlertDropdown, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {}
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var items = this.props.data.map(function (item, index) {
+	                return _react2['default'].createElement(_materialUiLibMenusMenuItem2['default'], { value: index, key: index, primaryText: item });
+	            });
+	
+	            return _react2['default'].createElement(
+	                _materialUiLibSelectField2['default'],
+	                { value: this.state.value,
+	                    onChange: this.handleChange },
+	                items
+	            );
+	        }
+	    }]);
+	
+	    return AlertDropdown;
+	})(_react2['default'].Component);
+	
+	exports['default'] = AlertDropdown;
 	module.exports = exports['default'];
 
 /***/ },
@@ -66192,146 +65982,17 @@
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
 	});
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _SelectField = __webpack_require__(470);
 	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	var _SelectField2 = _interopRequireDefault(_SelectField);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(3);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _altUtilsConnectToStores = __webpack_require__(462);
-	
-	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
-	
-	var _storesClientApplicationStore = __webpack_require__(464);
-	
-	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
-	
-	var _underscore = __webpack_require__(349);
-	
-	var _underscore2 = _interopRequireDefault(_underscore);
-	
-	var _materialUiLibTableTable = __webpack_require__(333);
-	
-	var _materialUiLibTableTable2 = _interopRequireDefault(_materialUiLibTableTable);
-	
-	var _materialUiLibTableTableHeaderColumn = __webpack_require__(334);
-	
-	var _materialUiLibTableTableHeaderColumn2 = _interopRequireDefault(_materialUiLibTableTableHeaderColumn);
-	
-	var _materialUiLibTableTableRow = __webpack_require__(335);
-	
-	var _materialUiLibTableTableRow2 = _interopRequireDefault(_materialUiLibTableTableRow);
-	
-	var _materialUiLibTableTableHeader = __webpack_require__(336);
-	
-	var _materialUiLibTableTableHeader2 = _interopRequireDefault(_materialUiLibTableTableHeader);
-	
-	var _materialUiLibTableTableRowColumn = __webpack_require__(345);
-	
-	var _materialUiLibTableTableRowColumn2 = _interopRequireDefault(_materialUiLibTableTableRowColumn);
-	
-	var _materialUiLibTableTableBody = __webpack_require__(346);
-	
-	var _materialUiLibTableTableBody2 = _interopRequireDefault(_materialUiLibTableTableBody);
-	
-	var _MaterialPanel = __webpack_require__(321);
-	
-	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
-	
-	var RealTimeMetricsPanel = (function (_React$Component) {
-	    _inherits(RealTimeMetricsPanel, _React$Component);
-	
-	    function RealTimeMetricsPanel(props) {
-	        _classCallCheck(this, _RealTimeMetricsPanel);
-	
-	        _get(Object.getPrototypeOf(_RealTimeMetricsPanel.prototype), 'constructor', this).call(this, props);
-	    }
-	
-	    _createClass(RealTimeMetricsPanel, [{
-	        key: 'render',
-	        value: function render() {
-	            var actuatorMetrics = this.props.actuatorMetrics;
-	
-	            var actuatorMarkup = _underscore2['default'].map(actuatorMetrics, function (value, key) {
-	                return _react2['default'].createElement(
-	                    _materialUiLibTableTableRow2['default'],
-	                    null,
-	                    _react2['default'].createElement(
-	                        _materialUiLibTableTableRowColumn2['default'],
-	                        null,
-	                        key
-	                    ),
-	                    _react2['default'].createElement(
-	                        _materialUiLibTableTableRowColumn2['default'],
-	                        null,
-	                        value
-	                    )
-	                );
-	            });
-	
-	            return _react2['default'].createElement(
-	                _MaterialPanel2['default'],
-	                { title: this.props.appName + ' Metrics' },
-	                _react2['default'].createElement(
-	                    _materialUiLibTableTable2['default'],
-	                    { selectable: false },
-	                    _react2['default'].createElement(
-	                        _materialUiLibTableTableHeader2['default'],
-	                        { displaySelectAll: false,
-	                            adjustForCheckbox: false },
-	                        _react2['default'].createElement(
-	                            _materialUiLibTableTableRow2['default'],
-	                            null,
-	                            _react2['default'].createElement(
-	                                _materialUiLibTableTableHeaderColumn2['default'],
-	                                null,
-	                                'Key'
-	                            ),
-	                            _react2['default'].createElement(
-	                                _materialUiLibTableTableHeaderColumn2['default'],
-	                                null,
-	                                'Value'
-	                            )
-	                        )
-	                    ),
-	                    _react2['default'].createElement(
-	                        _materialUiLibTableTableBody2['default'],
-	                        { displayRowCheckbox: false },
-	                        actuatorMarkup
-	                    )
-	                )
-	            );
-	        }
-	    }], [{
-	        key: 'getStores',
-	        value: function getStores(props) {
-	            return [_storesClientApplicationStore2['default']];
-	        }
-	    }, {
-	        key: 'getPropsFromStores',
-	        value: function getPropsFromStores(props) {
-	            return _storesClientApplicationStore2['default'].getState();
-	        }
-	    }]);
-	
-	    var _RealTimeMetricsPanel = RealTimeMetricsPanel;
-	    RealTimeMetricsPanel = (0, _altUtilsConnectToStores2['default'])(RealTimeMetricsPanel) || RealTimeMetricsPanel;
-	    return RealTimeMetricsPanel;
-	})(_react2['default'].Component);
-	
-	exports['default'] = RealTimeMetricsPanel;
+	exports.default = _SelectField2.default;
 	module.exports = exports['default'];
 
 /***/ },
@@ -66340,174 +66001,17 @@
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
 	});
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _SelectField = __webpack_require__(471);
 	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	var _SelectField2 = _interopRequireDefault(_SelectField);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(3);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _underscore = __webpack_require__(349);
-	
-	var _underscore2 = _interopRequireDefault(_underscore);
-	
-	var _MaterialPanel = __webpack_require__(321);
-	
-	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
-	
-	var _materialUiLibTextField = __webpack_require__(471);
-	
-	var _materialUiLibTextField2 = _interopRequireDefault(_materialUiLibTextField);
-	
-	var _actionsAppActions = __webpack_require__(350);
-	
-	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
-	
-	var _materialUiLibCircularProgress = __webpack_require__(305);
-	
-	var _materialUiLibCircularProgress2 = _interopRequireDefault(_materialUiLibCircularProgress);
-	
-	var _jquery = __webpack_require__(364);
-	
-	var _jquery2 = _interopRequireDefault(_jquery);
-	
-	var _materialUiLibSelectField = __webpack_require__(478);
-	
-	var _materialUiLibSelectField2 = _interopRequireDefault(_materialUiLibSelectField);
-	
-	var _materialUiLibMenusMenuItem = __webpack_require__(451);
-	
-	var _materialUiLibMenusMenuItem2 = _interopRequireDefault(_materialUiLibMenusMenuItem);
-	
-	var _materialUiLibRaisedButton = __webpack_require__(293);
-	
-	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
-	
-	var _utilsAuthService = __webpack_require__(457);
-	
-	var _utilsAuthService2 = _interopRequireDefault(_utilsAuthService);
-	
-	var items = [_react2['default'].createElement(_materialUiLibMenusMenuItem2['default'], { key: 1, value: 1, primaryText: 'Light Theme' }), _react2['default'].createElement(_materialUiLibMenusMenuItem2['default'], { key: 2, value: 2, primaryText: 'Dark Theme' })];
-	
-	var Settings = (function (_React$Component) {
-	    _inherits(Settings, _React$Component);
-	
-	    function Settings(props) {
-	        var _this = this;
-	
-	        _classCallCheck(this, Settings);
-	
-	        _get(Object.getPrototypeOf(Settings.prototype), 'constructor', this).call(this, props);
-	
-	        this.handleDockerHost = function (event) {
-	            _this.setState({
-	                dockerHost: event.target.value
-	            });
-	        };
-	
-	        this.handleDockerPort = function (event) {
-	            _this.setState({
-	                dockerPort: event.target.value
-	            });
-	        };
-	
-	        this.state = {
-	            value: null,
-	            dockerHost: null,
-	            dockerPort: null,
-	            theme: null,
-	            userId: null,
-	            username: null
-	        };
-	    }
-	
-	    _createClass(Settings, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            this.getSettingsForUser();
-	        }
-	    }, {
-	        key: 'saveSettingsForUser',
-	        value: function saveSettingsForUser() {
-	            var url = 'http://localhost:8090/api/settings/save/?userId=' + this.state.userId;
-	            _jquery2['default'].post({ url: url,
-	                data: {
-	                    dockerHost: this.state.dockerHost,
-	                    dockerPort: this.state.dockerPort
-	                },
-	                success: function success(settings) {
-	                    console.log("settings saved.");
-	                }
-	            });
-	        }
-	    }, {
-	        key: 'getSettingsForUser',
-	        value: function getSettingsForUser() {
-	            _utilsAuthService2['default'].getLock().getProfile(localStorage.getItem('userToken'), (function (err, profile) {
-	                var _this2 = this;
-	
-	                if (err) {
-	                    console.log("Error loading the Profile", err);
-	                    return;
-	                }
-	                var url = 'http://localhost:8090/api/settings/?userId=' + profile.user_id;
-	                _jquery2['default'].post({ url: url,
-	                    success: function success(settings) {
-	                        _this2.setState({
-	                            dockerHost: settings.dockerHost,
-	                            dockerPort: settings.dockerPort,
-	                            userId: profile.user_id,
-	                            username: profile.nickname
-	                        });
-	                    }
-	                });
-	            }).bind(this));
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2['default'].createElement(
-	                _MaterialPanel2['default'],
-	                { title: 'Settings for User ' + this.state.username },
-	                _react2['default'].createElement(_materialUiLibTextField2['default'], {
-	                    ref: 'dockerHost',
-	                    value: this.state.dockerHost,
-	                    floatingLabelText: 'Enter your docker host url.',
-	                    onChange: this.handleDockerHost
-	                }),
-	                _react2['default'].createElement('br', null),
-	                _react2['default'].createElement(_materialUiLibTextField2['default'], {
-	                    ref: 'dockerPort',
-	                    value: this.state.dockerPort,
-	                    floatingLabelText: 'Enter your docker host port.',
-	                    onChange: this.handleDockerPort
-	                }),
-	                _react2['default'].createElement('br', null),
-	                _react2['default'].createElement(
-	                    _materialUiLibSelectField2['default'],
-	                    { value: this.state.value, floatingLabelText: 'Choose your theme.' },
-	                    items
-	                ),
-	                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Save', secondary: true, onMouseDown: this.saveSettingsForUser })
-	            );
-	        }
-	    }]);
-	
-	    return Settings;
-	})(_react2['default'].Component);
-	
-	exports['default'] = Settings;
+	exports.default = _SelectField2.default;
 	module.exports = exports['default'];
 
 /***/ },
@@ -66516,17 +66020,296 @@
 
 	'use strict';
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	var _TextField = __webpack_require__(472);
+	var _react = __webpack_require__(3);
 	
-	var _TextField2 = _interopRequireDefault(_TextField);
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _stylePropable = __webpack_require__(223);
+	
+	var _stylePropable2 = _interopRequireDefault(_stylePropable);
+	
+	var _textField = __webpack_require__(472);
+	
+	var _textField2 = _interopRequireDefault(_textField);
+	
+	var _DropDownMenu = __webpack_require__(479);
+	
+	var _DropDownMenu2 = _interopRequireDefault(_DropDownMenu);
+	
+	var _getMuiTheme = __webpack_require__(246);
+	
+	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
+	
+	var _contextPure = __webpack_require__(299);
+	
+	var _contextPure2 = _interopRequireDefault(_contextPure);
+	
+	var _deprecatedPropType = __webpack_require__(482);
+	
+	var _deprecatedPropType2 = _interopRequireDefault(_deprecatedPropType);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	exports.default = _TextField2.default;
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var SelectField = _react2.default.createClass({
+	  displayName: 'SelectField',
+	
+	  propTypes: {
+	    /**
+	     * The width will automatically be set according to the
+	     * items inside the menu. To control this width in css
+	     * instead, set this prop to `false`.
+	     */
+	    autoWidth: _react2.default.PropTypes.bool,
+	
+	    /**
+	     * The `MenuItem` elements to populate the `Menu` with.
+	     * If the MenuItems have the prop `label` that value will
+	     * be used to render the representation of that
+	     * item within the field.
+	     */
+	    children: _react2.default.PropTypes.node,
+	
+	    /**
+	     * Disables the select field if set to true.
+	     */
+	    disabled: _react2.default.PropTypes.bool,
+	
+	    /**
+	     * The style object to use to override error styles.
+	     */
+	    errorStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * The error content to display.
+	     */
+	    errorText: _react2.default.PropTypes.node,
+	
+	    /**
+	     * The style object to use to override floating label styles.
+	     */
+	    floatingLabelStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * The content to use for the floating label element.
+	     */
+	    floatingLabelText: _react2.default.PropTypes.node,
+	
+	    /**
+	     * If true, the field receives the property width 100%.
+	     */
+	    fullWidth: _react2.default.PropTypes.bool,
+	
+	    /**
+	     * The style object to use to override hint styles.
+	     */
+	    hintStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * The hint content to display.
+	     */
+	    hintText: _react2.default.PropTypes.node,
+	
+	    /**
+	     * Overrides the styles of the icon element.
+	     */
+	    iconStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * `SelectField` will use text as default value,
+	     * with this property you can choose another name.
+	     */
+	    labelMember: (0, _deprecatedPropType2.default)(_react2.default.PropTypes.string, 'to promote composability.'),
+	
+	    /**
+	     * Overrides the styles of label when the `SelectField` is inactive.
+	     */
+	    labelStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * JSON data representing all menu items in the dropdown.
+	     */
+	    menuItems: (0, _deprecatedPropType2.default)(_react2.default.PropTypes.array, 'to promote composability.'),
+	
+	    /**
+	     * Callback function that is fired when the `SelectField` loses focus.
+	     */
+	    onBlur: _react2.default.PropTypes.func,
+	
+	    /**
+	     * Callback function that is fired when the value changes.
+	     */
+	    onChange: _react2.default.PropTypes.func,
+	
+	    /**
+	     * Callback function that is fired when the `SelectField` gains focus.
+	     */
+	    onFocus: _react2.default.PropTypes.func,
+	
+	    /**
+	     * The style object to use to override the `DropDownMenu`.
+	     */
+	    selectFieldRoot: _react2.default.PropTypes.object, // Must be changed!
+	
+	    /**
+	     * Index of the item selected.
+	     */
+	    selectedIndex: (0, _deprecatedPropType2.default)(_react2.default.PropTypes.number, 'with menuItems.'),
+	
+	    /**
+	     * Override the inline-styles of the root element.
+	     */
+	    style: _react2.default.PropTypes.object,
+	
+	    /**
+	     * Override the inline-styles of the underline element when disabled.
+	     */
+	    underlineDisabledStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * Override the inline-styles of the underline element when focused.
+	     */
+	    underlineFocusStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * Overrides the styles of the underline element.
+	     */
+	    underlineStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * The value that is currently selected.
+	     */
+	    value: _react2.default.PropTypes.any
+	  },
+	
+	  contextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  //for passing default theme context to children
+	  childContextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  mixins: [_stylePropable2.default, _contextPure2.default],
+	
+	  statics: {
+	    getChildrenClasses: function getChildrenClasses() {
+	      return [_textField2.default, _DropDownMenu2.default];
+	    }
+	  },
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      autoWidth: false,
+	      disabled: false,
+	      fullWidth: false
+	    };
+	  },
+	  getInitialState: function getInitialState() {
+	    return {
+	      muiTheme: this.context.muiTheme || (0, _getMuiTheme2.default)()
+	    };
+	  },
+	  getChildContext: function getChildContext() {
+	    return {
+	      muiTheme: this.state.muiTheme
+	    };
+	  },
+	
+	  //to update theme inside state whenever a new theme is passed down
+	  //from the parent / owner using context
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+	    this.setState({ muiTheme: newMuiTheme });
+	  },
+	  getStyles: function getStyles() {
+	    var floatingLabelText = this.props.floatingLabelText;
+	
+	    return {
+	      label: {
+	        paddingLeft: 0,
+	        top: floatingLabelText ? 6 : -4
+	      },
+	      icon: {
+	        right: 0,
+	        top: floatingLabelText ? 22 : 14
+	      },
+	      hideDropDownUnderline: {
+	        borderTop: 'none'
+	      }
+	    };
+	  },
+	  render: function render() {
+	    var styles = this.getStyles();
+	    var _props = this.props;
+	    var autoWidth = _props.autoWidth;
+	    var children = _props.children;
+	    var style = _props.style;
+	    var labelStyle = _props.labelStyle;
+	    var iconStyle = _props.iconStyle;
+	    var underlineDisabledStyle = _props.underlineDisabledStyle;
+	    var underlineFocusStyle = _props.underlineFocusStyle;
+	    var underlineStyle = _props.underlineStyle;
+	    var errorStyle = _props.errorStyle;
+	    var selectFieldRoot = _props.selectFieldRoot;
+	    var disabled = _props.disabled;
+	    var floatingLabelText = _props.floatingLabelText;
+	    var floatingLabelStyle = _props.floatingLabelStyle;
+	    var hintStyle = _props.hintStyle;
+	    var hintText = _props.hintText;
+	    var fullWidth = _props.fullWidth;
+	    var errorText = _props.errorText;
+	    var onFocus = _props.onFocus;
+	    var onBlur = _props.onBlur;
+	    var onChange = _props.onChange;
+	    var value = _props.value;
+	
+	    var other = _objectWithoutProperties(_props, ['autoWidth', 'children', 'style', 'labelStyle', 'iconStyle', 'underlineDisabledStyle', 'underlineFocusStyle', 'underlineStyle', 'errorStyle', 'selectFieldRoot', 'disabled', 'floatingLabelText', 'floatingLabelStyle', 'hintStyle', 'hintText', 'fullWidth', 'errorText', 'onFocus', 'onBlur', 'onChange', 'value']);
+	
+	    return _react2.default.createElement(
+	      _textField2.default,
+	      {
+	        style: style,
+	        floatingLabelText: floatingLabelText,
+	        floatingLabelStyle: floatingLabelStyle,
+	        hintStyle: hintStyle,
+	        hintText: !hintText && !floatingLabelText ? ' ' : hintText,
+	        fullWidth: fullWidth,
+	        errorText: errorText,
+	        underlineStyle: underlineStyle,
+	        errorStyle: errorStyle,
+	        onFocus: onFocus,
+	        onBlur: onBlur,
+	        underlineDisabledStyle: underlineDisabledStyle,
+	        underlineFocusStyle: underlineFocusStyle
+	      },
+	      _react2.default.createElement(
+	        _DropDownMenu2.default,
+	        _extends({
+	          disabled: disabled,
+	          style: selectFieldRoot,
+	          labelStyle: this.mergeStyles(styles.label, labelStyle),
+	          iconStyle: this.mergeStyles(styles.icon, iconStyle),
+	          underlineStyle: styles.hideDropDownUnderline,
+	          autoWidth: autoWidth,
+	          value: value,
+	          onChange: onChange
+	        }, other),
+	        children
+	      )
+	    );
+	  }
+	});
+	
+	exports.default = SelectField;
 	module.exports = exports['default'];
 
 /***/ },
@@ -66550,6 +66333,25 @@
 
 /***/ },
 /* 473 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _TextField = __webpack_require__(474);
+	
+	var _TextField2 = _interopRequireDefault(_TextField);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _TextField2.default;
+	module.exports = exports['default'];
+
+/***/ },
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -66584,7 +66386,7 @@
 	
 	var _uniqueId2 = _interopRequireDefault(_uniqueId);
 	
-	var _enhancedTextarea = __webpack_require__(474);
+	var _enhancedTextarea = __webpack_require__(475);
 	
 	var _enhancedTextarea2 = _interopRequireDefault(_enhancedTextarea);
 	
@@ -66596,15 +66398,15 @@
 	
 	var _contextPure2 = _interopRequireDefault(_contextPure);
 	
-	var _TextFieldHint = __webpack_require__(475);
+	var _TextFieldHint = __webpack_require__(476);
 	
 	var _TextFieldHint2 = _interopRequireDefault(_TextFieldHint);
 	
-	var _TextFieldLabel = __webpack_require__(476);
+	var _TextFieldLabel = __webpack_require__(477);
 	
 	var _TextFieldLabel2 = _interopRequireDefault(_TextFieldLabel);
 	
-	var _TextFieldUnderline = __webpack_require__(477);
+	var _TextFieldUnderline = __webpack_require__(478);
 	
 	var _TextFieldUnderline2 = _interopRequireDefault(_TextFieldUnderline);
 	
@@ -67115,7 +66917,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 474 */
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67321,7 +67123,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 475 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67399,7 +67201,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 476 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67511,7 +67313,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 477 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67649,25 +67451,6 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 478 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _SelectField = __webpack_require__(479);
-	
-	var _SelectField2 = _interopRequireDefault(_SelectField);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _SelectField2.default;
-	module.exports = exports['default'];
-
-/***/ },
 /* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -67677,324 +67460,7 @@
 	  value: true
 	});
 	
-	var _SelectField = __webpack_require__(480);
-	
-	var _SelectField2 = _interopRequireDefault(_SelectField);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _SelectField2.default;
-	module.exports = exports['default'];
-
-/***/ },
-/* 480 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(3);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _stylePropable = __webpack_require__(223);
-	
-	var _stylePropable2 = _interopRequireDefault(_stylePropable);
-	
-	var _textField = __webpack_require__(471);
-	
-	var _textField2 = _interopRequireDefault(_textField);
-	
-	var _DropDownMenu = __webpack_require__(481);
-	
-	var _DropDownMenu2 = _interopRequireDefault(_DropDownMenu);
-	
-	var _getMuiTheme = __webpack_require__(246);
-	
-	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
-	
-	var _contextPure = __webpack_require__(299);
-	
-	var _contextPure2 = _interopRequireDefault(_contextPure);
-	
-	var _deprecatedPropType = __webpack_require__(484);
-	
-	var _deprecatedPropType2 = _interopRequireDefault(_deprecatedPropType);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-	
-	var SelectField = _react2.default.createClass({
-	  displayName: 'SelectField',
-	
-	  propTypes: {
-	    /**
-	     * The width will automatically be set according to the
-	     * items inside the menu. To control this width in css
-	     * instead, set this prop to `false`.
-	     */
-	    autoWidth: _react2.default.PropTypes.bool,
-	
-	    /**
-	     * The `MenuItem` elements to populate the `Menu` with.
-	     * If the MenuItems have the prop `label` that value will
-	     * be used to render the representation of that
-	     * item within the field.
-	     */
-	    children: _react2.default.PropTypes.node,
-	
-	    /**
-	     * Disables the select field if set to true.
-	     */
-	    disabled: _react2.default.PropTypes.bool,
-	
-	    /**
-	     * The style object to use to override error styles.
-	     */
-	    errorStyle: _react2.default.PropTypes.object,
-	
-	    /**
-	     * The error content to display.
-	     */
-	    errorText: _react2.default.PropTypes.node,
-	
-	    /**
-	     * The style object to use to override floating label styles.
-	     */
-	    floatingLabelStyle: _react2.default.PropTypes.object,
-	
-	    /**
-	     * The content to use for the floating label element.
-	     */
-	    floatingLabelText: _react2.default.PropTypes.node,
-	
-	    /**
-	     * If true, the field receives the property width 100%.
-	     */
-	    fullWidth: _react2.default.PropTypes.bool,
-	
-	    /**
-	     * The style object to use to override hint styles.
-	     */
-	    hintStyle: _react2.default.PropTypes.object,
-	
-	    /**
-	     * The hint content to display.
-	     */
-	    hintText: _react2.default.PropTypes.node,
-	
-	    /**
-	     * Overrides the styles of the icon element.
-	     */
-	    iconStyle: _react2.default.PropTypes.object,
-	
-	    /**
-	     * `SelectField` will use text as default value,
-	     * with this property you can choose another name.
-	     */
-	    labelMember: (0, _deprecatedPropType2.default)(_react2.default.PropTypes.string, 'to promote composability.'),
-	
-	    /**
-	     * Overrides the styles of label when the `SelectField` is inactive.
-	     */
-	    labelStyle: _react2.default.PropTypes.object,
-	
-	    /**
-	     * JSON data representing all menu items in the dropdown.
-	     */
-	    menuItems: (0, _deprecatedPropType2.default)(_react2.default.PropTypes.array, 'to promote composability.'),
-	
-	    /**
-	     * Callback function that is fired when the `SelectField` loses focus.
-	     */
-	    onBlur: _react2.default.PropTypes.func,
-	
-	    /**
-	     * Callback function that is fired when the value changes.
-	     */
-	    onChange: _react2.default.PropTypes.func,
-	
-	    /**
-	     * Callback function that is fired when the `SelectField` gains focus.
-	     */
-	    onFocus: _react2.default.PropTypes.func,
-	
-	    /**
-	     * The style object to use to override the `DropDownMenu`.
-	     */
-	    selectFieldRoot: _react2.default.PropTypes.object, // Must be changed!
-	
-	    /**
-	     * Index of the item selected.
-	     */
-	    selectedIndex: (0, _deprecatedPropType2.default)(_react2.default.PropTypes.number, 'with menuItems.'),
-	
-	    /**
-	     * Override the inline-styles of the root element.
-	     */
-	    style: _react2.default.PropTypes.object,
-	
-	    /**
-	     * Override the inline-styles of the underline element when disabled.
-	     */
-	    underlineDisabledStyle: _react2.default.PropTypes.object,
-	
-	    /**
-	     * Override the inline-styles of the underline element when focused.
-	     */
-	    underlineFocusStyle: _react2.default.PropTypes.object,
-	
-	    /**
-	     * Overrides the styles of the underline element.
-	     */
-	    underlineStyle: _react2.default.PropTypes.object,
-	
-	    /**
-	     * The value that is currently selected.
-	     */
-	    value: _react2.default.PropTypes.any
-	  },
-	
-	  contextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-	
-	  //for passing default theme context to children
-	  childContextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-	
-	  mixins: [_stylePropable2.default, _contextPure2.default],
-	
-	  statics: {
-	    getChildrenClasses: function getChildrenClasses() {
-	      return [_textField2.default, _DropDownMenu2.default];
-	    }
-	  },
-	
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      autoWidth: false,
-	      disabled: false,
-	      fullWidth: false
-	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    return {
-	      muiTheme: this.context.muiTheme || (0, _getMuiTheme2.default)()
-	    };
-	  },
-	  getChildContext: function getChildContext() {
-	    return {
-	      muiTheme: this.state.muiTheme
-	    };
-	  },
-	
-	  //to update theme inside state whenever a new theme is passed down
-	  //from the parent / owner using context
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
-	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-	    this.setState({ muiTheme: newMuiTheme });
-	  },
-	  getStyles: function getStyles() {
-	    var floatingLabelText = this.props.floatingLabelText;
-	
-	    return {
-	      label: {
-	        paddingLeft: 0,
-	        top: floatingLabelText ? 6 : -4
-	      },
-	      icon: {
-	        right: 0,
-	        top: floatingLabelText ? 22 : 14
-	      },
-	      hideDropDownUnderline: {
-	        borderTop: 'none'
-	      }
-	    };
-	  },
-	  render: function render() {
-	    var styles = this.getStyles();
-	    var _props = this.props;
-	    var autoWidth = _props.autoWidth;
-	    var children = _props.children;
-	    var style = _props.style;
-	    var labelStyle = _props.labelStyle;
-	    var iconStyle = _props.iconStyle;
-	    var underlineDisabledStyle = _props.underlineDisabledStyle;
-	    var underlineFocusStyle = _props.underlineFocusStyle;
-	    var underlineStyle = _props.underlineStyle;
-	    var errorStyle = _props.errorStyle;
-	    var selectFieldRoot = _props.selectFieldRoot;
-	    var disabled = _props.disabled;
-	    var floatingLabelText = _props.floatingLabelText;
-	    var floatingLabelStyle = _props.floatingLabelStyle;
-	    var hintStyle = _props.hintStyle;
-	    var hintText = _props.hintText;
-	    var fullWidth = _props.fullWidth;
-	    var errorText = _props.errorText;
-	    var onFocus = _props.onFocus;
-	    var onBlur = _props.onBlur;
-	    var onChange = _props.onChange;
-	    var value = _props.value;
-	
-	    var other = _objectWithoutProperties(_props, ['autoWidth', 'children', 'style', 'labelStyle', 'iconStyle', 'underlineDisabledStyle', 'underlineFocusStyle', 'underlineStyle', 'errorStyle', 'selectFieldRoot', 'disabled', 'floatingLabelText', 'floatingLabelStyle', 'hintStyle', 'hintText', 'fullWidth', 'errorText', 'onFocus', 'onBlur', 'onChange', 'value']);
-	
-	    return _react2.default.createElement(
-	      _textField2.default,
-	      {
-	        style: style,
-	        floatingLabelText: floatingLabelText,
-	        floatingLabelStyle: floatingLabelStyle,
-	        hintStyle: hintStyle,
-	        hintText: !hintText && !floatingLabelText ? ' ' : hintText,
-	        fullWidth: fullWidth,
-	        errorText: errorText,
-	        underlineStyle: underlineStyle,
-	        errorStyle: errorStyle,
-	        onFocus: onFocus,
-	        onBlur: onBlur,
-	        underlineDisabledStyle: underlineDisabledStyle,
-	        underlineFocusStyle: underlineFocusStyle
-	      },
-	      _react2.default.createElement(
-	        _DropDownMenu2.default,
-	        _extends({
-	          disabled: disabled,
-	          style: selectFieldRoot,
-	          labelStyle: this.mergeStyles(styles.label, labelStyle),
-	          iconStyle: this.mergeStyles(styles.icon, iconStyle),
-	          underlineStyle: styles.hideDropDownUnderline,
-	          autoWidth: autoWidth,
-	          value: value,
-	          onChange: onChange
-	        }, other),
-	        children
-	      )
-	    );
-	  }
-	});
-	
-	exports.default = SelectField;
-	module.exports = exports['default'];
-
-/***/ },
-/* 481 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _DropDownMenu = __webpack_require__(482);
+	var _DropDownMenu = __webpack_require__(480);
 	
 	var _DropDownMenu2 = _interopRequireDefault(_DropDownMenu);
 	
@@ -68004,7 +67470,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 482 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -68047,7 +67513,7 @@
 	
 	var _popover2 = _interopRequireDefault(_popover);
 	
-	var _popoverAnimationFromTop = __webpack_require__(483);
+	var _popoverAnimationFromTop = __webpack_require__(481);
 	
 	var _popoverAnimationFromTop2 = _interopRequireDefault(_popoverAnimationFromTop);
 	
@@ -68057,7 +67523,7 @@
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _deprecatedPropType = __webpack_require__(484);
+	var _deprecatedPropType = __webpack_require__(482);
 	
 	var _deprecatedPropType2 = _interopRequireDefault(_deprecatedPropType);
 	
@@ -68482,7 +67948,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 483 */
+/* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68624,7 +68090,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 484 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -68651,6 +68117,733 @@
 	}
 	module.exports = exports['default'];
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+
+/***/ },
+/* 483 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
+	var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var _alt = __webpack_require__(351);
+	
+	var _alt2 = _interopRequireDefault(_alt);
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _actionsAppActions = __webpack_require__(350);
+	
+	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
+	
+	var _altUtilsDecorators = __webpack_require__(465);
+	
+	var _underscore = __webpack_require__(349);
+	
+	var _underscore2 = _interopRequireDefault(_underscore);
+	
+	var AlertStore = (function () {
+	    function AlertStore() {
+	        _classCallCheck(this, _AlertStore);
+	
+	        this.state = {
+	            alerts: []
+	        };
+	    }
+	
+	    _createDecoratedClass(AlertStore, [{
+	        key: 'updateLatestAlerts',
+	        decorators: [(0, _altUtilsDecorators.bind)(_actionsAppActions2['default'].updateLatestAlerts)],
+	        value: function updateLatestAlerts(alerts) {
+	            this.setState({
+	                alerts: alerts
+	            });
+	        }
+	    }, {
+	        key: 'saveAlert',
+	        decorators: [(0, _altUtilsDecorators.bind)(_actionsAppActions2['default'].saveAlert)],
+	        value: function saveAlert(alert) {
+	            this.setState({
+	                alerts: this.state.alerts.concat([alert])
+	            });
+	        }
+	    }]);
+	
+	    var _AlertStore = AlertStore;
+	    AlertStore = (0, _altUtilsDecorators.decorate)(_alt2['default'])(AlertStore) || AlertStore;
+	    return AlertStore;
+	})();
+	
+	exports['default'] = _alt2['default'].createStore(AlertStore);
+	module.exports = exports['default'];
+
+/***/ },
+/* 484 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(161);
+	
+	var _altUtilsConnectToStores = __webpack_require__(462);
+	
+	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
+	
+	var _materialUiLibRaisedButton = __webpack_require__(293);
+	
+	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
+	
+	var _materialUiLibIconButton = __webpack_require__(298);
+	
+	var _materialUiLibIconButton2 = _interopRequireDefault(_materialUiLibIconButton);
+	
+	var _materialUiLibSvgIconsNavigationArrowBack = __webpack_require__(485);
+	
+	var _materialUiLibSvgIconsNavigationArrowBack2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationArrowBack);
+	
+	var _Chart = __webpack_require__(440);
+	
+	var _Chart2 = _interopRequireDefault(_Chart);
+	
+	var _storesClientApplicationStore = __webpack_require__(464);
+	
+	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
+	
+	var _underscore = __webpack_require__(349);
+	
+	var _underscore2 = _interopRequireDefault(_underscore);
+	
+	var _RealTimeMetricsPanel = __webpack_require__(486);
+	
+	var _RealTimeMetricsPanel2 = _interopRequireDefault(_RealTimeMetricsPanel);
+	
+	var _actionsAppActions = __webpack_require__(350);
+	
+	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
+	
+	var _MaterialPanel = __webpack_require__(321);
+	
+	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
+	
+	var _materialUiLibTableTable = __webpack_require__(333);
+	
+	var _materialUiLibTableTable2 = _interopRequireDefault(_materialUiLibTableTable);
+	
+	var _materialUiLibTableTableHeaderColumn = __webpack_require__(334);
+	
+	var _materialUiLibTableTableHeaderColumn2 = _interopRequireDefault(_materialUiLibTableTableHeaderColumn);
+	
+	var _materialUiLibTableTableRow = __webpack_require__(335);
+	
+	var _materialUiLibTableTableRow2 = _interopRequireDefault(_materialUiLibTableTableRow);
+	
+	var _materialUiLibTableTableHeader = __webpack_require__(336);
+	
+	var _materialUiLibTableTableHeader2 = _interopRequireDefault(_materialUiLibTableTableHeader);
+	
+	var _materialUiLibTableTableRowColumn = __webpack_require__(345);
+	
+	var _materialUiLibTableTableRowColumn2 = _interopRequireDefault(_materialUiLibTableTableRowColumn);
+	
+	var _materialUiLibTableTableBody = __webpack_require__(346);
+	
+	var _materialUiLibTableTableBody2 = _interopRequireDefault(_materialUiLibTableTableBody);
+	
+	var _materialUiLibCardCardActions = __webpack_require__(326);
+	
+	var _materialUiLibCardCardActions2 = _interopRequireDefault(_materialUiLibCardCardActions);
+	
+	var _EventPanel = __webpack_require__(348);
+	
+	var _EventPanel2 = _interopRequireDefault(_EventPanel);
+	
+	var _ExceptionPanel = __webpack_require__(432);
+	
+	var _ExceptionPanel2 = _interopRequireDefault(_ExceptionPanel);
+	
+	var ClientAppDrilldown = (function (_React$Component) {
+	    _inherits(ClientAppDrilldown, _React$Component);
+	
+	    function ClientAppDrilldown(props) {
+	        _classCallCheck(this, ClientAppDrilldown);
+	
+	        _get(Object.getPrototypeOf(ClientAppDrilldown.prototype), 'constructor', this).call(this, props);
+	    }
+	
+	    _createClass(ClientAppDrilldown, [{
+	        key: 'render',
+	        value: function render() {
+	
+	            // TODO: This is a routing hack, fix it
+	            var currentApp = _underscore2['default'].findWhere(_storesClientApplicationStore2['default'].getState().clientApplications, {
+	                appName: 'frankblizzard/' + this.props.params.image
+	            });
+	
+	            var actuatorMetrics = currentApp.actuatorMetrics;
+	            var appName = currentApp.appName;
+	
+	            var actuatorMarkup = _underscore2['default'].map(actuatorMetrics, function (value, key) {
+	                return _react2['default'].createElement(
+	                    'tr',
+	                    null,
+	                    _react2['default'].createElement(
+	                        'td',
+	                        null,
+	                        ' ',
+	                        key,
+	                        ' '
+	                    ),
+	                    _react2['default'].createElement(
+	                        'td',
+	                        null,
+	                        ' ',
+	                        value,
+	                        ' '
+	                    )
+	                );
+	            });
+	
+	            return _react2['default'].createElement(
+	                'div',
+	                { className: 'col-lg-12 col-md-12 col-sm-12 col-xs-12' },
+	                _react2['default'].createElement(
+	                    _MaterialPanel2['default'],
+	                    { title: appName + ' Details ',
+	                        subtitle: _react2['default'].createElement(
+	                            _reactRouter.Link,
+	                            { to: '/environment' },
+	                            'GO BACK',
+	                            _react2['default'].createElement(
+	                                _materialUiLibIconButton2['default'],
+	                                null,
+	                                ' ',
+	                                _react2['default'].createElement(_materialUiLibSvgIconsNavigationArrowBack2['default'], null),
+	                                ' '
+	                            )
+	                        ) },
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'col-lg-5 col-md-5 col-sm-5 col-xs-5' },
+	                        _react2['default'].createElement(_EventPanel2['default'], { appName: appName })
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'col-lg-5 col-md-5 col-sm-5 col-xs-5' },
+	                        _react2['default'].createElement(_ExceptionPanel2['default'], { appName: appName })
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'panel panel-primary' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'panel-heading' },
+	                                _react2['default'].createElement(
+	                                    'h3',
+	                                    { className: 'panel-title' },
+	                                    appName,
+	                                    ' Alerts'
+	                                )
+	                            )
+	                        )
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
+	                        _react2['default'].createElement(_RealTimeMetricsPanel2['default'], { appName: appName,
+	                            actuatorMetrics: actuatorMetrics })
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'panel panel-primary' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'panel-heading' },
+	                                _react2['default'].createElement(
+	                                    'h3',
+	                                    { className: 'panel-title' },
+	                                    appName,
+	                                    ' Query Times'
+	                                )
+	                            ),
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'panel-body' },
+	                                '/* ',
+	                                _react2['default'].createElement(
+	                                    'table',
+	                                    { className: 'table' },
+	                                    _react2['default'].createElement(
+	                                        'tbody',
+	                                        null,
+	                                        _react2['default'].createElement(
+	                                            'tr',
+	                                            null,
+	                                            _react2['default'].createElement(
+	                                                'th',
+	                                                null,
+	                                                'Query Method'
+	                                            ),
+	                                            _react2['default'].createElement(
+	                                                'th',
+	                                                null,
+	                                                'Class'
+	                                            ),
+	                                            _react2['default'].createElement(
+	                                                'th',
+	                                                null,
+	                                                'Execution Time'
+	                                            ),
+	                                            _react2['default'].createElement(
+	                                                'th',
+	                                                null,
+	                                                'How Long Ago'
+	                                            )
+	                                        ),
+	                                        _react2['default'].createElement(
+	                                            'tr',
+	                                            null,
+	                                            _react2['default'].createElement(
+	                                                'td',
+	                                                null,
+	                                                'updateUserCredentials()'
+	                                            ),
+	                                            _react2['default'].createElement(
+	                                                'td',
+	                                                null,
+	                                                'UserDaoImpl'
+	                                            ),
+	                                            _react2['default'].createElement(
+	                                                'td',
+	                                                null,
+	                                                '200ms'
+	                                            ),
+	                                            _react2['default'].createElement(
+	                                                'td',
+	                                                null,
+	                                                '10 minutes ago'
+	                                            )
+	                                        )
+	                                    )
+	                                ),
+	                                ' */'
+	                            )
+	                        )
+	                    ),
+	                    _react2['default'].createElement(_Chart2['default'], { appName: appName }),
+	                    _react2['default'].createElement(
+	                        _materialUiLibCardCardActions2['default'],
+	                        null,
+	                        _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Add to Favourites', secondary: true })
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return ClientAppDrilldown;
+	})(_react2['default'].Component);
+	
+	exports['default'] = ClientAppDrilldown;
+	module.exports = exports['default'];
+
+/***/ },
+/* 485 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactAddonsPureRenderMixin = __webpack_require__(276);
+	
+	var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
+	
+	var _svgIcon = __webpack_require__(304);
+	
+	var _svgIcon2 = _interopRequireDefault(_svgIcon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var NavigationArrowBack = _react2.default.createClass({
+	  displayName: 'NavigationArrowBack',
+	
+	  mixins: [_reactAddonsPureRenderMixin2.default],
+	
+	  render: function render() {
+	    return _react2.default.createElement(
+	      _svgIcon2.default,
+	      this.props,
+	      _react2.default.createElement('path', { d: 'M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z' })
+	    );
+	  }
+	});
+	
+	exports.default = NavigationArrowBack;
+	module.exports = exports['default'];
+
+/***/ },
+/* 486 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _altUtilsConnectToStores = __webpack_require__(462);
+	
+	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
+	
+	var _storesClientApplicationStore = __webpack_require__(464);
+	
+	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
+	
+	var _underscore = __webpack_require__(349);
+	
+	var _underscore2 = _interopRequireDefault(_underscore);
+	
+	var _materialUiLibTableTable = __webpack_require__(333);
+	
+	var _materialUiLibTableTable2 = _interopRequireDefault(_materialUiLibTableTable);
+	
+	var _materialUiLibTableTableHeaderColumn = __webpack_require__(334);
+	
+	var _materialUiLibTableTableHeaderColumn2 = _interopRequireDefault(_materialUiLibTableTableHeaderColumn);
+	
+	var _materialUiLibTableTableRow = __webpack_require__(335);
+	
+	var _materialUiLibTableTableRow2 = _interopRequireDefault(_materialUiLibTableTableRow);
+	
+	var _materialUiLibTableTableHeader = __webpack_require__(336);
+	
+	var _materialUiLibTableTableHeader2 = _interopRequireDefault(_materialUiLibTableTableHeader);
+	
+	var _materialUiLibTableTableRowColumn = __webpack_require__(345);
+	
+	var _materialUiLibTableTableRowColumn2 = _interopRequireDefault(_materialUiLibTableTableRowColumn);
+	
+	var _materialUiLibTableTableBody = __webpack_require__(346);
+	
+	var _materialUiLibTableTableBody2 = _interopRequireDefault(_materialUiLibTableTableBody);
+	
+	var _MaterialPanel = __webpack_require__(321);
+	
+	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
+	
+	var RealTimeMetricsPanel = (function (_React$Component) {
+	    _inherits(RealTimeMetricsPanel, _React$Component);
+	
+	    function RealTimeMetricsPanel(props) {
+	        _classCallCheck(this, _RealTimeMetricsPanel);
+	
+	        _get(Object.getPrototypeOf(_RealTimeMetricsPanel.prototype), 'constructor', this).call(this, props);
+	    }
+	
+	    _createClass(RealTimeMetricsPanel, [{
+	        key: 'render',
+	        value: function render() {
+	            var actuatorMetrics = this.props.actuatorMetrics;
+	
+	            var actuatorMarkup = _underscore2['default'].map(actuatorMetrics, function (value, key) {
+	                return _react2['default'].createElement(
+	                    _materialUiLibTableTableRow2['default'],
+	                    null,
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableRowColumn2['default'],
+	                        null,
+	                        key
+	                    ),
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableRowColumn2['default'],
+	                        null,
+	                        value
+	                    )
+	                );
+	            });
+	
+	            return _react2['default'].createElement(
+	                _MaterialPanel2['default'],
+	                { title: this.props.appName + ' Metrics' },
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTable2['default'],
+	                    { selectable: false },
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableHeader2['default'],
+	                        { displaySelectAll: false,
+	                            adjustForCheckbox: false },
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableRow2['default'],
+	                            null,
+	                            _react2['default'].createElement(
+	                                _materialUiLibTableTableHeaderColumn2['default'],
+	                                null,
+	                                'Key'
+	                            ),
+	                            _react2['default'].createElement(
+	                                _materialUiLibTableTableHeaderColumn2['default'],
+	                                null,
+	                                'Value'
+	                            )
+	                        )
+	                    ),
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableBody2['default'],
+	                        { displayRowCheckbox: false },
+	                        actuatorMarkup
+	                    )
+	                )
+	            );
+	        }
+	    }], [{
+	        key: 'getStores',
+	        value: function getStores(props) {
+	            return [_storesClientApplicationStore2['default']];
+	        }
+	    }, {
+	        key: 'getPropsFromStores',
+	        value: function getPropsFromStores(props) {
+	            return _storesClientApplicationStore2['default'].getState();
+	        }
+	    }]);
+	
+	    var _RealTimeMetricsPanel = RealTimeMetricsPanel;
+	    RealTimeMetricsPanel = (0, _altUtilsConnectToStores2['default'])(RealTimeMetricsPanel) || RealTimeMetricsPanel;
+	    return RealTimeMetricsPanel;
+	})(_react2['default'].Component);
+	
+	exports['default'] = RealTimeMetricsPanel;
+	module.exports = exports['default'];
+
+/***/ },
+/* 487 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _underscore = __webpack_require__(349);
+	
+	var _underscore2 = _interopRequireDefault(_underscore);
+	
+	var _MaterialPanel = __webpack_require__(321);
+	
+	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
+	
+	var _materialUiLibTextField = __webpack_require__(472);
+	
+	var _materialUiLibTextField2 = _interopRequireDefault(_materialUiLibTextField);
+	
+	var _actionsAppActions = __webpack_require__(350);
+	
+	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
+	
+	var _materialUiLibCircularProgress = __webpack_require__(305);
+	
+	var _materialUiLibCircularProgress2 = _interopRequireDefault(_materialUiLibCircularProgress);
+	
+	var _jquery = __webpack_require__(364);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _materialUiLibSelectField = __webpack_require__(469);
+	
+	var _materialUiLibSelectField2 = _interopRequireDefault(_materialUiLibSelectField);
+	
+	var _materialUiLibMenusMenuItem = __webpack_require__(451);
+	
+	var _materialUiLibMenusMenuItem2 = _interopRequireDefault(_materialUiLibMenusMenuItem);
+	
+	var _materialUiLibRaisedButton = __webpack_require__(293);
+	
+	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
+	
+	var _utilsAuthService = __webpack_require__(457);
+	
+	var _utilsAuthService2 = _interopRequireDefault(_utilsAuthService);
+	
+	var items = [_react2['default'].createElement(_materialUiLibMenusMenuItem2['default'], { key: 1, value: 1, primaryText: 'Light Theme' }), _react2['default'].createElement(_materialUiLibMenusMenuItem2['default'], { key: 2, value: 2, primaryText: 'Dark Theme' })];
+	
+	var Settings = (function (_React$Component) {
+	    _inherits(Settings, _React$Component);
+	
+	    function Settings(props) {
+	        var _this = this;
+	
+	        _classCallCheck(this, Settings);
+	
+	        _get(Object.getPrototypeOf(Settings.prototype), 'constructor', this).call(this, props);
+	
+	        this.handleDockerHost = function (event) {
+	            _this.setState({
+	                dockerHost: event.target.value
+	            });
+	        };
+	
+	        this.handleDockerPort = function (event) {
+	            _this.setState({
+	                dockerPort: event.target.value
+	            });
+	        };
+	
+	        this.state = {
+	            value: null,
+	            dockerHost: null,
+	            dockerPort: null,
+	            theme: null,
+	            userId: null,
+	            username: null
+	        };
+	    }
+	
+	    _createClass(Settings, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.getSettingsForUser();
+	        }
+	    }, {
+	        key: 'saveSettingsForUser',
+	        value: function saveSettingsForUser() {
+	            var url = 'http://localhost:8090/api/settings/save/?userId=' + this.state.userId;
+	            _jquery2['default'].post({ url: url,
+	                data: {
+	                    dockerHost: this.state.dockerHost,
+	                    dockerPort: this.state.dockerPort
+	                },
+	                success: function success(settings) {
+	                    console.log("settings saved.");
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'getSettingsForUser',
+	        value: function getSettingsForUser() {
+	            _utilsAuthService2['default'].getLock().getProfile(localStorage.getItem('userToken'), (function (err, profile) {
+	                var _this2 = this;
+	
+	                if (err) {
+	                    console.log("Error loading the Profile", err);
+	                    return;
+	                }
+	                var url = 'http://localhost:8090/api/settings/?userId=' + profile.user_id;
+	                _jquery2['default'].post({ url: url,
+	                    success: function success(settings) {
+	                        _this2.setState({
+	                            dockerHost: settings.dockerHost,
+	                            dockerPort: settings.dockerPort,
+	                            userId: profile.user_id,
+	                            username: profile.nickname
+	                        });
+	                    }
+	                });
+	            }).bind(this));
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2['default'].createElement(
+	                _MaterialPanel2['default'],
+	                { title: 'Settings for User ' + this.state.username },
+	                _react2['default'].createElement(_materialUiLibTextField2['default'], {
+	                    ref: 'dockerHost',
+	                    value: this.state.dockerHost,
+	                    floatingLabelText: 'Enter your docker host url.',
+	                    onChange: this.handleDockerHost
+	                }),
+	                _react2['default'].createElement('br', null),
+	                _react2['default'].createElement(_materialUiLibTextField2['default'], {
+	                    ref: 'dockerPort',
+	                    value: this.state.dockerPort,
+	                    floatingLabelText: 'Enter your docker host port.',
+	                    onChange: this.handleDockerPort
+	                }),
+	                _react2['default'].createElement('br', null),
+	                _react2['default'].createElement(
+	                    _materialUiLibSelectField2['default'],
+	                    { value: this.state.value, floatingLabelText: 'Choose your theme.' },
+	                    items
+	                ),
+	                _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Save', secondary: true, onMouseDown: this.saveSettingsForUser })
+	            );
+	        }
+	    }]);
+	
+	    return Settings;
+	})(_react2['default'].Component);
+	
+	exports['default'] = Settings;
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);

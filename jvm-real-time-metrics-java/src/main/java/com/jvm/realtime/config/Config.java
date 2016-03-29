@@ -1,6 +1,6 @@
 package com.jvm.realtime.config;
 
-import com.jvm.realtime.client.JvmrtExceptionHandler;
+import com.jvm.realtime.client.IgnoreDuringScan;
 import com.jvm.realtime.data.RealTimeDataClient;
 import com.jvm.realtime.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 
 
+//@ComponentScan(basePackages ="com.jvm.realtime",
+//        excludeFilters = @ComponentScan.Filter(IgnoreDuringScan.class))
 @Configuration
-@ComponentScan (
-    excludeFilters = @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE, value={JvmrtExceptionHandler.class})
-)
 public class Config {
 
     @Autowired
@@ -26,11 +25,11 @@ public class Config {
 //        return new OAuthWebFilter();
 //    }
 
-    @Bean
-    public String sendEmailTest() {
-       emailService.sendEmail();
-        return "Email sent";
-    }
+//    @Bean
+//    public String sendEmailTest() {
+//       emailService.sendEmail();
+//        return "Email sent";
+//    }
 
 
 
