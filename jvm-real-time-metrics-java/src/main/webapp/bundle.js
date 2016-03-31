@@ -81,15 +81,15 @@
 	
 	var _componentsHomeDashboard2 = _interopRequireDefault(_componentsHomeDashboard);
 	
-	var _componentsEnvironmentDashboard = __webpack_require__(460);
+	var _componentsEnvironmentDashboard = __webpack_require__(467);
 	
 	var _componentsEnvironmentDashboard2 = _interopRequireDefault(_componentsEnvironmentDashboard);
 	
-	var _componentsAlertsDashboard = __webpack_require__(466);
+	var _componentsAlertsDashboard = __webpack_require__(473);
 	
 	var _componentsAlertsDashboard2 = _interopRequireDefault(_componentsAlertsDashboard);
 	
-	var _componentsClientAppDrilldown = __webpack_require__(484);
+	var _componentsClientAppDrilldown = __webpack_require__(492);
 	
 	var _componentsClientAppDrilldown2 = _interopRequireDefault(_componentsClientAppDrilldown);
 	
@@ -97,7 +97,7 @@
 	
 	var _componentsLogin2 = _interopRequireDefault(_componentsLogin);
 	
-	var _componentsSettings = __webpack_require__(487);
+	var _componentsSettings = __webpack_require__(495);
 	
 	var _componentsSettings2 = _interopRequireDefault(_componentsSettings);
 	
@@ -8017,6 +8017,10 @@
 	  }
 	};
 	
+	function registerNullComponentID() {
+	  ReactEmptyComponentRegistry.registerNullComponentID(this._rootNodeID);
+	}
+	
 	var ReactEmptyComponent = function (instantiate) {
 	  this._currentElement = null;
 	  this._rootNodeID = null;
@@ -8025,7 +8029,7 @@
 	assign(ReactEmptyComponent.prototype, {
 	  construct: function (element) {},
 	  mountComponent: function (rootID, transaction, context) {
-	    ReactEmptyComponentRegistry.registerNullComponentID(rootID);
+	    transaction.getReactMountReady().enqueue(registerNullComponentID, this);
 	    this._rootNodeID = rootID;
 	    return ReactReconciler.mountComponent(this._renderedComponent, rootID, transaction, context);
 	  },
@@ -18748,7 +18752,7 @@
 	
 	'use strict';
 	
-	module.exports = '0.14.7';
+	module.exports = '0.14.8';
 
 /***/ },
 /* 149 */
@@ -24853,24 +24857,28 @@
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _materialUiLibMenusIconMenu = __webpack_require__(442);
+	var _materialUiLibMenusIconMenu = __webpack_require__(443);
 	
 	var _materialUiLibMenusIconMenu2 = _interopRequireDefault(_materialUiLibMenusIconMenu);
 	
-	var _materialUiLibSvgIconsNavigationMoreVert = __webpack_require__(450);
+	var _materialUiLibSvgIconsNavigationMoreVert = __webpack_require__(451);
 	
 	var _materialUiLibSvgIconsNavigationMoreVert2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationMoreVert);
 	
-	var _materialUiLibMenusMenuItem = __webpack_require__(451);
+	var _materialUiLibMenusMenuItem = __webpack_require__(452);
 	
 	var _materialUiLibMenusMenuItem2 = _interopRequireDefault(_materialUiLibMenusMenuItem);
 	
-	var _utilsAuthService = __webpack_require__(457);
+	var _utilsAuthService = __webpack_require__(458);
 	
 	var _utilsAuthService2 = _interopRequireDefault(_utilsAuthService);
 	
+	var _NotificationDialog = __webpack_require__(459);
+	
+	var _NotificationDialog2 = _interopRequireDefault(_NotificationDialog);
+	
 	// CSS
-	__webpack_require__(458);
+	__webpack_require__(465);
 	
 	// Component for the main Container Div of the application.
 	
@@ -24996,7 +25004,8 @@
 	                        style: styles.appBar
 	                    }),
 	                    myTabs,
-	                    this.props.children
+	                    this.props.children,
+	                    _react2['default'].createElement(_NotificationDialog2['default'], null)
 	                );
 	            } else {
 	                return _react2['default'].createElement(_Login2['default'], { lock: _utilsAuthService2['default'].getLock(), idToken: this.state.idToken });
@@ -35516,7 +35525,7 @@
 	
 	var _WhatsNew2 = _interopRequireDefault(_WhatsNew);
 	
-	var _Favourites = __webpack_require__(437);
+	var _Favourites = __webpack_require__(438);
 	
 	var _Favourites2 = _interopRequireDefault(_Favourites);
 	
@@ -35525,7 +35534,7 @@
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
 	// CSS
-	__webpack_require__(433);
+	__webpack_require__(434);
 	
 	// Component for the main home dashboard of the application.
 	
@@ -35636,8 +35645,12 @@
 	
 	var _ExceptionPanel2 = _interopRequireDefault(_ExceptionPanel);
 	
+	var _AlertPanel = __webpack_require__(433);
+	
+	var _AlertPanel2 = _interopRequireDefault(_AlertPanel);
+	
 	// CSS
-	__webpack_require__(433);
+	__webpack_require__(434);
 	
 	var WhatsNew = (function (_React$Component) {
 	    _inherits(WhatsNew, _React$Component);
@@ -35659,61 +35672,7 @@
 	                    { title: 'Latest', subtitle: 'The Latest From Your Environment' },
 	                    _react2['default'].createElement(_EventPanel2['default'], { appName: 'All' }),
 	                    _react2['default'].createElement(_ExceptionPanel2['default'], { appName: 'All' }),
-	                    _react2['default'].createElement(
-	                        _MaterialPanel2['default'],
-	                        { title: 'Alerts' },
-	                        _react2['default'].createElement(
-	                            _materialUiLibTableTable2['default'],
-	                            { selectable: false },
-	                            _react2['default'].createElement(
-	                                _materialUiLibTableTableHeader2['default'],
-	                                { displaySelectAll: false,
-	                                    adjustForCheckbox: false },
-	                                _react2['default'].createElement(
-	                                    _materialUiLibTableTableRow2['default'],
-	                                    null,
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableHeaderColumn2['default'],
-	                                        null,
-	                                        'Event'
-	                                    ),
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableHeaderColumn2['default'],
-	                                        null,
-	                                        'Type'
-	                                    ),
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableHeaderColumn2['default'],
-	                                        null,
-	                                        'Time'
-	                                    )
-	                                )
-	                            ),
-	                            _react2['default'].createElement(
-	                                _materialUiLibTableTableBody2['default'],
-	                                { displayRowCheckbox: false },
-	                                _react2['default'].createElement(
-	                                    _materialUiLibTableTableRow2['default'],
-	                                    null,
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableRowColumn2['default'],
-	                                        null,
-	                                        'App updated'
-	                                    ),
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableRowColumn2['default'],
-	                                        null,
-	                                        'Update'
-	                                    ),
-	                                    _react2['default'].createElement(
-	                                        _materialUiLibTableTableRowColumn2['default'],
-	                                        null,
-	                                        '2 hours ago'
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
+	                    _react2['default'].createElement(_AlertPanel2['default'], { appName: 'All' })
 	                )
 	            );
 	        }
@@ -42038,6 +41997,7 @@
 	        this.generateActions('updateLatestEvents');
 	        this.generateActions('saveAlert');
 	        this.generateActions('updateLatestAlerts');
+	        this.generateActions('deleteAlert');
 	        this.generateActions('updateLatestApplicationMetadata');
 	    }
 	
@@ -43719,7 +43679,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	 * jQuery JavaScript Library v2.2.1
+	 * jQuery JavaScript Library v2.2.2
 	 * http://jquery.com/
 	 *
 	 * Includes Sizzle.js
@@ -43729,7 +43689,7 @@
 	 * Released under the MIT license
 	 * http://jquery.org/license
 	 *
-	 * Date: 2016-02-22T19:11Z
+	 * Date: 2016-03-17T17:51Z
 	 */
 	
 	(function( global, factory ) {
@@ -43785,7 +43745,7 @@
 	
 	
 	var
-		version = "2.2.1",
+		version = "2.2.2",
 	
 		// Define a local copy of jQuery
 		jQuery = function( selector, context ) {
@@ -43996,6 +43956,7 @@
 		},
 	
 		isPlainObject: function( obj ) {
+			var key;
 	
 			// Not plain objects:
 			// - Any object or value whose internal [[Class]] property is not "[object Object]"
@@ -44005,14 +43966,18 @@
 				return false;
 			}
 	
+			// Not own constructor property must be Object
 			if ( obj.constructor &&
-					!hasOwn.call( obj.constructor.prototype, "isPrototypeOf" ) ) {
+					!hasOwn.call( obj, "constructor" ) &&
+					!hasOwn.call( obj.constructor.prototype || {}, "isPrototypeOf" ) ) {
 				return false;
 			}
 	
-			// If the function hasn't returned already, we're confident that
-			// |obj| is a plain object, created by {} or constructed with new Object
-			return true;
+			// Own properties are enumerated firstly, so to speed up,
+			// if last one is own, then all properties are own
+			for ( key in obj ) {}
+	
+			return key === undefined || hasOwn.call( obj, key );
 		},
 	
 		isEmptyObject: function( obj ) {
@@ -51045,6 +51010,12 @@
 		}
 	} );
 	
+	// Support: IE <=11 only
+	// Accessing the selectedIndex property
+	// forces the browser to respect setting selected
+	// on the option
+	// The getter ensures a default option is selected
+	// when in an optgroup
 	if ( !support.optSelected ) {
 		jQuery.propHooks.selected = {
 			get: function( elem ) {
@@ -51053,6 +51024,16 @@
 					parent.parentNode.selectedIndex;
 				}
 				return null;
+			},
+			set: function( elem ) {
+				var parent = elem.parentNode;
+				if ( parent ) {
+					parent.selectedIndex;
+	
+					if ( parent.parentNode ) {
+						parent.parentNode.selectedIndex;
+					}
+				}
 			}
 		};
 	}
@@ -51247,7 +51228,8 @@
 	
 	
 	
-	var rreturn = /\r/g;
+	var rreturn = /\r/g,
+		rspaces = /[\x20\t\r\n\f]+/g;
 	
 	jQuery.fn.extend( {
 		val: function( value ) {
@@ -51323,9 +51305,15 @@
 			option: {
 				get: function( elem ) {
 	
-					// Support: IE<11
-					// option.value not trimmed (#14858)
-					return jQuery.trim( elem.value );
+					var val = jQuery.find.attr( elem, "value" );
+					return val != null ?
+						val :
+	
+						// Support: IE10-11+
+						// option.text throws exceptions (#14686, #14858)
+						// Strip and collapse whitespace
+						// https://html.spec.whatwg.org/#strip-and-collapse-whitespace
+						jQuery.trim( jQuery.text( elem ) ).replace( rspaces, " " );
 				}
 			},
 			select: {
@@ -51378,7 +51366,7 @@
 					while ( i-- ) {
 						option = options[ i ];
 						if ( option.selected =
-								jQuery.inArray( jQuery.valHooks.option.get( option ), values ) > -1
+							jQuery.inArray( jQuery.valHooks.option.get( option ), values ) > -1
 						) {
 							optionSet = true;
 						}
@@ -53073,18 +53061,6 @@
 	
 	
 	
-	// Support: Safari 8+
-	// In Safari 8 documents created via document.implementation.createHTMLDocument
-	// collapse sibling forms: the second one becomes a child of the first one.
-	// Because of that, this security measure has to be disabled in Safari 8.
-	// https://bugs.webkit.org/show_bug.cgi?id=137337
-	support.createHTMLDocument = ( function() {
-		var body = document.implementation.createHTMLDocument( "" ).body;
-		body.innerHTML = "<form></form><form></form>";
-		return body.childNodes.length === 2;
-	} )();
-	
-	
 	// Argument "data" should be string of html
 	// context (optional): If specified, the fragment will be created in this context,
 	// defaults to document
@@ -53097,12 +53073,7 @@
 			keepScripts = context;
 			context = false;
 		}
-	
-		// Stop scripts or inline event handlers from being executed immediately
-		// by using document.implementation
-		context = context || ( support.createHTMLDocument ?
-			document.implementation.createHTMLDocument( "" ) :
-			document );
+		context = context || document;
 	
 		var parsed = rsingleTag.exec( data ),
 			scripts = !keepScripts && [];
@@ -53580,8 +53551,8 @@
 	
 	    _createClass(WebSocket, null, [{
 	        key: 'register',
-	        value: function register(registrations) {
-	            var socket = (0, _sockjsClient2['default'])('/metricspoll');
+	        value: function register(registrations, endpoint) {
+	            var socket = (0, _sockjsClient2['default'])(endpoint);
 	            var stompClient = Stomp.Stomp.over(socket);
 	            stompClient.connect({}, function (frame) {
 	                console.log('Connected: ' + frame);
@@ -53946,7 +53917,8 @@
 	var required = __webpack_require__(374)
 	  , lolcation = __webpack_require__(375)
 	  , qs = __webpack_require__(376)
-	  , relativere = /^\/(?!\/)/;
+	  , relativere = /^\/(?!\/)/
+	  , protocolre = /^([a-z0-9.+-]+:)?(\/\/)?(.*)$/i; // actual protocol is first match
 	
 	/**
 	 * These are the parse instructions for the URL parsers, it informs the parser
@@ -53963,13 +53935,36 @@
 	var instructions = [
 	  ['#', 'hash'],                        // Extract from the back.
 	  ['?', 'query'],                       // Extract from the back.
-	  ['//', 'protocol', 2, 1, 1],          // Extract from the front.
 	  ['/', 'pathname'],                    // Extract from the back.
 	  ['@', 'auth', 1],                     // Extract from the front.
 	  [NaN, 'host', undefined, 1, 1],       // Set left over value.
 	  [/\:(\d+)$/, 'port'],                 // RegExp the back.
 	  [NaN, 'hostname', undefined, 1, 1]    // Set left over.
 	];
+	
+	 /**
+	 * @typedef ProtocolExtract
+	 * @type Object
+	 * @property {String} protocol Protocol matched in the URL, in lowercase
+	 * @property {Boolean} slashes Indicates whether the protocol is followed by double slash ("//")
+	 * @property {String} rest     Rest of the URL that is not part of the protocol
+	 */
+	
+	 /**
+	  * Extract protocol information from a URL with/without double slash ("//")
+	  *
+	  * @param  {String} address   URL we want to extract from.
+	  * @return {ProtocolExtract}  Extracted information
+	  * @private
+	  */
+	function extractProtocol(address) {
+	  var match = protocolre.exec(address);
+	  return {
+	    protocol: match[1] ? match[1].toLowerCase() : '',
+	    slashes: !!match[2],
+	    rest: match[3] ? match[3] : ''
+	  };
+	}
 	
 	/**
 	 * The actual URL instance. Instead of returning an object we've opted-in to
@@ -53978,8 +53973,8 @@
 	 *
 	 * @constructor
 	 * @param {String} address URL we want to parse.
-	 * @param {Boolean|function} parser Parser for the query string.
-	 * @param {Object} location Location defaults for relative paths.
+	 * @param {Object|String} location Location defaults for relative paths.
+	 * @param {Boolean|Function} parser Parser for the query string.
 	 * @api public
 	 */
 	function URL(address, location, parser) {
@@ -54014,6 +54009,12 @@
 	  }
 	
 	  location = lolcation(location);
+	
+	  // extract protocol information before running the instructions
+	  var extracted = extractProtocol(address);
+	  url.protocol = extracted.protocol || location.protocol || '';
+	  url.slashes = extracted.slashes || location.slashes;
+	  address = extracted.rest;
 	
 	  for (; i < instructions.length; i++) {
 	    instruction = instructions[i];
@@ -54085,8 +54086,12 @@
 	 * This is convenience method for changing properties in the URL instance to
 	 * insure that they all propagate correctly.
 	 *
-	 * @param {String} prop Property we need to adjust.
-	 * @param {Mixed} value The newly assigned value.
+	 * @param {String} prop          Property we need to adjust.
+	 * @param {Mixed} value          The newly assigned value.
+	 * @param {Boolean|Function} fn  When setting the query, it will be the function used to parse
+	 *                               the query.
+	 *                               When setting the protocol, double slash will be removed from
+	 *                               the final url if it is true.
 	 * @returns {URL}
 	 * @api public
 	 */
@@ -54121,6 +54126,9 @@
 	      url.hostname = value[0];
 	      url.port = value[1];
 	    }
+	  } else if ('protocol' === part) {
+	    url.protocol = value;
+	    url.slashes = !fn;
 	  } else {
 	    url[part] = value;
 	  }
@@ -54141,7 +54149,11 @@
 	
 	  var query
 	    , url = this
-	    , result = url.protocol +'//';
+	    , protocol = url.protocol;
+	
+	  if (protocol && protocol.charAt(protocol.length - 1) !== ':') protocol += ':';
+	
+	  var result = protocol + (url.slashes ? '//' : '');
 	
 	  if (url.username) {
 	    result += url.username;
@@ -54221,9 +54233,11 @@
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 	
+	var slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
+	
 	/**
 	 * These properties should not be copied or inherited from. This is only needed
-	 * for all non blob URL's as the a blob URL does not include a hash, only the
+	 * for all non blob URL's as a blob URL does not include a hash, only the
 	 * origin.
 	 *
 	 * @type {Object}
@@ -54240,7 +54254,7 @@
 	 * encoded in the `pathname` so we can thankfully generate a good "default"
 	 * location from it so we can generate proper relative URL's again.
 	 *
-	 * @param {Object} loc Optional default location object.
+	 * @param {Object|String} loc Optional default location object.
 	 * @returns {Object} lolcation object.
 	 * @api public
 	 */
@@ -54257,9 +54271,15 @@
 	  } else if ('string' === type) {
 	    finaldestination = new URL(loc, {});
 	    for (key in ignore) delete finaldestination[key];
-	  } else if ('object' === type) for (key in loc) {
-	    if (key in ignore) continue;
-	    finaldestination[key] = loc[key];
+	  } else if ('object' === type) {
+	    for (key in loc) {
+	      if (key in ignore) continue;
+	      finaldestination[key] = loc[key];
+	    }
+	
+	    if (finaldestination.slashes === undefined) {
+	      finaldestination.slashes = slashes.test(loc.href);
+	    }
 	  }
 	
 	  return finaldestination;
@@ -59864,6 +59884,23 @@
 	            }
 	            return Math.floor(seconds) + " seconds ago";
 	        }
+	    }, {
+	        key: "timestampToDateTime",
+	        value: function timestampToDateTime(timestamp) {
+	            if (!timestamp) {
+	                return "N/A";
+	            }
+	            var a = new Date(timestamp);
+	            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	            var year = a.getFullYear();
+	            var month = months[a.getMonth()];
+	            var date = a.getDate();
+	            var hour = a.getHours();
+	            var min = a.getMinutes();
+	            var sec = a.getSeconds();
+	            var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+	            return time;
+	        }
 	    }]);
 	
 	    return TimeDelta;
@@ -60088,13 +60125,205 @@
 /* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _underscore = __webpack_require__(349);
+	
+	var _underscore2 = _interopRequireDefault(_underscore);
+	
+	var _materialUiLibTableTable = __webpack_require__(333);
+	
+	var _materialUiLibTableTable2 = _interopRequireDefault(_materialUiLibTableTable);
+	
+	var _materialUiLibTableTableHeaderColumn = __webpack_require__(334);
+	
+	var _materialUiLibTableTableHeaderColumn2 = _interopRequireDefault(_materialUiLibTableTableHeaderColumn);
+	
+	var _materialUiLibTableTableRow = __webpack_require__(335);
+	
+	var _materialUiLibTableTableRow2 = _interopRequireDefault(_materialUiLibTableTableRow);
+	
+	var _materialUiLibTableTableHeader = __webpack_require__(336);
+	
+	var _materialUiLibTableTableHeader2 = _interopRequireDefault(_materialUiLibTableTableHeader);
+	
+	var _materialUiLibTableTableRowColumn = __webpack_require__(345);
+	
+	var _materialUiLibTableTableRowColumn2 = _interopRequireDefault(_materialUiLibTableTableRowColumn);
+	
+	var _materialUiLibTableTableBody = __webpack_require__(346);
+	
+	var _materialUiLibTableTableBody2 = _interopRequireDefault(_materialUiLibTableTableBody);
+	
+	var _MaterialPanel = __webpack_require__(321);
+	
+	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
+	
+	var _actionsAppActions = __webpack_require__(350);
+	
+	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
+	
+	var _materialUiLibCircularProgress = __webpack_require__(305);
+	
+	var _materialUiLibCircularProgress2 = _interopRequireDefault(_materialUiLibCircularProgress);
+	
+	var _jquery = __webpack_require__(364);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _utilsWebSocket = __webpack_require__(365);
+	
+	var _utilsWebSocket2 = _interopRequireDefault(_utilsWebSocket);
+	
+	var _utilsTimeDelta = __webpack_require__(431);
+	
+	var _utilsTimeDelta2 = _interopRequireDefault(_utilsTimeDelta);
+	
+	var AlertPanel = (function (_React$Component) {
+	    _inherits(AlertPanel, _React$Component);
+	
+	    function AlertPanel(props) {
+	        _classCallCheck(this, AlertPanel);
+	
+	        _get(Object.getPrototypeOf(AlertPanel.prototype), 'constructor', this).call(this, props);
+	        this.state = {
+	            alerts: []
+	        };
+	    }
+	
+	    _createClass(AlertPanel, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.getLatestAlerts(this.props.appName);
+	            _utilsWebSocket2['default'].register([{
+	                route: '/jvmrt/alertNotification',
+	                callback: this.getLatestAlerts(this.props.appName)
+	            }]);
+	        }
+	    }, {
+	        key: 'getLatestAlerts',
+	        value: function getLatestAlerts(criteria) {
+	            var _this = this;
+	
+	            var url;
+	            if (criteria == "All") {
+	                url = "http://localhost:8090/api/alerts/triggered";
+	            } else {
+	                url = 'http://localhost:8090/api/alerts/triggered/?appName=' + criteria;
+	            }
+	            _jquery2['default'].getJSON({ url: url,
+	                success: function success(alerts) {
+	                    _this.setState({
+	                        alerts: alerts
+	                    });
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var alertsMarkup;
+	            if (this.state.alerts) {
+	                alertsMarkup = _underscore2['default'].map(this.state.alerts, function (alert, index) {
+	                    return _react2['default'].createElement(
+	                        _materialUiLibTableTableRow2['default'],
+	                        { key: index },
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableRowColumn2['default'],
+	                            null,
+	                            alert.appName
+	                        ),
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableRowColumn2['default'],
+	                            null,
+	                            alert.metric + ' ' + alert.condition + ' ' + alert.criteria + ' '
+	                        ),
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableRowColumn2['default'],
+	                            null,
+	                            _utilsTimeDelta2['default'].calculateTimeDelta(alert.timeLastTriggered / 1000)
+	                        )
+	                    );
+	                });
+	            } else {
+	                alertsMarkup = _react2['default'].createElement(_materialUiLibCircularProgress2['default'], null);
+	            }
+	
+	            return _react2['default'].createElement(
+	                _MaterialPanel2['default'],
+	                { title: this.props.appName + ' Alerts' },
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTable2['default'],
+	                    { selectable: false },
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableHeader2['default'],
+	                        { displaySelectAll: false,
+	                            adjustForCheckbox: false },
+	                        _react2['default'].createElement(
+	                            _materialUiLibTableTableRow2['default'],
+	                            null,
+	                            _react2['default'].createElement(
+	                                _materialUiLibTableTableHeaderColumn2['default'],
+	                                null,
+	                                'Application'
+	                            ),
+	                            _react2['default'].createElement(
+	                                _materialUiLibTableTableHeaderColumn2['default'],
+	                                null,
+	                                'Alert'
+	                            ),
+	                            _react2['default'].createElement(
+	                                _materialUiLibTableTableHeaderColumn2['default'],
+	                                null,
+	                                'Time Triggered'
+	                            )
+	                        )
+	                    ),
+	                    _react2['default'].createElement(
+	                        _materialUiLibTableTableBody2['default'],
+	                        { displayRowCheckbox: false },
+	                        alertsMarkup
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return AlertPanel;
+	})(_react2['default'].Component);
+	
+	exports['default'] = AlertPanel;
+	module.exports = exports['default'];
+
+/***/ },
+/* 434 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(434);
+	var content = __webpack_require__(435);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(436)(content, {});
+	var update = __webpack_require__(437)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -60111,10 +60340,10 @@
 	}
 
 /***/ },
-/* 434 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(435)();
+	exports = module.exports = __webpack_require__(436)();
 	// imports
 	
 	
@@ -60125,7 +60354,7 @@
 
 
 /***/ },
-/* 435 */
+/* 436 */
 /***/ function(module, exports) {
 
 	/*
@@ -60181,7 +60410,7 @@
 
 
 /***/ },
-/* 436 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -60397,7 +60626,6 @@
 	function applyToTag(styleElement, obj) {
 		var css = obj.css;
 		var media = obj.media;
-		var sourceMap = obj.sourceMap;
 	
 		if(media) {
 			styleElement.setAttribute("media", media)
@@ -60415,7 +60643,6 @@
 	
 	function updateLink(linkElement, obj) {
 		var css = obj.css;
-		var media = obj.media;
 		var sourceMap = obj.sourceMap;
 	
 		if(sourceMap) {
@@ -60435,7 +60662,7 @@
 
 
 /***/ },
-/* 437 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60474,7 +60701,7 @@
 	
 	var _materialUiLibFontIcon2 = _interopRequireDefault(_materialUiLibFontIcon);
 	
-	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(438);
+	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(439);
 	
 	var _materialUiLibSvgIconsNavigationClose2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationClose);
 	
@@ -60490,11 +60717,11 @@
 	
 	var _materialUiLibStylesColors2 = _interopRequireDefault(_materialUiLibStylesColors);
 	
-	var _reactHighchartsBundleHighcharts = __webpack_require__(439);
+	var _reactHighchartsBundleHighcharts = __webpack_require__(440);
 	
 	var _reactHighchartsBundleHighcharts2 = _interopRequireDefault(_reactHighchartsBundleHighcharts);
 	
-	var _Chart = __webpack_require__(440);
+	var _Chart = __webpack_require__(441);
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
 	
@@ -60503,8 +60730,8 @@
 	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
 	
 	// CSS
-	__webpack_require__(441);
-	__webpack_require__(433);
+	__webpack_require__(442);
+	__webpack_require__(434);
 	
 	var Favourites = (function (_React$Component) {
 	    _inherits(Favourites, _React$Component);
@@ -60593,7 +60820,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 438 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60634,7 +60861,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 439 */
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	!function(t,e){ true?module.exports=e(__webpack_require__(3)):"function"==typeof define&&define.amd?define(["react"],e):"object"==typeof exports?exports.Highcharts=e(require("react")):t.Highcharts=e(t.react)}(this,function(t){return function(t){function e(n){if(i[n])return i[n].exports;var o=i[n]={exports:{},id:n,loaded:!1};return t[n].call(o.exports,o,o.exports,e),o.loaded=!0,o.exports}var i={};return e.m=t,e.c=i,e.p="",e(0)}([function(t,e,i){(function(e){"use strict";if(!n){e.HighchartsAdapter=i(4);var n=i(7)}t.exports=i(3)}).call(e,function(){return this}())},function(t,e,i){"use strict";var n=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var i=arguments[e];for(var n in i)Object.prototype.hasOwnProperty.call(i,n)&&(t[n]=i[n])}return t},o=i(2);if("undefined"==typeof Highcharts)throw Error('Starting with version 3 of react-highcharts, Highcharts is not bundled by default.  use "react-highcharts/dist/bundle/highcharts" instead, or include highcharts. ');t.exports=function(t,e){var i="Highcharts"+e,r=o.createClass({displayName:i,propTypes:{config:o.PropTypes.object.isRequired,isPureConfig:o.PropTypes.bool},renderChart:function(o){if(!o)throw new Error("Config must be specified for the "+i+" component");var r=o.chart;this.chart=new t[e](n({},o,{chart:n({},r,{renderTo:this.refs.chart})}))},shouldComponentUpdate:function(t){return this.props.isPureConfig&&this.props.config===t.config||this.renderChart(t.config),!0},getChart:function(){if(!this.chart)throw new Error("getChart() should not be called before the component is mounted");return this.chart},componentDidMount:function(){this.renderChart(this.props.config)},render:function(){var t=this.props;return t=n({},t,{ref:"chart"}),o.createElement("div",t)}});return r.Highcharts=t,r}},function(e,i){e.exports=t},function(t,e,i){"use strict";var n=i(1);t.exports=n(Highcharts,"Chart")},function(t,e){/**
@@ -60659,7 +60886,7 @@
 	t.hoverPoint=null)},importEvents:function(){if(!this.hasImportedEvents){var e,i=this,n=t(i.series.options.point,i.options),o=n.events;i.events=o;for(e in o)ge(i,e,o[e]);this.hasImportedEvents=!0}},setState:function(e,i){var n,o,r,s,a=this,l=ut(a.plotX),h=a.plotY,c=a.series,d=c.options.states,p=ke[c.type].marker&&c.options.marker,u=p&&!p.enabled,f=p&&p.states[e],g=f&&f.enabled===!1,m=c.stateMarkerGraphic,y=a.marker||{},x=c.chart,v=c.halo;e=e||$t,s=a.pointAttr[e]||c.pointAttr[e],e===a.state&&!i||a.selected&&e!==Qt||d[e]&&d[e].enabled===!1||e&&(g||u&&f.enabled===!1)||e&&y.states&&y.states[e]&&y.states[e].enabled===!1||(a.graphic?(n=p&&a.graphic.symbolName&&s.r,a.graphic.attr(t(s,n?{x:l-n,y:h-n,width:2*n,height:2*n}:{})),m&&m.hide()):(e&&f&&(n=f.radius,r=y.symbol||c.symbol,m&&m.currentSymbol!==r&&(m=m.destroy()),m?m[i?"animate":"attr"]({x:l-n,y:h-n}):r&&(c.stateMarkerGraphic=m=x.renderer.symbol(r,l-n,h-n,2*n,2*n).attr(s).add(c.markerGroup),m.currentSymbol=r)),m&&(m[e&&x.isInsidePlot(l,h,x.inverted)?"show":"hide"](),m.element.point=a)),o=d[e]&&d[e].halo,o&&o.size?(v||(c.halo=v=x.renderer.path().add(x.seriesGroup)),v.attr(ne({fill:Ce(a.color||c.color).setOpacity(o.opacity).get()},o.attributes))[i?"animate":"attr"]({d:a.haloPath(o.size)})):v&&v.attr({d:[]}),a.state=e)},haloPath:function(t){var e=this.series,i=e.chart,n=e.getPlotBox(),o=i.inverted;return i.renderer.symbols.circle(n.translateX+(o?e.yAxis.len-this.plotY:this.plotX)-t,n.translateY+(o?e.xAxis.len-this.plotX:this.plotY)-t,2*t,2*t)}}),ne(je.prototype,{onMouseOver:function(){var t=this,e=t.chart,i=e.hoverSeries;i&&i!==t&&i.onMouseOut(),t.options.events.mouseOver&&ye(t,"mouseOver"),t.setState(Jt),e.hoverSeries=t},onMouseOut:function(){var t=this,e=t.options,i=t.chart,n=i.tooltip,o=i.hoverPoint;i.hoverSeries=null,o&&o.onMouseOut(),t&&e.events.mouseOut&&ye(t,"mouseOut"),!n||e.stickyTracking||n.shared&&!t.noSharedTooltip||n.hide(),t.setState()},setState:function(t){var e,i=this,n=i.options,o=i.graph,r=n.states,s=n.lineWidth,a=0;if(t=t||$t,i.state!==t){if(i.state=t,r[t]&&r[t].enabled===!1)return;if(t&&(s=r[t].lineWidth||s+(r[t].lineWidthPlus||0)),o&&!o.dashstyle)for(e={"stroke-width":s},o.attr(e);i["zoneGraph"+a];)i["zoneGraph"+a].attr(e),a+=1}},setVisible:function(t,e){var i,n=this,o=n.chart,r=n.legendItem,s=o.options.chart.ignoreHiddenSeries,a=n.visible;n.visible=t=n.userOptions.visible=t===B?!a:t,i=t?"show":"hide",de(["group","dataLabelsGroup","markerGroup","tracker"],function(t){n[t]&&n[t][i]()}),(o.hoverSeries===n||(o.hoverPoint&&o.hoverPoint.series)===n)&&n.onMouseOut(),r&&o.legend.colorizeItem(n,t),n.isDirty=!0,n.options.stacking&&de(o.series,function(t){t.options.stacking&&t.visible&&(t.isDirty=!0)}),de(n.linkedSeries,function(e){e.setVisible(t,!1)}),s&&(o.isDirtyBox=!0),e!==!1&&o.redraw(),ye(n,i)},show:function(){this.setVisible(!0)},hide:function(){this.setVisible(!1)},select:function(t){var e=this;e.selected=t=t===B?!e.selected:t,e.checkbox&&(e.checkbox.checked=t),ye(e,t?"select":"unselect")},drawTracker:ni.drawTrackerGraph}),ne(lt,{Color:Ce,Point:Ve,Tick:E,Renderer:H,SVGElement:z,SVGRenderer:Pe,arrayMin:A,arrayMax:S,charts:Bt,dateFormat:Y,error:P,format:v,pathAnim:F,getOptions:I,hasBidiBug:Ot,isTouchDevice:Mt,setOptions:O,addEvent:ge,removeEvent:me,createElement:u,discardElement:C,css:p,each:de,map:fe,merge:t,splat:d,extendClass:f,pInt:e,svg:Dt,canvas:It,vml:!Dt&&!It,product:Xt,version:Wt})}()}])});
 
 /***/ },
-/* 440 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60698,7 +60925,7 @@
 	
 	var _materialUiLibFontIcon2 = _interopRequireDefault(_materialUiLibFontIcon);
 	
-	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(438);
+	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(439);
 	
 	var _materialUiLibSvgIconsNavigationClose2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationClose);
 	
@@ -60714,7 +60941,7 @@
 	
 	var _materialUiLibStylesColors2 = _interopRequireDefault(_materialUiLibStylesColors);
 	
-	var _reactHighchartsBundleHighcharts = __webpack_require__(439);
+	var _reactHighchartsBundleHighcharts = __webpack_require__(440);
 	
 	var _reactHighchartsBundleHighcharts2 = _interopRequireDefault(_reactHighchartsBundleHighcharts);
 	
@@ -60727,8 +60954,8 @@
 	var _underscore2 = _interopRequireDefault(_underscore);
 	
 	// CSS
-	__webpack_require__(441);
-	__webpack_require__(433);
+	__webpack_require__(442);
+	__webpack_require__(434);
 	
 	var Chart = (function (_React$Component) {
 	    _inherits(Chart, _React$Component);
@@ -60831,7 +61058,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 441 */
+/* 442 */
 /***/ function(module, exports) {
 
 	/**
@@ -61050,7 +61277,7 @@
 
 
 /***/ },
-/* 442 */
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -61081,7 +61308,7 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _menu = __webpack_require__(443);
+	var _menu = __webpack_require__(444);
 	
 	var _menu2 = _interopRequireDefault(_menu);
 	
@@ -61089,7 +61316,7 @@
 	
 	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
 	
-	var _popover = __webpack_require__(445);
+	var _popover = __webpack_require__(446);
 	
 	var _popover2 = _interopRequireDefault(_popover);
 	
@@ -61450,7 +61677,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 443 */
+/* 444 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61497,7 +61724,7 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _list = __webpack_require__(444);
+	var _list = __webpack_require__(445);
 	
 	var _list2 = _interopRequireDefault(_list);
 	
@@ -62065,7 +62292,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 444 */
+/* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62231,7 +62458,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 445 */
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62254,7 +62481,7 @@
 	
 	var _windowListenable2 = _interopRequireDefault(_windowListenable);
 	
-	var _renderToLayer = __webpack_require__(446);
+	var _renderToLayer = __webpack_require__(447);
 	
 	var _renderToLayer2 = _interopRequireDefault(_renderToLayer);
 	
@@ -62270,7 +62497,7 @@
 	
 	var _paper2 = _interopRequireDefault(_paper);
 	
-	var _lodash = __webpack_require__(447);
+	var _lodash = __webpack_require__(448);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -62278,7 +62505,7 @@
 	
 	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
 	
-	var _popoverDefaultAnimation = __webpack_require__(449);
+	var _popoverDefaultAnimation = __webpack_require__(450);
 	
 	var _popoverDefaultAnimation2 = _interopRequireDefault(_popoverDefaultAnimation);
 	
@@ -62664,7 +62891,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 446 */
+/* 447 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62839,7 +63066,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 447 */
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -62850,7 +63077,7 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var debounce = __webpack_require__(448);
+	var debounce = __webpack_require__(449);
 	
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -62941,7 +63168,7 @@
 
 
 /***/ },
-/* 448 */
+/* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -63181,7 +63408,7 @@
 
 
 /***/ },
-/* 449 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63357,7 +63584,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 450 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63398,7 +63625,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 451 */
+/* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63429,15 +63656,15 @@
 	
 	var _colors2 = _interopRequireDefault(_colors);
 	
-	var _popover = __webpack_require__(445);
+	var _popover = __webpack_require__(446);
 	
 	var _popover2 = _interopRequireDefault(_popover);
 	
-	var _check = __webpack_require__(452);
+	var _check = __webpack_require__(453);
 	
 	var _check2 = _interopRequireDefault(_check);
 	
-	var _listItem = __webpack_require__(453);
+	var _listItem = __webpack_require__(454);
 	
 	var _listItem2 = _interopRequireDefault(_listItem);
 	
@@ -63445,7 +63672,7 @@
 	
 	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
 	
-	var _menu = __webpack_require__(443);
+	var _menu = __webpack_require__(444);
 	
 	var _menu2 = _interopRequireDefault(_menu);
 	
@@ -63753,7 +63980,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 452 */
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63794,7 +64021,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 453 */
+/* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63845,15 +64072,15 @@
 	
 	var _iconButton2 = _interopRequireDefault(_iconButton);
 	
-	var _arrowDropUp = __webpack_require__(454);
+	var _arrowDropUp = __webpack_require__(455);
 	
 	var _arrowDropUp2 = _interopRequireDefault(_arrowDropUp);
 	
-	var _arrowDropDown = __webpack_require__(455);
+	var _arrowDropDown = __webpack_require__(456);
 	
 	var _arrowDropDown2 = _interopRequireDefault(_arrowDropDown);
 	
-	var _nestedList = __webpack_require__(456);
+	var _nestedList = __webpack_require__(457);
 	
 	var _nestedList2 = _interopRequireDefault(_nestedList);
 	
@@ -64456,7 +64683,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 454 */
+/* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64497,7 +64724,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 455 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64538,7 +64765,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 456 */
+/* 457 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64555,7 +64782,7 @@
 	
 	var _styles = __webpack_require__(224);
 	
-	var _list = __webpack_require__(444);
+	var _list = __webpack_require__(445);
 	
 	var _list2 = _interopRequireDefault(_list);
 	
@@ -64624,7 +64851,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 457 */
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64700,47 +64927,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 458 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(459);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(436)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js?outputStyle=expanded!./main.scss", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js?outputStyle=expanded!./main.scss");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
 /* 459 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(435)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "* {\n  font-family: 'Roboto', sans-serif;\n}\n\nbody {\n  background-color: #1a1a1a;\n}\n", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64763,11 +64950,1470 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ClientApplications = __webpack_require__(461);
+	var _materialUiLibSnackbar = __webpack_require__(460);
+	
+	var _materialUiLibSnackbar2 = _interopRequireDefault(_materialUiLibSnackbar);
+	
+	var _materialUiLibFlatButton = __webpack_require__(319);
+	
+	var _materialUiLibFlatButton2 = _interopRequireDefault(_materialUiLibFlatButton);
+	
+	var _materialUiLibDialog = __webpack_require__(463);
+	
+	var _materialUiLibDialog2 = _interopRequireDefault(_materialUiLibDialog);
+	
+	var _utilsWebSocket = __webpack_require__(365);
+	
+	var _utilsWebSocket2 = _interopRequireDefault(_utilsWebSocket);
+	
+	var NotificationDialog = (function (_React$Component) {
+	    _inherits(NotificationDialog, _React$Component);
+	
+	    function NotificationDialog(props) {
+	        var _this = this;
+	
+	        _classCallCheck(this, NotificationDialog);
+	
+	        _get(Object.getPrototypeOf(NotificationDialog.prototype), 'constructor', this).call(this, props);
+	
+	        this.show = function (alert) {
+	            var incomingAlert = JSON.parse(alert.body);
+	            _this.setState({
+	                open: true
+	            });
+	        };
+	
+	        this.handleClose = function () {
+	            _this.setState({
+	                open: false
+	            });
+	        };
+	
+	        this.state = {
+	            open: false,
+	            appName: null,
+	            metric: null,
+	            condition: null,
+	            criteria: null
+	        };
+	    }
+	
+	    _createClass(NotificationDialog, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            _utilsWebSocket2['default'].register([{
+	                route: '/jvmrt/alertNotification', callback: this.show
+	            }], "/alertnotification");
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var actions = [_react2['default'].createElement(_materialUiLibFlatButton2['default'], {
+	                label: 'OK',
+	                secondary: true,
+	                onTouchTap: this.handleClose
+	            })];
+	
+	            return _react2['default'].createElement(
+	                _materialUiLibDialog2['default'],
+	                {
+	                    title: this.props.title,
+	                    actions: actions,
+	                    modal: false,
+	                    open: this.state.open,
+	                    onRequestClose: this.handleClose
+	                },
+	                'An Alert you set has been triggered.'
+	            );
+	        }
+	    }]);
+	
+	    return NotificationDialog;
+	})(_react2['default'].Component);
+	
+	exports['default'] = NotificationDialog;
+	module.exports = exports['default'];
+
+/***/ },
+/* 460 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _stylePropable = __webpack_require__(223);
+	
+	var _stylePropable2 = _interopRequireDefault(_stylePropable);
+	
+	var _transitions = __webpack_require__(222);
+	
+	var _transitions2 = _interopRequireDefault(_transitions);
+	
+	var _clickAwayable = __webpack_require__(347);
+	
+	var _clickAwayable2 = _interopRequireDefault(_clickAwayable);
+	
+	var _flatButton = __webpack_require__(319);
+	
+	var _flatButton2 = _interopRequireDefault(_flatButton);
+	
+	var _getMuiTheme = __webpack_require__(246);
+	
+	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
+	
+	var _contextPure = __webpack_require__(299);
+	
+	var _contextPure2 = _interopRequireDefault(_contextPure);
+	
+	var _styleResizable = __webpack_require__(461);
+	
+	var _styleResizable2 = _interopRequireDefault(_styleResizable);
+	
+	var _warning = __webpack_require__(164);
+	
+	var _warning2 = _interopRequireDefault(_warning);
+	
+	var _deprecatedPropType = __webpack_require__(462);
+	
+	var _deprecatedPropType2 = _interopRequireDefault(_deprecatedPropType);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var Snackbar = _react2.default.createClass({
+	  displayName: 'Snackbar',
+	
+	  propTypes: {
+	    /**
+	     * The label for the action on the snackbar.
+	     */
+	    action: _react2.default.PropTypes.string,
+	
+	    /**
+	     * The number of milliseconds to wait before automatically dismissing.
+	     * If no value is specified the snackbar will dismiss normally.
+	     * If a value is provided the snackbar can still be dismissed normally.
+	     * If a snackbar is dismissed before the timer expires, the timer will be cleared.
+	     */
+	    autoHideDuration: _react2.default.PropTypes.number,
+	
+	    /**
+	     * Override the inline-styles of the body element.
+	     */
+	    bodyStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * The css class name of the root element.
+	     */
+	    className: _react2.default.PropTypes.string,
+	
+	    /**
+	     * The message to be displayed.
+	     */
+	    message: _react2.default.PropTypes.node.isRequired,
+	
+	    /**
+	     * Fired when the action button is touchtapped.
+	     *
+	     * @param {object} event Action button event.
+	     */
+	    onActionTouchTap: _react2.default.PropTypes.func,
+	
+	    /**
+	     * Fired when the `Snackbar` is dismissed.
+	     */
+	    onDismiss: (0, _deprecatedPropType2.default)(_react2.default.PropTypes.func, 'Instead, use the open property to control the component.'),
+	
+	    /**
+	     * Fired when the `Snackbar` is requested to be closed by a click outside the `Snackbar`, or after the
+	     * `autoHideDuration` timer expires.
+	     *
+	     * Typically `onRequestClose` is used to set state in the parent component, which is used to control the `Snackbar`
+	     * `open` prop.
+	     *
+	     * The `reason` parameter can optionally be used to control the response to `onRequestClose`,
+	     * for example ignoring `clickaway`.
+	     *
+	     * @param {string} reason Can be:`"timeout"` (`autoHideDuration` expired) or: `"clickaway"`
+	     */
+	    onRequestClose: _react2.default.PropTypes.func.isRequired,
+	
+	    /**
+	     * Fired when the `Snackbar` is shown.
+	     */
+	    onShow: (0, _deprecatedPropType2.default)(_react2.default.PropTypes.func, 'Instead, use the open property to control the component.'),
+	
+	    /**
+	     * Controls whether the `Snackbar` is opened or not.
+	     */
+	    open: _react2.default.PropTypes.bool.isRequired,
+	
+	    /**
+	     * If true, the `Snackbar` will open once mounted.
+	     */
+	    openOnMount: (0, _deprecatedPropType2.default)(_react2.default.PropTypes.bool, 'Instead, use the open property to control the component.'),
+	
+	    /**
+	     * Override the inline-styles of the root element.
+	     */
+	    style: _react2.default.PropTypes.object
+	  },
+	
+	  contextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  //for passing default theme context to children
+	  childContextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  mixins: [_stylePropable2.default, _styleResizable2.default, _clickAwayable2.default, _contextPure2.default],
+	
+	  statics: {
+	    getRelevantContextKeys: function getRelevantContextKeys(muiTheme) {
+	      var theme = muiTheme.snackbar;
+	      var spacing = muiTheme.rawTheme.spacing;
+	
+	      return {
+	        textColor: theme.textColor,
+	        backgroundColor: theme.backgroundColor,
+	        desktopGutter: spacing.desktopGutter,
+	        desktopSubheaderHeight: spacing.desktopSubheaderHeight,
+	        actionColor: theme.actionColor
+	      };
+	    },
+	    getChildrenClasses: function getChildrenClasses() {
+	      return [_flatButton2.default];
+	    }
+	  },
+	
+	  getInitialState: function getInitialState() {
+	    var open = this.props.open;
+	
+	    if (open === null) {
+	      open = this.props.openOnMount;
+	    }
+	
+	    return {
+	      open: open,
+	      message: this.props.message,
+	      action: this.props.action,
+	      muiTheme: this.context.muiTheme || (0, _getMuiTheme2.default)()
+	    };
+	  },
+	  getChildContext: function getChildContext() {
+	    return {
+	      muiTheme: this.state.muiTheme
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+	
+	    if (this.state.open) {
+	      this._setAutoHideTimer();
+	
+	      //Only Bind clickaway after transition finishes
+	      this.timerTransitionId = setTimeout(function () {
+	        _this._bindClickAway();
+	      }, 400);
+	    }
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+	    var _this2 = this;
+	
+	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+	    this.setState({
+	      muiTheme: newMuiTheme
+	    });
+	
+	    if (this.state.open && nextProps.open === this.props.open && (nextProps.message !== this.props.message || nextProps.action !== this.props.action)) {
+	      this.setState({
+	        open: false
+	      });
+	
+	      clearTimeout(this.timerOneAtTheTimeId);
+	      this.timerOneAtTheTimeId = setTimeout(function () {
+	        _this2.setState({
+	          message: nextProps.message,
+	          action: nextProps.action,
+	          open: true
+	        });
+	      }, 400);
+	    } else {
+	      var open = nextProps.open;
+	
+	      this.setState({
+	        open: open !== null ? open : this.state.open,
+	        message: nextProps.message,
+	        action: nextProps.action
+	      });
+	    }
+	  },
+	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+	    var _this3 = this;
+	
+	    if (prevState.open !== this.state.open) {
+	      if (this.state.open) {
+	        this._setAutoHideTimer();
+	
+	        //Only Bind clickaway after transition finishes
+	        this.timerTransitionId = setTimeout(function () {
+	          _this3._bindClickAway();
+	        }, 400);
+	      } else {
+	        clearTimeout(this.timerAutoHideId);
+	        this._unbindClickAway();
+	      }
+	    }
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    clearTimeout(this.timerAutoHideId);
+	    clearTimeout(this.timerTransitionId);
+	    clearTimeout(this.timerOneAtTheTimeId);
+	    this._unbindClickAway();
+	  },
+	
+	  manuallyBindClickAway: true,
+	
+	  timerAutoHideId: undefined,
+	  timerTransitionId: undefined,
+	  timerOneAtTheTimeId: undefined,
+	
+	  componentClickAway: function componentClickAway() {
+	    if (this.props.open !== null && this.props.onRequestClose) {
+	      this.props.onRequestClose('clickaway');
+	    } else {
+	      this.setState({ open: false });
+	    }
+	  },
+	  getStyles: function getStyles() {
+	    var _constructor$getRelev = this.constructor.getRelevantContextKeys(this.state.muiTheme);
+	
+	    var textColor = _constructor$getRelev.textColor;
+	    var backgroundColor = _constructor$getRelev.backgroundColor;
+	    var desktopGutter = _constructor$getRelev.desktopGutter;
+	    var desktopSubheaderHeight = _constructor$getRelev.desktopSubheaderHeight;
+	    var actionColor = _constructor$getRelev.actionColor;
+	
+	    var isSmall = this.state.deviceSize === this.constructor.Sizes.SMALL;
+	
+	    var styles = {
+	      root: {
+	        position: 'fixed',
+	        left: 0,
+	        display: 'flex',
+	        right: 0,
+	        bottom: 0,
+	        zIndex: this.state.muiTheme.zIndex.snackbar,
+	        visibility: 'hidden',
+	        transform: 'translate3d(0, ' + desktopSubheaderHeight + 'px, 0)',
+	        transition: _transitions2.default.easeOut('400ms', 'transform') + ',' + _transitions2.default.easeOut('400ms', 'visibility')
+	      },
+	      rootWhenOpen: {
+	        visibility: 'visible',
+	        transform: 'translate3d(0, 0, 0)'
+	      },
+	      body: {
+	        backgroundColor: backgroundColor,
+	        padding: '0 ' + desktopGutter + 'px',
+	        height: desktopSubheaderHeight,
+	        lineHeight: desktopSubheaderHeight + 'px',
+	        borderRadius: isSmall ? 0 : 2,
+	        maxWidth: isSmall ? 'inherit' : 568,
+	        minWidth: isSmall ? 'inherit' : 288,
+	        flexGrow: isSmall ? 1 : 0,
+	        margin: 'auto'
+	      },
+	      content: {
+	        fontSize: 14,
+	        color: textColor,
+	        opacity: 0,
+	        transition: _transitions2.default.easeOut('400ms', 'opacity')
+	      },
+	      contentWhenOpen: {
+	        opacity: 1,
+	        transition: _transitions2.default.easeOut('500ms', 'opacity', '100ms')
+	      },
+	      action: {
+	        color: actionColor,
+	        float: 'right',
+	        marginTop: 6,
+	        marginRight: -16,
+	        marginLeft: desktopGutter,
+	        backgroundColor: 'transparent'
+	      }
+	    };
+	
+	    return styles;
+	  },
+	  show: function show() {
+	    process.env.NODE_ENV !== "production" ? (0, _warning2.default)(false, 'show has been deprecated in favor of explicitly setting the open property.') : undefined;
+	
+	    this.setState({
+	      open: true
+	    });
+	
+	    if (this.props.onShow) {
+	      this.props.onShow();
+	    }
+	  },
+	  _onDismiss: function _onDismiss() {
+	    if (this.props.onDismiss) {
+	      this.props.onDismiss();
+	    }
+	  },
+	  dismiss: function dismiss() {
+	    process.env.NODE_ENV !== "production" ? (0, _warning2.default)(false, 'dismiss has been deprecated in favor of explicitly setting the open property.') : undefined;
+	
+	    this.setState({
+	      open: false
+	    }, this._onDismiss);
+	  },
+	  _setAutoHideTimer: function _setAutoHideTimer() {
+	    var _this4 = this;
+	
+	    var autoHideDuration = this.props.autoHideDuration;
+	
+	    if (autoHideDuration > 0) {
+	      clearTimeout(this.timerAutoHideId);
+	      this.timerAutoHideId = setTimeout(function () {
+	        if (_this4.props.open !== null && _this4.props.onRequestClose) {
+	          _this4.props.onRequestClose('timeout');
+	        } else {
+	          _this4.setState({ open: false });
+	        }
+	      }, autoHideDuration);
+	    }
+	  },
+	  render: function render() {
+	    var _props = this.props;
+	    var onActionTouchTap = _props.onActionTouchTap;
+	    var style = _props.style;
+	    var bodyStyle = _props.bodyStyle;
+	
+	    var others = _objectWithoutProperties(_props, ['onActionTouchTap', 'style', 'bodyStyle']);
+	
+	    var styles = this.getStyles();
+	
+	    var _state = this.state;
+	    var open = _state.open;
+	    var action = _state.action;
+	    var message = _state.message;
+	
+	    var rootStyles = open ? this.mergeStyles(styles.root, styles.rootWhenOpen, style) : this.mergeStyles(styles.root, style);
+	
+	    var actionButton = undefined;
+	    if (action) {
+	      actionButton = _react2.default.createElement(_flatButton2.default, {
+	        style: styles.action,
+	        label: action,
+	        onTouchTap: onActionTouchTap
+	      });
+	    }
+	
+	    var mergedBodyStyle = this.mergeStyles(styles.body, bodyStyle);
+	
+	    var contentStyle = open ? this.mergeStyles(styles.content, styles.contentWhenOpen) : styles.content;
+	
+	    return _react2.default.createElement(
+	      'div',
+	      _extends({}, others, { style: rootStyles }),
+	      _react2.default.createElement(
+	        'div',
+	        { style: mergedBodyStyle },
+	        _react2.default.createElement(
+	          'div',
+	          { style: contentStyle },
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            message
+	          ),
+	          actionButton
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	exports.default = Snackbar;
+	module.exports = exports['default'];
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+
+/***/ },
+/* 461 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _events = __webpack_require__(282);
+	
+	var _events2 = _interopRequireDefault(_events);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Sizes = {
+	  SMALL: 1,
+	  MEDIUM: 2,
+	  LARGE: 3
+	};
+	
+	exports.default = {
+	
+	  statics: {
+	    Sizes: Sizes
+	  },
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      deviceSize: Sizes.SMALL
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this._updateDeviceSize();
+	    if (!this.manuallyBindResize) this._bindResize();
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this._unbindResize();
+	  },
+	  isDeviceSize: function isDeviceSize(desiredSize) {
+	    return this.state.deviceSize >= desiredSize;
+	  },
+	  _updateDeviceSize: function _updateDeviceSize() {
+	    var width = window.innerWidth;
+	
+	    if (width >= 992) {
+	      this.setState({ deviceSize: Sizes.LARGE });
+	    } else if (width >= 768) {
+	      this.setState({ deviceSize: Sizes.MEDIUM });
+	    } else {
+	      // width < 768
+	      this.setState({ deviceSize: Sizes.SMALL });
+	    }
+	  },
+	  _bindResize: function _bindResize() {
+	    _events2.default.on(window, 'resize', this._updateDeviceSize);
+	  },
+	  _unbindResize: function _unbindResize() {
+	    _events2.default.off(window, 'resize', this._updateDeviceSize);
+	  }
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 462 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = deprecated;
+	
+	var _warning = __webpack_require__(164);
+	
+	var _warning2 = _interopRequireDefault(_warning);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function deprecated(propType, explanation) {
+	  return function validate(props, propName, componentName) {
+	    if (props[propName] != null) {
+	      process.env.NODE_ENV !== "production" ? (0, _warning2.default)(false, '"' + propName + '" property of "' + componentName + '" has been deprecated.\n' + explanation) : undefined;
+	    }
+	
+	    return propType(props, propName, componentName);
+	  };
+	}
+	module.exports = exports['default'];
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+
+/***/ },
+/* 463 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(160);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	var _windowListenable = __webpack_require__(340);
+	
+	var _windowListenable2 = _interopRequireDefault(_windowListenable);
+	
+	var _keyCode = __webpack_require__(283);
+	
+	var _keyCode2 = _interopRequireDefault(_keyCode);
+	
+	var _transitions = __webpack_require__(222);
+	
+	var _transitions2 = _interopRequireDefault(_transitions);
+	
+	var _stylePropable = __webpack_require__(223);
+	
+	var _stylePropable2 = _interopRequireDefault(_stylePropable);
+	
+	var _flatButton = __webpack_require__(319);
+	
+	var _flatButton2 = _interopRequireDefault(_flatButton);
+	
+	var _overlay = __webpack_require__(464);
+	
+	var _overlay2 = _interopRequireDefault(_overlay);
+	
+	var _renderToLayer = __webpack_require__(447);
+	
+	var _renderToLayer2 = _interopRequireDefault(_renderToLayer);
+	
+	var _paper = __webpack_require__(295);
+	
+	var _paper2 = _interopRequireDefault(_paper);
+	
+	var _getMuiTheme = __webpack_require__(246);
+	
+	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
+	
+	var _warning = __webpack_require__(164);
+	
+	var _warning2 = _interopRequireDefault(_warning);
+	
+	var _deprecatedPropType = __webpack_require__(462);
+	
+	var _deprecatedPropType2 = _interopRequireDefault(_deprecatedPropType);
+	
+	var _reactAddonsTransitionGroup = __webpack_require__(286);
+	
+	var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var TransitionItem = _react2.default.createClass({
+	  displayName: 'TransitionItem',
+	
+	  propTypes: {
+	    children: _react2.default.PropTypes.node,
+	    style: _react2.default.PropTypes.object
+	  },
+	
+	  contextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  //for passing default theme context to children
+	  childContextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  mixins: [_stylePropable2.default],
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      style: {},
+	      muiTheme: this.context.muiTheme || (0, _getMuiTheme2.default)()
+	    };
+	  },
+	  getChildContext: function getChildContext() {
+	    return {
+	      muiTheme: this.state.muiTheme
+	    };
+	  },
+	
+	  //to update theme inside state whenever a new theme is passed down
+	  //from the parent / owner using context
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+	    this.setState({ muiTheme: newMuiTheme });
+	  },
+	  componentWillEnter: function componentWillEnter(callback) {
+	    this.componentWillAppear(callback);
+	  },
+	  componentWillAppear: function componentWillAppear(callback) {
+	    var spacing = this.state.muiTheme.rawTheme.spacing;
+	
+	    this.setState({
+	      style: {
+	        opacity: 1,
+	        transform: 'translate3d(0, ' + spacing.desktopKeylineIncrement + 'px, 0)'
+	      }
+	    });
+	
+	    setTimeout(callback, 450); // matches transition duration
+	  },
+	  componentWillLeave: function componentWillLeave(callback) {
+	    var _this = this;
+	
+	    this.setState({
+	      style: {
+	        opacity: 0,
+	        transform: 'translate3d(0, 0, 0)'
+	      }
+	    });
+	
+	    setTimeout(function () {
+	      if (_this.isMounted()) callback();
+	    }, 450); // matches transition duration
+	  },
+	  render: function render() {
+	    var _props = this.props;
+	    var style = _props.style;
+	    var children = _props.children;
+	
+	    var other = _objectWithoutProperties(_props, ['style', 'children']);
+	
+	    return _react2.default.createElement(
+	      'div',
+	      _extends({}, other, { style: this.prepareStyles(this.state.style, style) }),
+	      children
+	    );
+	  }
+	});
+	
+	var DialogInline = _react2.default.createClass({
+	  displayName: 'DialogInline',
+	
+	  propTypes: {
+	    actionFocus: _react2.default.PropTypes.string,
+	    actions: _react2.default.PropTypes.node,
+	    actionsContainerClassName: _react2.default.PropTypes.string,
+	    actionsContainerStyle: _react2.default.PropTypes.object,
+	    autoDetectWindowHeight: _react2.default.PropTypes.bool,
+	    autoScrollBodyContent: _react2.default.PropTypes.bool,
+	    bodyClassName: _react2.default.PropTypes.string,
+	    bodyStyle: _react2.default.PropTypes.object,
+	    children: _react2.default.PropTypes.node,
+	    className: _react2.default.PropTypes.string,
+	    contentClassName: _react2.default.PropTypes.string,
+	    contentStyle: _react2.default.PropTypes.object,
+	    modal: _react2.default.PropTypes.bool,
+	    onRequestClose: _react2.default.PropTypes.func,
+	    open: _react2.default.PropTypes.bool.isRequired,
+	    overlayClassName: _react2.default.PropTypes.string,
+	    overlayStyle: _react2.default.PropTypes.object,
+	    repositionOnUpdate: _react2.default.PropTypes.bool,
+	    style: _react2.default.PropTypes.object,
+	    title: _react2.default.PropTypes.node,
+	    titleClassName: _react2.default.PropTypes.string,
+	    titleStyle: _react2.default.PropTypes.object,
+	    width: _react2.default.PropTypes.any
+	  },
+	
+	  contextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  //for passing default theme context to children
+	  childContextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  mixins: [_windowListenable2.default, _stylePropable2.default],
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      muiTheme: this.context.muiTheme || (0, _getMuiTheme2.default)()
+	    };
+	  },
+	  getChildContext: function getChildContext() {
+	    return {
+	      muiTheme: this.state.muiTheme
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this._positionDialog();
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+	    this.setState({ muiTheme: newMuiTheme });
+	  },
+	  componentDidUpdate: function componentDidUpdate() {
+	    this._positionDialog();
+	  },
+	
+	  windowListeners: {
+	    keyup: '_handleWindowKeyUp',
+	    resize: '_handleResize'
+	  },
+	
+	  getStyles: function getStyles() {
+	    var _props2 = this.props;
+	    var autoScrollBodyContent = _props2.autoScrollBodyContent;
+	    var open = _props2.open;
+	    var width = _props2.width;
+	
+	    var muiTheme = this.state.muiTheme;
+	    var rawTheme = muiTheme.rawTheme;
+	    var spacing = rawTheme.spacing;
+	    var gutter = spacing.desktopGutter;
+	
+	    return {
+	      root: {
+	        position: 'fixed',
+	        boxSizing: 'border-box',
+	        WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+	        zIndex: muiTheme.zIndex.dialog,
+	        top: 0,
+	        left: open ? 0 : -10000,
+	        width: '100%',
+	        height: '100%',
+	        transition: open ? _transitions2.default.easeOut('0ms', 'left', '0ms') : _transitions2.default.easeOut('0ms', 'left', '450ms')
+	      },
+	      content: {
+	        boxSizing: 'border-box',
+	        WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+	        transition: _transitions2.default.easeOut(),
+	        position: 'relative',
+	        width: width || '75%',
+	        maxWidth: spacing.desktopKeylineIncrement * 12,
+	        margin: '0 auto',
+	        zIndex: muiTheme.zIndex.dialog
+	      },
+	      body: {
+	        padding: spacing.desktopGutter,
+	        overflowY: autoScrollBodyContent ? 'auto' : 'hidden',
+	        overflowX: 'hidden'
+	      },
+	      actionsContainer: {
+	        boxSizing: 'border-box',
+	        WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+	        padding: 8,
+	        marginBottom: 8,
+	        width: '100%',
+	        textAlign: 'right'
+	      },
+	      paper: {
+	        background: rawTheme.palette.canvasColor
+	      },
+	      overlay: {
+	        zIndex: muiTheme.zIndex.dialogOverlay
+	      },
+	      title: {
+	        margin: 0,
+	        padding: gutter + 'px ' + gutter + 'px 0 ' + gutter + 'px',
+	        color: rawTheme.palette.textColor,
+	        fontSize: 24,
+	        lineHeight: '32px',
+	        fontWeight: 400
+	      }
+	    };
+	  },
+	  _getAction: function _getAction(actionJSON) {
+	    var _this2 = this;
+	
+	    process.env.NODE_ENV !== "production" ? (0, _warning2.default)(false, 'using actionsJSON is deprecated on Dialog, please provide an array of\n buttons, or any other components instead. For more information please refer to documentations.') : undefined;
+	    var props = {
+	      secondary: true,
+	      onClick: actionJSON.onClick,
+	      onTouchTap: function onTouchTap() {
+	        if (actionJSON.onTouchTap) {
+	          actionJSON.onTouchTap.call(undefined);
+	        }
+	        if (!(actionJSON.onClick || actionJSON.onTouchTap)) {
+	          _this2._requestClose(true);
+	        }
+	      },
+	      label: actionJSON.text,
+	      style: {
+	        marginRight: 8
+	      }
+	    };
+	
+	    if (actionJSON.ref) {
+	      props.ref = actionJSON.ref;
+	      props.keyboardFocused = actionJSON.ref === this.props.actionFocus;
+	    }
+	    if (actionJSON.id) {
+	      props.id = actionJSON.id;
+	    }
+	
+	    return _react2.default.createElement(_flatButton2.default, props);
+	  },
+	  _getActionObjects: function _getActionObjects(actions) {
+	    var _this3 = this;
+	
+	    var actionObjects = [];
+	
+	    // ------- Replace this selction with:
+	    //
+	    // React.Children.forEach(actions, action => {
+	    //   if (React.isValidElement(action)) {
+	    //     actionObjects.push(action);
+	    //   }
+	    // });
+	    //
+	    // Also the return element will not need a call to React.Children.toArray
+	    //
+	    // for the 0.15.0 release
+	
+	    if (actions) {
+	
+	      if (_react2.default.isValidElement(actions)) {
+	        actionObjects.push(actions);
+	      } else {
+	        actions.forEach(function (action) {
+	          if (action) {
+	            if (!_react2.default.isValidElement(action)) {
+	              action = _this3._getAction(action);
+	            }
+	            actionObjects.push(action);
+	          }
+	        });
+	      }
+	    }
+	
+	    // ------- End of section
+	
+	    return actionObjects;
+	  },
+	  _getActionsContainer: function _getActionsContainer(actions, styles, className) {
+	    var actionObjects = this._getActionObjects(actions);
+	
+	    return actionObjects.length > 0 && _react2.default.createElement(
+	      'div',
+	      { className: className, style: this.prepareStyles(styles) },
+	      _react2.default.Children.toArray(actionObjects)
+	    );
+	  },
+	  _positionDialog: function _positionDialog() {
+	    var _props3 = this.props;
+	    var actions = _props3.actions;
+	    var autoDetectWindowHeight = _props3.autoDetectWindowHeight;
+	    var autoScrollBodyContent = _props3.autoScrollBodyContent;
+	    var bodyStyle = _props3.bodyStyle;
+	    var open = _props3.open;
+	    var repositionOnUpdate = _props3.repositionOnUpdate;
+	    var title = _props3.title;
+	
+	    if (!open) {
+	      return;
+	    }
+	
+	    var clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+	    var container = _reactDom2.default.findDOMNode(this);
+	    var dialogWindow = _reactDom2.default.findDOMNode(this.refs.dialogWindow);
+	    var dialogContent = _reactDom2.default.findDOMNode(this.refs.dialogContent);
+	    var minPaddingTop = 16;
+	
+	    //Reset the height in case the window was resized.
+	    dialogWindow.style.height = '';
+	    dialogContent.style.height = '';
+	
+	    var dialogWindowHeight = dialogWindow.offsetHeight;
+	    var paddingTop = (clientHeight - dialogWindowHeight) / 2 - 64;
+	    if (paddingTop < minPaddingTop) paddingTop = minPaddingTop;
+	
+	    //Vertically center the dialog window, but make sure it doesn't
+	    //transition to that position.
+	    if (repositionOnUpdate || !container.style.paddingTop) {
+	      container.style.paddingTop = paddingTop + 'px';
+	    }
+	
+	    // Force a height if the dialog is taller than clientHeight
+	    if (autoDetectWindowHeight || autoScrollBodyContent) {
+	      var styles = this.getStyles();
+	      styles.body = this.mergeStyles(styles.body, bodyStyle);
+	      var maxDialogContentHeight = clientHeight - 2 * (styles.body.padding + 64);
+	
+	      if (title) maxDialogContentHeight -= dialogContent.previousSibling.offsetHeight;
+	
+	      var hasActions = this._getActionObjects(actions).length > 0;
+	      if (hasActions) maxDialogContentHeight -= dialogContent.nextSibling.offsetHeight;
+	
+	      dialogContent.style.maxHeight = maxDialogContentHeight + 'px';
+	    }
+	  },
+	  _requestClose: function _requestClose(buttonClicked) {
+	
+	    if (!buttonClicked && this.props.modal) {
+	      return;
+	    }
+	
+	    if (this.props.onRequestClose) {
+	      this.props.onRequestClose(!!buttonClicked);
+	    }
+	  },
+	  _handleOverlayTouchTap: function _handleOverlayTouchTap() {
+	    this._requestClose(false);
+	  },
+	  _handleWindowKeyUp: function _handleWindowKeyUp(event) {
+	    if (event.keyCode === _keyCode2.default.ESC) {
+	      this._requestClose(false);
+	    }
+	  },
+	  _handleResize: function _handleResize() {
+	    if (this.props.open) {
+	      this._positionDialog();
+	    }
+	  },
+	  render: function render() {
+	    var _props4 = this.props;
+	    var actions = _props4.actions;
+	    var actionsContainerClassName = _props4.actionsContainerClassName;
+	    var actionsContainerStyle = _props4.actionsContainerStyle;
+	    var bodyClassName = _props4.bodyClassName;
+	    var bodyStyle = _props4.bodyStyle;
+	    var children = _props4.children;
+	    var className = _props4.className;
+	    var contentClassName = _props4.contentClassName;
+	    var contentStyle = _props4.contentStyle;
+	    var overlayClassName = _props4.overlayClassName;
+	    var overlayStyle = _props4.overlayStyle;
+	    var open = _props4.open;
+	    var titleClassName = _props4.titleClassName;
+	    var titleStyle = _props4.titleStyle;
+	    var title = _props4.title;
+	    var style = _props4.style;
+	
+	    var styles = this.getStyles();
+	
+	    styles.root = this.mergeStyles(styles.root, style);
+	    styles.content = this.mergeStyles(styles.content, contentStyle);
+	    styles.body = this.mergeStyles(styles.body, bodyStyle);
+	    styles.actionsContainer = this.mergeStyles(styles.actionsContainer, actionsContainerStyle);
+	    styles.overlay = this.mergeStyles(styles.overlay, overlayStyle);
+	    styles.title = this.mergeStyles(styles.title, titleStyle);
+	
+	    var actionsContainer = this._getActionsContainer(actions, styles.actionsContainer, actionsContainerClassName);
+	
+	    var titleElement = typeof title === 'string' ? _react2.default.createElement(
+	      'h3',
+	      { className: titleClassName, style: this.prepareStyles(styles.title) },
+	      title
+	    ) : title;
+	
+	    return _react2.default.createElement(
+	      'div',
+	      { className: className, style: this.prepareStyles(styles.root) },
+	      _react2.default.createElement(
+	        _reactAddonsTransitionGroup2.default,
+	        {
+	          component: 'div', ref: 'dialogWindow',
+	          transitionAppear: true, transitionAppearTimeout: 450,
+	          transitionEnter: true, transitionEnterTimeout: 450
+	        },
+	        open && _react2.default.createElement(
+	          TransitionItem,
+	          {
+	            className: contentClassName,
+	            style: styles.content
+	          },
+	          _react2.default.createElement(
+	            _paper2.default,
+	            {
+	              style: styles.paper,
+	              zDepth: 4
+	            },
+	            titleElement,
+	            _react2.default.createElement(
+	              'div',
+	              {
+	                ref: 'dialogContent',
+	                className: bodyClassName,
+	                style: this.prepareStyles(styles.body)
+	              },
+	              children
+	            ),
+	            actionsContainer
+	          )
+	        )
+	      ),
+	      _react2.default.createElement(_overlay2.default, {
+	        show: open,
+	        className: overlayClassName,
+	        style: styles.overlay,
+	        onTouchTap: this._handleOverlayTouchTap
+	      })
+	    );
+	  }
+	});
+	
+	var Dialog = _react2.default.createClass({
+	  displayName: 'Dialog',
+	
+	  propTypes: {
+	    /**
+	     * The `ref` of the action to focus on when the `Dialog` is displayed.
+	     */
+	    actionFocus: (0, _deprecatedPropType2.default)(_react2.default.PropTypes.string, 'Instead, use a custom `actions` property.'),
+	
+	    /**
+	     * This prop can be either a JSON object containing the actions to render (This is **DEPRECATED**),
+	     * a react elements, or an array of react elements.
+	     */
+	    actions: _react2.default.PropTypes.node,
+	
+	    /**
+	     * The `className` to add to the actions container's root element.
+	     */
+	    actionsContainerClassName: _react2.default.PropTypes.string,
+	
+	    /**
+	     * Overrides the inline-styles of the actions container's root element.
+	     */
+	    actionsContainerStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * If set to true, the height of the `Dialog` will be auto detected. A max height
+	     * will be enforced so that the content does not extend beyond the viewport.
+	     */
+	    autoDetectWindowHeight: _react2.default.PropTypes.bool,
+	
+	    /**
+	     * If set to true, the body content of the `Dialog` will be scrollable.
+	     */
+	    autoScrollBodyContent: _react2.default.PropTypes.bool,
+	
+	    /**
+	     * The `className` to add to the content's root element under the title.
+	     */
+	    bodyClassName: _react2.default.PropTypes.string,
+	
+	    /**
+	     * Overrides the inline-styles of the content's root element under the title.
+	     */
+	    bodyStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * The contents of the `Dialog`.
+	     */
+	    children: _react2.default.PropTypes.node,
+	
+	    /**
+	     * The css class name of the root element.
+	     */
+	    className: _react2.default.PropTypes.string,
+	
+	    /**
+	     * The `className` to add to the content container.
+	     */
+	    contentClassName: _react2.default.PropTypes.string,
+	
+	    /**
+	     * Overrides the inline-styles of the content container.
+	     */
+	    contentStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * Force the user to use one of the actions in the `Dialog`.
+	     * Clicking outside the `Dialog` will not trigger the `onRequestClose`.
+	     */
+	    modal: _react2.default.PropTypes.bool,
+	
+	    /**
+	     * Fired when the `Dialog` is requested to be closed by a click outside the `Dialog` or on the buttons.
+	     *
+	     * @param {bool} buttonClicked Determines whether a button click triggered this request.
+	     */
+	    onRequestClose: _react2.default.PropTypes.func,
+	
+	    /**
+	     * Controls whether the Dialog is opened or not.
+	     */
+	    open: _react2.default.PropTypes.bool.isRequired,
+	
+	    /**
+	     * The `className` to add to the `Overlay` component that is rendered behind the `Dialog`.
+	     */
+	    overlayClassName: _react2.default.PropTypes.string,
+	
+	    /**
+	     * Overrides the inline-styles of the `Overlay` component that is rendered behind the `Dialog`.
+	     */
+	    overlayStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * Determines whether the `Dialog` should be repositioned when it's contents are updated.
+	     */
+	    repositionOnUpdate: _react2.default.PropTypes.bool,
+	
+	    /**
+	     * Override the inline-styles of the root element.
+	     */
+	    style: _react2.default.PropTypes.object,
+	
+	    /**
+	     * The title to display on the `Dialog`. Could be number, string, element or an array containing these types.
+	     */
+	    title: _react2.default.PropTypes.node,
+	
+	    /**
+	     * The `className` to add to the title's root container element.
+	     */
+	    titleClassName: _react2.default.PropTypes.string,
+	
+	    /**
+	     * Overrides the inline-styles of the title's root container element.
+	     */
+	    titleStyle: _react2.default.PropTypes.object,
+	
+	    /**
+	     * Changes the width of the `Dialog`.
+	     */
+	    width: (0, _deprecatedPropType2.default)(_react2.default.PropTypes.any, 'Use the contentStyle.')
+	  },
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      autoDetectWindowHeight: true,
+	      autoScrollBodyContent: false,
+	      modal: false,
+	      repositionOnUpdate: true
+	    };
+	  },
+	  renderLayer: function renderLayer() {
+	    return _react2.default.createElement(DialogInline, this.props);
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(_renderToLayer2.default, { render: this.renderLayer, open: true, useLayerForClickAway: false });
+	  }
+	});
+	
+	exports.default = Dialog;
+	module.exports = exports['default'];
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+
+/***/ },
+/* 464 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(160);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	var _stylePropable = __webpack_require__(223);
+	
+	var _stylePropable2 = _interopRequireDefault(_stylePropable);
+	
+	var _transitions = __webpack_require__(222);
+	
+	var _transitions2 = _interopRequireDefault(_transitions);
+	
+	var _colors = __webpack_require__(264);
+	
+	var _colors2 = _interopRequireDefault(_colors);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var Overlay = _react2.default.createClass({
+	  displayName: 'Overlay',
+	
+	  propTypes: {
+	    autoLockScrolling: _react2.default.PropTypes.bool,
+	    show: _react2.default.PropTypes.bool.isRequired,
+	
+	    /**
+	     * Override the inline-styles of the root element.
+	     */
+	    style: _react2.default.PropTypes.object,
+	    transitionEnabled: _react2.default.PropTypes.bool
+	  },
+	
+	  contextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  mixins: [_stylePropable2.default],
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      autoLockScrolling: true,
+	      transitionEnabled: true,
+	      style: {}
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    if (this.props.show) {
+	      this._applyAutoLockScrolling(this.props);
+	    }
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    if (this.props.show !== nextProps.show) {
+	      this._applyAutoLockScrolling(nextProps);
+	    }
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    if (this.props.show === true) {
+	      this._allowScrolling();
+	    }
+	  },
+	
+	  _originalBodyOverflow: '',
+	
+	  setOpacity: function setOpacity(opacity) {
+	    var overlay = _reactDom2.default.findDOMNode(this);
+	    overlay.style.opacity = opacity;
+	  },
+	  getStyles: function getStyles() {
+	    return {
+	      root: {
+	        position: 'fixed',
+	        height: '100%',
+	        width: '100%',
+	        top: 0,
+	        left: '-100%',
+	        opacity: 0,
+	        backgroundColor: _colors2.default.lightBlack,
+	        WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
+	
+	        // Two ways to promote overlay to its own render layer
+	        willChange: 'opacity',
+	        transform: 'translateZ(0)',
+	
+	        transition: this.props.transitionEnabled && _transitions2.default.easeOut('0ms', 'left', '400ms') + ',' + _transitions2.default.easeOut('400ms', 'opacity')
+	      },
+	      rootWhenShown: {
+	        left: '0',
+	        opacity: 1,
+	        transition: this.props.transitionEnabled && _transitions2.default.easeOut('0ms', 'left') + ',' + _transitions2.default.easeOut('400ms', 'opacity')
+	      }
+	    };
+	  },
+	  _applyAutoLockScrolling: function _applyAutoLockScrolling(props) {
+	    if (props.autoLockScrolling) {
+	      if (props.show) {
+	        this._preventScrolling();
+	      } else {
+	        this._allowScrolling();
+	      }
+	    }
+	  },
+	  _preventScrolling: function _preventScrolling() {
+	    var body = document.getElementsByTagName('body')[0];
+	    this._originalBodyOverflow = body.style.overflow;
+	
+	    body.style.overflow = 'hidden';
+	  },
+	  _allowScrolling: function _allowScrolling() {
+	    var body = document.getElementsByTagName('body')[0];
+	    body.style.overflow = this._originalBodyOverflow || '';
+	  },
+	  render: function render() {
+	    var _props = this.props;
+	    var show = _props.show;
+	    var style = _props.style;
+	
+	    var other = _objectWithoutProperties(_props, ['show', 'style']);
+	
+	    var styles = this.mergeStyles(this.getStyles().root, style, show && this.getStyles().rootWhenShown);
+	
+	    return _react2.default.createElement('div', _extends({}, other, { style: this.prepareStyles(styles) }));
+	  }
+	});
+	
+	exports.default = Overlay;
+	module.exports = exports['default'];
+
+/***/ },
+/* 465 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(466);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(437)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js?outputStyle=expanded!./main.scss", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js?outputStyle=expanded!./main.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 466 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(436)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "* {\n  font-family: 'Roboto', sans-serif;\n}\n\nbody {\n  background-color: #1a1a1a;\n}\n", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 467 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ClientApplications = __webpack_require__(468);
 	
 	var _ClientApplications2 = _interopRequireDefault(_ClientApplications);
 	
-	var _Chart = __webpack_require__(440);
+	var _Chart = __webpack_require__(441);
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
 	
@@ -64776,7 +66422,7 @@
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
 	// CSS
-	__webpack_require__(433);
+	__webpack_require__(434);
 	
 	// Component for the main home dashboard of the application.
 	
@@ -64836,7 +66482,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 461 */
+/* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64859,7 +66505,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _altUtilsConnectToStores = __webpack_require__(462);
+	var _altUtilsConnectToStores = __webpack_require__(469);
 	
 	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
 	
@@ -64871,7 +66517,7 @@
 	
 	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 	
-	var _ClientApp = __webpack_require__(463);
+	var _ClientApp = __webpack_require__(470);
 	
 	var _ClientApp2 = _interopRequireDefault(_ClientApp);
 	
@@ -64879,7 +66525,7 @@
 	
 	var _utilsWebSocket2 = _interopRequireDefault(_utilsWebSocket);
 	
-	var _storesClientApplicationStore = __webpack_require__(464);
+	var _storesClientApplicationStore = __webpack_require__(471);
 	
 	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
 	
@@ -64892,7 +66538,7 @@
 	var _materialUiLibCircularProgress2 = _interopRequireDefault(_materialUiLibCircularProgress);
 	
 	// CSS
-	__webpack_require__(433);
+	__webpack_require__(434);
 	
 	var ClientApplications = (function (_React$Component) {
 	    _inherits(ClientApplications, _React$Component);
@@ -64911,7 +66557,7 @@
 	        value: function componentDidMount() {
 	            _utilsWebSocket2['default'].register([{
 	                route: '/jvmrt/metricsUpdate', callback: _actionsAppActions2['default'].updateLatestApplicationMetadata
-	            }]);
+	            }], "/metricspoll");
 	        }
 	    }, {
 	        key: 'render',
@@ -64962,7 +66608,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 462 */
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -65084,7 +66730,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 463 */
+/* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65129,7 +66775,7 @@
 	
 	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
-	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(438);
+	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(439);
 	
 	var _materialUiLibSvgIconsNavigationClose2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationClose);
 	
@@ -65145,7 +66791,7 @@
 	
 	var _materialUiLibStylesColors2 = _interopRequireDefault(_materialUiLibStylesColors);
 	
-	var _Chart = __webpack_require__(440);
+	var _Chart = __webpack_require__(441);
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
 	
@@ -65186,7 +66832,7 @@
 	var _materialUiLibCardCardActions2 = _interopRequireDefault(_materialUiLibCardCardActions);
 	
 	// CSS
-	__webpack_require__(433);
+	__webpack_require__(434);
 	
 	var ClientApp = (function (_React$Component) {
 	    _inherits(ClientApp, _React$Component);
@@ -65283,7 +66929,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 464 */
+/* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65310,7 +66956,7 @@
 	
 	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 	
-	var _altUtilsDecorators = __webpack_require__(465);
+	var _altUtilsDecorators = __webpack_require__(472);
 	
 	var _underscore = __webpack_require__(349);
 	
@@ -65346,7 +66992,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 465 */
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65456,7 +67102,7 @@
 	}
 
 /***/ },
-/* 466 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65495,7 +67141,7 @@
 	
 	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
-	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(438);
+	var _materialUiLibSvgIconsNavigationClose = __webpack_require__(439);
 	
 	var _materialUiLibSvgIconsNavigationClose2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationClose);
 	
@@ -65535,7 +67181,7 @@
 	
 	var _materialUiLibTableTableBody2 = _interopRequireDefault(_materialUiLibTableTableBody);
 	
-	var _Chart = __webpack_require__(440);
+	var _Chart = __webpack_require__(441);
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
 	
@@ -65543,11 +67189,15 @@
 	
 	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
 	
-	var _NewAlert = __webpack_require__(467);
+	var _Alert = __webpack_require__(474);
+	
+	var _Alert2 = _interopRequireDefault(_Alert);
+	
+	var _NewAlert = __webpack_require__(475);
 	
 	var _NewAlert2 = _interopRequireDefault(_NewAlert);
 	
-	var _altUtilsConnectToStores = __webpack_require__(462);
+	var _altUtilsConnectToStores = __webpack_require__(469);
 	
 	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
 	
@@ -65555,12 +67205,12 @@
 	
 	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 	
-	var _storesAlertStore = __webpack_require__(483);
+	var _storesAlertStore = __webpack_require__(491);
 	
 	var _storesAlertStore2 = _interopRequireDefault(_storesAlertStore);
 	
 	// CSS
-	__webpack_require__(433);
+	__webpack_require__(434);
 	
 	var AlertsDashboard = (function (_React$Component) {
 	    _inherits(AlertsDashboard, _React$Component);
@@ -65573,55 +67223,19 @@
 	    }
 	
 	    _createClass(AlertsDashboard, [{
-	        key: 'deleteAlert',
-	        value: function deleteAlert() {
-	            console.log("delete");
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this = this;
-	
-	            var styles = {
-	                fontWeight: "bold",
-	                textAlign: "center"
-	            };
-	
 	            var alerts = this.props.alerts.map(function (alert, index) {
-	                return _react2['default'].createElement(
-	                    _materialUiLibTableTableRow2['default'],
-	                    { key: index },
-	                    _react2['default'].createElement(
-	                        _materialUiLibTableTableRowColumn2['default'],
-	                        null,
-	                        alert.appName
-	                    ),
-	                    _react2['default'].createElement(
-	                        _materialUiLibTableTableRowColumn2['default'],
-	                        null,
-	                        alert.metric
-	                    ),
-	                    _react2['default'].createElement(
-	                        _materialUiLibTableTableRowColumn2['default'],
-	                        null,
-	                        alert.condition
-	                    ),
-	                    _react2['default'].createElement(
-	                        _materialUiLibTableTableRowColumn2['default'],
-	                        null,
-	                        alert.criteria
-	                    ),
-	                    _react2['default'].createElement(
-	                        _materialUiLibTableTableRowColumn2['default'],
-	                        null,
-	                        alert.user
-	                    ),
-	                    _react2['default'].createElement(
-	                        _materialUiLibTableTableRowColumn2['default'],
-	                        null,
-	                        _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DELETE', onClick: _this.deleteAlert.bind(_this, _this.props) })
-	                    )
-	                );
+	                return _react2['default'].createElement(_Alert2['default'], { key: index,
+	                    id: alert.id,
+	                    appName: alert.appName,
+	                    metric: alert.metric,
+	                    condition: alert.condition,
+	                    criteria: alert.criteria,
+	                    user: alert.user,
+	                    triggered: alert.triggered,
+	                    timeLastTriggered: alert.timeLastTriggered
+	                });
 	            });
 	
 	            return _react2['default'].createElement(
@@ -65669,6 +67283,16 @@
 	                                    _materialUiLibTableTableHeaderColumn2['default'],
 	                                    null,
 	                                    'Actions'
+	                                ),
+	                                _react2['default'].createElement(
+	                                    _materialUiLibTableTableHeaderColumn2['default'],
+	                                    null,
+	                                    'Triggered?'
+	                                ),
+	                                _react2['default'].createElement(
+	                                    _materialUiLibTableTableHeaderColumn2['default'],
+	                                    null,
+	                                    'Time Last Triggered'
 	                                )
 	                            )
 	                        ),
@@ -65703,7 +67327,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 467 */
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65730,7 +67354,156 @@
 	
 	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
-	var _AlertDropdown = __webpack_require__(468);
+	var _materialUiLibTableTableRow = __webpack_require__(335);
+	
+	var _materialUiLibTableTableRow2 = _interopRequireDefault(_materialUiLibTableTableRow);
+	
+	var _materialUiLibTableTableHeader = __webpack_require__(336);
+	
+	var _materialUiLibTableTableHeader2 = _interopRequireDefault(_materialUiLibTableTableHeader);
+	
+	var _materialUiLibTableTableRowColumn = __webpack_require__(345);
+	
+	var _materialUiLibTableTableRowColumn2 = _interopRequireDefault(_materialUiLibTableTableRowColumn);
+	
+	var _materialUiLibCheckbox = __webpack_require__(337);
+	
+	var _materialUiLibCheckbox2 = _interopRequireDefault(_materialUiLibCheckbox);
+	
+	var _jquery = __webpack_require__(364);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _actionsAppActions = __webpack_require__(350);
+	
+	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
+	
+	var _utilsTimeDelta = __webpack_require__(431);
+	
+	var _utilsTimeDelta2 = _interopRequireDefault(_utilsTimeDelta);
+	
+	var Alert = (function (_React$Component) {
+	    _inherits(Alert, _React$Component);
+	
+	    function Alert(props) {
+	        _classCallCheck(this, Alert);
+	
+	        _get(Object.getPrototypeOf(Alert.prototype), 'constructor', this).call(this, props);
+	        this.state = {
+	            appName: null,
+	            metric: null,
+	            condition: null,
+	            criteria: null,
+	            user: null,
+	            triggered: false,
+	            timeLastTriggered: null
+	        };
+	    }
+	
+	    _createClass(Alert, [{
+	        key: 'deleteAlert',
+	        value: function deleteAlert() {
+	            _jquery2['default'].post('http://localhost:8090/api/alerts/delete/' + this.props.id);
+	            _actionsAppActions2['default'].deleteAlert(this.props.id);
+	        }
+	    }, {
+	        key: 'resetAlert',
+	        value: function resetAlert() {
+	            _jquery2['default'].post('http://localhost:8090/api/alerts/reset/' + this.props.id);
+	            this.setState({
+	                triggered: false
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2['default'].createElement(
+	                _materialUiLibTableTableRow2['default'],
+	                null,
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    this.props.appName
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    this.props.metric
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    this.props.condition
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    this.props.criteria
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    this.props.user
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DELETE', primary: true, onClick: this.deleteAlert.bind(this, this.props) }),
+	                    _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'RESET', onClick: this.resetAlert.bind(this, this.props) })
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    ' ',
+	                    _react2['default'].createElement(_materialUiLibCheckbox2['default'], { checked: this.props.triggered, disabled: true }),
+	                    ' '
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    ' ',
+	                    _utilsTimeDelta2['default'].timestampToDateTime(this.props.timeLastTriggered),
+	                    ' '
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Alert;
+	})(_react2['default'].Component);
+	
+	exports['default'] = Alert;
+	module.exports = exports['default'];
+
+/***/ },
+/* 475 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _materialUiLibRaisedButton = __webpack_require__(293);
+	
+	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
+	
+	var _AlertDropdown = __webpack_require__(476);
 	
 	var _AlertDropdown2 = _interopRequireDefault(_AlertDropdown);
 	
@@ -65758,7 +67531,7 @@
 	
 	var _materialUiLibTableTableBody2 = _interopRequireDefault(_materialUiLibTableTableBody);
 	
-	var _materialUiLibTextField = __webpack_require__(472);
+	var _materialUiLibTextField = __webpack_require__(480);
 	
 	var _materialUiLibTextField2 = _interopRequireDefault(_materialUiLibTextField);
 	
@@ -65769,6 +67542,10 @@
 	var _actionsAppActions = __webpack_require__(350);
 	
 	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
+	
+	var _NotificationSnackbar = __webpack_require__(490);
+	
+	var _NotificationSnackbar2 = _interopRequireDefault(_NotificationSnackbar);
 	
 	var NewAlert = (function (_React$Component) {
 	    _inherits(NewAlert, _React$Component);
@@ -65791,7 +67568,8 @@
 	            metrics: ["gcps_marksweeptime", "gaugeresponsemetrics", "classes", "gcps_marksweepcount", "threadstotalStarted", "processors", "heapinit", "memfree", "systemloadaverage", "gcps_scavengetime", "mem", "counterstatus200metrics", "heap", "heapused", "instanceuptime", "gcps_scavengecount", "heapcommitted", "threads", "httpsessionsmax", "uptime", "classesloaded", "httpsessionsactive", "threadspeak", "classesunloaded", "threadsdaemon"],
 	            conditions: ["Less Than", "Greater Than"],
 	            criteria: null,
-	            users: []
+	            users: [],
+	            errorText: ''
 	        };
 	    }
 	
@@ -65800,7 +67578,8 @@
 	        value: function componentWillMount() {
 	            var _this2 = this;
 	
-	            _jquery2['default'].getJSON({ url: "http://localhost:8090/api/users/all",
+	            _jquery2['default'].getJSON({
+	                url: "http://localhost:8090/api/users/all",
 	                success: function success(users) {
 	                    _this2.setState({
 	                        users: users
@@ -65808,7 +67587,8 @@
 	                }
 	            });
 	
-	            _jquery2['default'].getJSON({ url: "http://localhost:8090/api/clientapps/names/all",
+	            _jquery2['default'].getJSON({
+	                url: "http://localhost:8090/api/clientapps/names/all",
 	                success: function success(clientApps) {
 	                    _this2.setState({
 	                        apps: clientApps
@@ -65819,30 +67599,40 @@
 	    }, {
 	        key: 'saveAlert',
 	        value: function saveAlert() {
-	            var alert = {
-	                appName: this.refs.appName.props.data[0],
-	                metric: this.refs.metric.props.data[0],
-	                condition: this.refs.condition.props.data[0],
-	                criteria: this.refs.criteria.props.value,
-	                user: this.refs.user.props.data[0]
-	            };
-	            _jquery2['default'].ajax({
-	                url: 'http://localhost:8090/api/alerts/add',
-	                type: "POST",
-	                headers: {
-	                    'Accept': 'application/json',
-	                    'Content-Type': 'application/json'
-	                },
-	                data: JSON.stringify(alert),
-	                dataType: 'application/json',
-	                success: function success(alert) {
-	                    console.log(alert);
-	                    _actionsAppActions2['default'].saveAlert(alert);
-	                },
-	                error: function error(_error) {
-	                    console.log("error when saving alert", _error);
-	                }
-	            });
+	            var number = this.refs.criteria.props.value;
+	            if (isNaN(parseFloat(number)) && !isFinite(number)) {
+	                this.setState({
+	                    errorText: "Must be a number."
+	                });
+	            } else {
+	
+	                var alert = {
+	                    appName: this.refs.appName.props.data[this.refs.appName.state.value],
+	                    metric: this.refs.metric.props.data[this.refs.metric.state.value],
+	                    condition: this.refs.condition.props.data[this.refs.condition.state.value],
+	                    criteria: number,
+	                    user: this.refs.user.props.data[this.refs.user.state.value]
+	                };
+	                var snackBar = this.refs.newAlert;
+	                _jquery2['default'].ajax({
+	                    url: 'http://localhost:8090/api/alerts/add',
+	                    type: "POST",
+	                    headers: {
+	                        'Accept': 'application/json',
+	                        'Content-Type': 'application/json'
+	                    },
+	                    data: JSON.stringify(alert),
+	                    dataType: 'json',
+	                    success: function success(alert) {
+	                        console.log(alert);
+	                        _actionsAppActions2['default'].saveAlert(alert);
+	                        snackBar.show();
+	                    },
+	                    error: function error(_error) {
+	                        console.log("error when saving alert", _error);
+	                    }
+	                });
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -65872,7 +67662,8 @@
 	                        ref: 'criteria',
 	                        value: this.state.criteria,
 	                        floatingLabelText: 'Alert Criteria',
-	                        onChange: this.handleCriteriaChange
+	                        onChange: this.handleCriteriaChange,
+	                        errorText: this.state.errorText
 	                    })
 	                ),
 	                _react2['default'].createElement(
@@ -65883,7 +67674,22 @@
 	                _react2['default'].createElement(
 	                    _materialUiLibTableTableRowColumn2['default'],
 	                    null,
-	                    _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'ADD', onClick: this.saveAlert.bind(this, this.props) })
+	                    _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'ADD',
+	                        secondary: true,
+	                        onClick: this.saveAlert.bind(this, this.props) })
+	                ),
+	                _react2['default'].createElement(_NotificationSnackbar2['default'], { ref: 'newAlert',
+	                    message: 'New Alert added.'
+	                }),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    'N/A'
+	                ),
+	                _react2['default'].createElement(
+	                    _materialUiLibTableTableRowColumn2['default'],
+	                    null,
+	                    'N/A'
 	                )
 	            );
 	        }
@@ -65896,7 +67702,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 468 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65923,11 +67729,11 @@
 	
 	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
-	var _materialUiLibSelectField = __webpack_require__(469);
+	var _materialUiLibSelectField = __webpack_require__(477);
 	
 	var _materialUiLibSelectField2 = _interopRequireDefault(_materialUiLibSelectField);
 	
-	var _materialUiLibMenusMenuItem = __webpack_require__(451);
+	var _materialUiLibMenusMenuItem = __webpack_require__(452);
 	
 	var _materialUiLibMenusMenuItem2 = _interopRequireDefault(_materialUiLibMenusMenuItem);
 	
@@ -65946,8 +67752,7 @@
 	        };
 	
 	        this.state = {
-	            value: 0,
-	            data: null
+	            value: 0
 	        };
 	    }
 	
@@ -65958,7 +67763,7 @@
 	        key: 'render',
 	        value: function render() {
 	            var items = this.props.data.map(function (item, index) {
-	                return _react2['default'].createElement(_materialUiLibMenusMenuItem2['default'], { value: index, key: index, primaryText: item });
+	                return _react2['default'].createElement(_materialUiLibMenusMenuItem2['default'], { key: index, value: index, primaryText: item });
 	            });
 	
 	            return _react2['default'].createElement(
@@ -65977,7 +67782,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 469 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65986,7 +67791,7 @@
 	  value: true
 	});
 	
-	var _SelectField = __webpack_require__(470);
+	var _SelectField = __webpack_require__(478);
 	
 	var _SelectField2 = _interopRequireDefault(_SelectField);
 	
@@ -65996,7 +67801,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 470 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66005,7 +67810,7 @@
 	  value: true
 	});
 	
-	var _SelectField = __webpack_require__(471);
+	var _SelectField = __webpack_require__(479);
 	
 	var _SelectField2 = _interopRequireDefault(_SelectField);
 	
@@ -66015,7 +67820,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 471 */
+/* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66034,11 +67839,11 @@
 	
 	var _stylePropable2 = _interopRequireDefault(_stylePropable);
 	
-	var _textField = __webpack_require__(472);
+	var _textField = __webpack_require__(480);
 	
 	var _textField2 = _interopRequireDefault(_textField);
 	
-	var _DropDownMenu = __webpack_require__(479);
+	var _DropDownMenu = __webpack_require__(487);
 	
 	var _DropDownMenu2 = _interopRequireDefault(_DropDownMenu);
 	
@@ -66050,7 +67855,7 @@
 	
 	var _contextPure2 = _interopRequireDefault(_contextPure);
 	
-	var _deprecatedPropType = __webpack_require__(482);
+	var _deprecatedPropType = __webpack_require__(462);
 	
 	var _deprecatedPropType2 = _interopRequireDefault(_deprecatedPropType);
 	
@@ -66313,7 +68118,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 472 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66322,7 +68127,7 @@
 	  value: true
 	});
 	
-	var _TextField = __webpack_require__(473);
+	var _TextField = __webpack_require__(481);
 	
 	var _TextField2 = _interopRequireDefault(_TextField);
 	
@@ -66332,7 +68137,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 473 */
+/* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66341,7 +68146,7 @@
 	  value: true
 	});
 	
-	var _TextField = __webpack_require__(474);
+	var _TextField = __webpack_require__(482);
 	
 	var _TextField2 = _interopRequireDefault(_TextField);
 	
@@ -66351,7 +68156,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 474 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -66386,7 +68191,7 @@
 	
 	var _uniqueId2 = _interopRequireDefault(_uniqueId);
 	
-	var _enhancedTextarea = __webpack_require__(475);
+	var _enhancedTextarea = __webpack_require__(483);
 	
 	var _enhancedTextarea2 = _interopRequireDefault(_enhancedTextarea);
 	
@@ -66398,15 +68203,15 @@
 	
 	var _contextPure2 = _interopRequireDefault(_contextPure);
 	
-	var _TextFieldHint = __webpack_require__(476);
+	var _TextFieldHint = __webpack_require__(484);
 	
 	var _TextFieldHint2 = _interopRequireDefault(_TextFieldHint);
 	
-	var _TextFieldLabel = __webpack_require__(477);
+	var _TextFieldLabel = __webpack_require__(485);
 	
 	var _TextFieldLabel2 = _interopRequireDefault(_TextFieldLabel);
 	
-	var _TextFieldUnderline = __webpack_require__(478);
+	var _TextFieldUnderline = __webpack_require__(486);
 	
 	var _TextFieldUnderline2 = _interopRequireDefault(_TextFieldUnderline);
 	
@@ -66917,7 +68722,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 475 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67123,7 +68928,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 476 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67201,7 +69006,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 477 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67313,7 +69118,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 478 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67451,7 +69256,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 479 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67460,7 +69265,7 @@
 	  value: true
 	});
 	
-	var _DropDownMenu = __webpack_require__(480);
+	var _DropDownMenu = __webpack_require__(488);
 	
 	var _DropDownMenu2 = _interopRequireDefault(_DropDownMenu);
 	
@@ -67470,7 +69275,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 480 */
+/* 488 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -67489,15 +69294,15 @@
 	
 	var _transitions2 = _interopRequireDefault(_transitions);
 	
-	var _arrowDropDown = __webpack_require__(455);
+	var _arrowDropDown = __webpack_require__(456);
 	
 	var _arrowDropDown2 = _interopRequireDefault(_arrowDropDown);
 	
-	var _menu = __webpack_require__(443);
+	var _menu = __webpack_require__(444);
 	
 	var _menu2 = _interopRequireDefault(_menu);
 	
-	var _menuItem = __webpack_require__(451);
+	var _menuItem = __webpack_require__(452);
 	
 	var _menuItem2 = _interopRequireDefault(_menuItem);
 	
@@ -67509,11 +69314,11 @@
 	
 	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
 	
-	var _popover = __webpack_require__(445);
+	var _popover = __webpack_require__(446);
 	
 	var _popover2 = _interopRequireDefault(_popover);
 	
-	var _popoverAnimationFromTop = __webpack_require__(481);
+	var _popoverAnimationFromTop = __webpack_require__(489);
 	
 	var _popoverAnimationFromTop2 = _interopRequireDefault(_popoverAnimationFromTop);
 	
@@ -67523,7 +69328,7 @@
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
-	var _deprecatedPropType = __webpack_require__(482);
+	var _deprecatedPropType = __webpack_require__(462);
 	
 	var _deprecatedPropType2 = _interopRequireDefault(_deprecatedPropType);
 	
@@ -67948,7 +69753,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 481 */
+/* 489 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68090,36 +69895,84 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 482 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
 	});
-	exports.default = deprecated;
 	
-	var _warning = __webpack_require__(164);
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var _warning2 = _interopRequireDefault(_warning);
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	function deprecated(propType, explanation) {
-	  return function validate(props, propName, componentName) {
-	    if (props[propName] != null) {
-	      process.env.NODE_ENV !== "production" ? (0, _warning2.default)(false, '"' + propName + '" property of "' + componentName + '" has been deprecated.\n' + explanation) : undefined;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _materialUiLibSnackbar = __webpack_require__(460);
+	
+	var _materialUiLibSnackbar2 = _interopRequireDefault(_materialUiLibSnackbar);
+	
+	var NotificationSnackbar = (function (_React$Component) {
+	    _inherits(NotificationSnackbar, _React$Component);
+	
+	    function NotificationSnackbar(props) {
+	        var _this = this;
+	
+	        _classCallCheck(this, NotificationSnackbar);
+	
+	        _get(Object.getPrototypeOf(NotificationSnackbar.prototype), 'constructor', this).call(this, props);
+	
+	        this.show = function () {
+	            _this.setState({
+	                open: true
+	            });
+	        };
+	
+	        this.handleRequestClose = function () {
+	            _this.setState({
+	                open: false
+	            });
+	        };
+	
+	        this.state = {
+	            open: false
+	        };
 	    }
 	
-	    return propType(props, propName, componentName);
-	  };
-	}
+	    _createClass(NotificationSnackbar, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2['default'].createElement(
+	                'div',
+	                null,
+	                _react2['default'].createElement(_materialUiLibSnackbar2['default'], {
+	                    open: this.state.open,
+	                    message: this.props.message,
+	                    autoHideDuration: 4000,
+	                    onRequestClose: this.handleRequestClose
+	                })
+	            );
+	        }
+	    }]);
+	
+	    return NotificationSnackbar;
+	})(_react2['default'].Component);
+	
+	exports['default'] = NotificationSnackbar;
 	module.exports = exports['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 483 */
+/* 491 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68146,7 +69999,7 @@
 	
 	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 	
-	var _altUtilsDecorators = __webpack_require__(465);
+	var _altUtilsDecorators = __webpack_require__(472);
 	
 	var _underscore = __webpack_require__(349);
 	
@@ -68177,6 +70030,18 @@
 	                alerts: this.state.alerts.concat([alert])
 	            });
 	        }
+	    }, {
+	        key: 'deleteAlert',
+	        decorators: [(0, _altUtilsDecorators.bind)(_actionsAppActions2['default'].deleteAlert)],
+	        value: function deleteAlert(id) {
+	            var updatedAlerts = this.state.alerts.filter(function (alert) {
+	                return alert.id !== id;
+	            });
+	
+	            this.setState({
+	                alerts: updatedAlerts
+	            });
+	        }
 	    }]);
 	
 	    var _AlertStore = AlertStore;
@@ -68188,7 +70053,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 484 */
+/* 492 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68213,7 +70078,7 @@
 	
 	var _reactRouter = __webpack_require__(161);
 	
-	var _altUtilsConnectToStores = __webpack_require__(462);
+	var _altUtilsConnectToStores = __webpack_require__(469);
 	
 	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
 	
@@ -68225,15 +70090,15 @@
 	
 	var _materialUiLibIconButton2 = _interopRequireDefault(_materialUiLibIconButton);
 	
-	var _materialUiLibSvgIconsNavigationArrowBack = __webpack_require__(485);
+	var _materialUiLibSvgIconsNavigationArrowBack = __webpack_require__(493);
 	
 	var _materialUiLibSvgIconsNavigationArrowBack2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationArrowBack);
 	
-	var _Chart = __webpack_require__(440);
+	var _Chart = __webpack_require__(441);
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
 	
-	var _storesClientApplicationStore = __webpack_require__(464);
+	var _storesClientApplicationStore = __webpack_require__(471);
 	
 	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
 	
@@ -68241,7 +70106,7 @@
 	
 	var _underscore2 = _interopRequireDefault(_underscore);
 	
-	var _RealTimeMetricsPanel = __webpack_require__(486);
+	var _RealTimeMetricsPanel = __webpack_require__(494);
 	
 	var _RealTimeMetricsPanel2 = _interopRequireDefault(_RealTimeMetricsPanel);
 	
@@ -68481,7 +70346,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 485 */
+/* 493 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68522,7 +70387,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 486 */
+/* 494 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68545,11 +70410,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _altUtilsConnectToStores = __webpack_require__(462);
+	var _altUtilsConnectToStores = __webpack_require__(469);
 	
 	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
 	
-	var _storesClientApplicationStore = __webpack_require__(464);
+	var _storesClientApplicationStore = __webpack_require__(471);
 	
 	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
 	
@@ -68670,7 +70535,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 487 */
+/* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68701,7 +70566,7 @@
 	
 	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
 	
-	var _materialUiLibTextField = __webpack_require__(472);
+	var _materialUiLibTextField = __webpack_require__(480);
 	
 	var _materialUiLibTextField2 = _interopRequireDefault(_materialUiLibTextField);
 	
@@ -68717,11 +70582,11 @@
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _materialUiLibSelectField = __webpack_require__(469);
+	var _materialUiLibSelectField = __webpack_require__(477);
 	
 	var _materialUiLibSelectField2 = _interopRequireDefault(_materialUiLibSelectField);
 	
-	var _materialUiLibMenusMenuItem = __webpack_require__(451);
+	var _materialUiLibMenusMenuItem = __webpack_require__(452);
 	
 	var _materialUiLibMenusMenuItem2 = _interopRequireDefault(_materialUiLibMenusMenuItem);
 	
@@ -68729,7 +70594,7 @@
 	
 	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
-	var _utilsAuthService = __webpack_require__(457);
+	var _utilsAuthService = __webpack_require__(458);
 	
 	var _utilsAuthService2 = _interopRequireDefault(_utilsAuthService);
 	

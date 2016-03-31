@@ -1,13 +1,9 @@
 package com.jvm.realtime.config;
 
-import com.jvm.realtime.client.IgnoreDuringScan;
 import com.jvm.realtime.data.RealTimeDataClient;
-import com.jvm.realtime.email.EmailService;
+import com.jvm.realtime.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 
 
 //@ComponentScan(basePackages ="com.jvm.realtime",

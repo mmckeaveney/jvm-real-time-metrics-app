@@ -4,6 +4,7 @@ import com.github.dockerjava.api.model.Container;
 import com.jvm.realtime.config.Config;
 import com.jvm.realtime.config.ConfigurationProps;
 import com.jvm.realtime.model.ClientAppSnapshot;
+import com.jvm.realtime.service.AlertService;
 import com.jvm.realtime.websocket.WebSocketConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,17 +24,20 @@ public class MetricsEndpointProcessor implements DataProcessor {
     private DockerProcessor dockerPoller;
     private final SimpMessagingTemplate websocket;
     private ConfigurationProps configurationProps;
+    private AlertService alertService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetricsEndpointProcessor.class);
 
     @Autowired
     public MetricsEndpointProcessor(DockerProcessor dockerPoller,
                                     SimpMessagingTemplate websocket,
-                                    ConfigurationProps configurationProps) {
+                                    ConfigurationProps configurationProps,
+                                    AlertService alertService) {
         this.restTemplate = new RestTemplate();
         this.dockerPoller = dockerPoller;
         this.websocket = websocket;
         this.configurationProps = configurationProps;
+        this.alertService = alertService;
     }
 
     public void poll() {
@@ -71,6 +75,8 @@ public class MetricsEndpointProcessor implements DataProcessor {
                 }
 
                 currentAppModel.setActuatorMetrics(formattedMetricsMap);
+                alertService.checkForAlerts(formattedMetricsMap);
+
 
                 currentClientAppSnapshots.add(currentAppModel);
 
