@@ -2,6 +2,7 @@ package com.jvm.realtime.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dockerjava.api.model.Event;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.springframework.data.annotation.Id;
 
@@ -12,6 +13,9 @@ public class ClientAppSnapshot {
 
     @Id
     private String id;
+
+    @JsonProperty("containerId")
+    private String containerId;
 
     @JsonProperty("appName")
     private String appName;
@@ -31,9 +35,10 @@ public class ClientAppSnapshot {
     public ClientAppSnapshot() {
     }
 
-    public ClientAppSnapshot(String id, String appName, Map<String, Object> actuatorMetrics, Integer publicPort,
-                             Long timeStamp, List<Event> applicationEvents) {
+    public ClientAppSnapshot(String id, String containerId, String appName, Map<String, Object> actuatorMetrics,
+                             Integer publicPort, Long timeStamp, List<Event> applicationEvents) {
         this.id = id;
+        this.containerId = containerId;
         this.appName = appName;
         this.actuatorMetrics = actuatorMetrics;
         this.publicPort = publicPort;
@@ -89,12 +94,34 @@ public class ClientAppSnapshot {
         this.applicationEvents = applicationEvents;
     }
 
+    public String getContainerId() {
+        return containerId;
+    }
+
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("containerId", containerId)
+                .add("appName", appName)
+                .add("actuatorMetrics", actuatorMetrics)
+                .add("publicPort", publicPort)
+                .add("timeStamp", timeStamp)
+                .add("applicationEvents", applicationEvents)
+                .toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientAppSnapshot that = (ClientAppSnapshot) o;
         return Objects.equal(id, that.id) &&
+                Objects.equal(containerId, that.containerId) &&
                 Objects.equal(appName, that.appName) &&
                 Objects.equal(actuatorMetrics, that.actuatorMetrics) &&
                 Objects.equal(publicPort, that.publicPort) &&
@@ -104,6 +131,6 @@ public class ClientAppSnapshot {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, appName, actuatorMetrics, publicPort, timeStamp, applicationEvents);
+        return Objects.hashCode(id, containerId, appName, actuatorMetrics, publicPort, timeStamp, applicationEvents);
     }
 }

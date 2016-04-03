@@ -34,9 +34,14 @@ public class AlertController {
         return alertModel;
     }
 
-    @RequestMapping(value = "/alerts/triggered", method = RequestMethod.GET)
-    public @ResponseBody List<AlertModel> resetAlert() {
+    @RequestMapping(value = "/alerts/triggered/all", method = RequestMethod.GET)
+    public @ResponseBody List<AlertModel> findAllTriggeredAlerts() {
         return alertRepository.findByTriggeredIsTrue();
+    }
+
+    @RequestMapping(value = "/alerts/triggered", method = RequestMethod.GET)
+    public List<AlertModel> getTriggeredAlerts(@RequestParam(value = "appName") String appName) {
+        return alertRepository.findByAppNameAndTriggeredIsTrue(appName);
     }
 
     @RequestMapping(value = "/alerts/reset/{id}", method = RequestMethod.POST)

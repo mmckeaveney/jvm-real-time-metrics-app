@@ -3,26 +3,29 @@ package com.jvm.realtime.service;
 import com.amazonaws.services.simpleemail.*;
 import com.amazonaws.services.simpleemail.model.*;
 import com.amazonaws.regions.*;
+import com.jvm.realtime.model.AlertModel;
+import com.jvm.realtime.model.UserModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 
     static final String FROM = "martinmckeaveney@gmail.com";  // Replace with your "From" address. This address must be verified.
-    static final String TO = "martyarsenal@hotmail.co.uk"; // Replace with a "To" address. If your account is still in the
-    // sandbox, this address must be verified.
-    static final String BODY = "This email was sent through Amazon SES by using the AWS SDK for Java.";
-    static final String SUBJECT = "Amazon SES test (AWS SDK for Java)";
 
-    public void sendEmail() {
+    public void sendAlertEmail(UserModel userToAlert, AlertModel alertModel) {
 
         // Construct an object to contain the recipient address.
-        Destination destination = new Destination().withToAddresses(new String[]{TO});
+        Destination destination = new Destination().withToAddresses(new String[]{userToAlert.getEmail()});
 
         // Create the subject and body of the message.
-        Content subject = new Content().withData(SUBJECT);
-        Content textBody = new Content().withData(BODY);
+        Content subject = new Content().withData("JVM Real Time Metrics System - Alert triggered for User " +
+                userToAlert.getUsername());
+        Content textBody = new Content().withData("An alert has been triggered in your environment. The alert is as follows -\n" +
+                alertModel.getAppName() + " " + alertModel.getMetric() + " " + alertModel.getCondition() + " " + alertModel.getCriteria());
         Body body = new Body().withText(textBody);
 
         // Create a message with the specified subject and body.
@@ -51,10 +54,9 @@ public class EmailService {
 
             // Send the service.
             client.sendEmail(request);
-            System.out.println("Email sent!");
+            LOGGER.info("Email sent to {} for alert triggered", userToAlert.getEmail());
         } catch (Exception ex) {
-            System.out.println("The service was not sent.");
-            System.out.println("Error message: " + ex.getMessage());
+            LOGGER.error("Error sending alert email", ex);
         }
     }
 

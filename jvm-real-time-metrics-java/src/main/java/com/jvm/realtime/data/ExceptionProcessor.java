@@ -35,7 +35,7 @@ public class ExceptionProcessor {
         exceptionRepository.save(exceptionModel);
 
         LOGGER.info("Real time exception notification being transmitted over websocket at " + currentTime);
-        websocket.convertAndSend(WebSocketConfiguration.MESSAGE_PREFIX + "/exceptionUpdate", exceptionModel);
+        websocket.convertAndSend(WebSocketConfiguration.MESSAGE_PREFIX + "/exceptionsUpdate", exceptionModel);
 
     }
 

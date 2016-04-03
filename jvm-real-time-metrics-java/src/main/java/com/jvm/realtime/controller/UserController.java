@@ -36,10 +36,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/usercheck", method = RequestMethod.POST)
-    public UserModel checkIfUserExistsAndBootstrap(@RequestParam String userId,
-                                                   @RequestParam String userName,
+    public UserModel checkIfUserExistsAndBootstrap(@RequestParam String id,
+                                                   @RequestParam String uname,
                                                    @RequestParam String email) {
-        userProcessor.provisionUser(userId, userName, email);
+        userProcessor.provisionUser(id, uname, email);
         return new UserModel();
     }
 

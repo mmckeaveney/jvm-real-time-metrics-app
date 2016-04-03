@@ -85,7 +85,7 @@
 	
 	var _componentsEnvironmentDashboard2 = _interopRequireDefault(_componentsEnvironmentDashboard);
 	
-	var _componentsAlertsDashboard = __webpack_require__(473);
+	var _componentsAlertsDashboard = __webpack_require__(474);
 	
 	var _componentsAlertsDashboard2 = _interopRequireDefault(_componentsAlertsDashboard);
 	
@@ -24873,9 +24873,9 @@
 	
 	var _utilsAuthService2 = _interopRequireDefault(_utilsAuthService);
 	
-	var _NotificationDialog = __webpack_require__(459);
+	var _AlertNotificationDialog = __webpack_require__(459);
 	
-	var _NotificationDialog2 = _interopRequireDefault(_NotificationDialog);
+	var _AlertNotificationDialog2 = _interopRequireDefault(_AlertNotificationDialog);
 	
 	// CSS
 	__webpack_require__(465);
@@ -24911,7 +24911,7 @@
 	                    console.log("Error loading the Profile", err);
 	                    return;
 	                }
-	                _jquery2['default'].post({ url: 'http://localhost:8090/api/usercheck?userId=' + profile.user_id + '&userName=' + profile.nickname + '&email=' + profile.email,
+	                _jquery2['default'].post({ url: 'http://localhost:8090/api/usercheck?id=' + profile.user_id + '&uname=' + profile.nickname + '&email=' + profile.email,
 	                    success: function success(user) {
 	                        _this.setState({ profile: profile });
 	                    }
@@ -25005,7 +25005,7 @@
 	                    }),
 	                    myTabs,
 	                    this.props.children,
-	                    _react2['default'].createElement(_NotificationDialog2['default'], null)
+	                    _react2['default'].createElement(_AlertNotificationDialog2['default'], null)
 	                );
 	            } else {
 	                return _react2['default'].createElement(_Login2['default'], { lock: _utilsAuthService2['default'].getLock(), idToken: this.state.idToken });
@@ -40311,7 +40311,7 @@
 	            _utilsWebSocket2['default'].register([{
 	                route: '/jvmrt/eventsUpdate',
 	                callback: this.getLatestEvents(this.props.appName)
-	            }]);
+	            }], "/eventspoll");
 	        }
 	    }, {
 	        key: 'getLatestEvents',
@@ -60004,7 +60004,7 @@
 	            _utilsWebSocket2['default'].register([{
 	                route: '/jvmrt/exceptionsUpdate',
 	                callback: this.getLatestExceptions(this.props.appName)
-	            }]);
+	            }], "/exceptionspoll");
 	        }
 	    }, {
 	        key: 'getLatestExceptions',
@@ -60029,7 +60029,7 @@
 	        key: 'render',
 	        value: function render() {
 	            var exceptionsMarkup;
-	            if (this.state.exceptions) {
+	            if (this.state.exceptions.length > 0) {
 	                exceptionsMarkup = _underscore2['default'].map(this.state.exceptions, function (exception, index) {
 	                    return _react2['default'].createElement(
 	                        _materialUiLibTableTableRow2['default'],
@@ -60062,7 +60062,11 @@
 	                    );
 	                });
 	            } else {
-	                exceptionsMarkup = _react2['default'].createElement(_materialUiLibCircularProgress2['default'], null);
+	                exceptionsMarkup = _react2['default'].createElement(
+	                    'div',
+	                    null,
+	                    'No exceptions thrown at this level.'
+	                );
 	            }
 	
 	            return _react2['default'].createElement(
@@ -60214,20 +60218,20 @@
 	        value: function componentDidMount() {
 	            this.getLatestAlerts(this.props.appName);
 	            _utilsWebSocket2['default'].register([{
-	                route: '/jvmrt/alertNotification',
+	                route: '/jvmrt/alertnotification',
 	                callback: this.getLatestAlerts(this.props.appName)
-	            }]);
+	            }], "/alertnotification");
 	        }
 	    }, {
 	        key: 'getLatestAlerts',
-	        value: function getLatestAlerts(criteria) {
+	        value: function getLatestAlerts(appName) {
 	            var _this = this;
 	
 	            var url;
-	            if (criteria == "All") {
-	                url = "http://localhost:8090/api/alerts/triggered";
+	            if (appName == "All") {
+	                url = "http://localhost:8090/api/alerts/triggered/all";
 	            } else {
-	                url = 'http://localhost:8090/api/alerts/triggered/?appName=' + criteria;
+	                url = 'http://localhost:8090/api/alerts/triggered/?appName=' + appName;
 	            }
 	            _jquery2['default'].getJSON({ url: url,
 	                success: function success(alerts) {
@@ -60241,7 +60245,7 @@
 	        key: 'render',
 	        value: function render() {
 	            var alertsMarkup;
-	            if (this.state.alerts) {
+	            if (this.state.alerts.length > 0) {
 	                alertsMarkup = _underscore2['default'].map(this.state.alerts, function (alert, index) {
 	                    return _react2['default'].createElement(
 	                        _materialUiLibTableTableRow2['default'],
@@ -60264,7 +60268,11 @@
 	                    );
 	                });
 	            } else {
-	                alertsMarkup = _react2['default'].createElement(_materialUiLibCircularProgress2['default'], null);
+	                alertsMarkup = _react2['default'].createElement(
+	                    'div',
+	                    null,
+	                    'No alerts triggered at this level.'
+	                );
 	            }
 	
 	            return _react2['default'].createElement(
@@ -60745,70 +60753,10 @@
 	    _createClass(Favourites, [{
 	        key: 'render',
 	        value: function render() {
-	
-	            var config = {
-	                title: {
-	                    text: 'ReactClient'
-	                },
-	                plotOptions: {
-	                    line: {
-	                        dataLabels: {
-	                            enabled: true
-	                        },
-	                        enableMouseTracking: false
-	                    }
-	                },
-	                xAxis: {
-	                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-	                },
-	                series: [{
-	                    name: 'CPU Usage',
-	                    data: [2900.9, 1000.5, 1060.4, 1290.2, 1440.0, 1760.0, 1350.6, 1480.5, 2160.4, 1940.1, 950.6, 540.4]
-	                }, {
-	                    name: 'Heap Space',
-	                    data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-	                }, {
-	                    name: 'Exceptions Thrown',
-	                    data: [29, 13, 10, 100, 50, 40, 30, 20, 10, 9, 8, 1, 10, 19, 15]
-	                }]
-	            };
-	
-	            var config2 = {
-	                title: {
-	                    text: 'JVClient'
-	                },
-	                plotOptions: {
-	                    line: {
-	                        dataLabels: {
-	                            enabled: true
-	                        },
-	                        enableMouseTracking: false
-	                    }
-	                },
-	                xAxis: {
-	                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-	                },
-	                series: [{
-	                    name: 'Active HTTP Sessions',
-	                    data: [10, 20, 25, 100, 200, 400, 1, 1000, 900, 800, 400, 36]
-	                }, {
-	                    name: 'Uptime',
-	                    data: [2900.9, 7100.5, 10600.4, 1290.2, 14400.0, 17600.0, 1350.6, 14800.5, 21600.4, 19400.1, 9500.6, 5400.4]
-	                }, {
-	                    name: 'Threads',
-	                    data: [29, 13, 10, 100, 50, 40, 30, 20, 10, 9, 8, 1, 10, 19, 15]
-	                }]
-	            };
-	
 	            return _react2['default'].createElement(
 	                'div',
 	                { className: 'col-lg-7 col-md-7 col-sm-7 col-xs-7', id: 'article-panel-container', style: { marginTop: "10px" } },
-	                _react2['default'].createElement(
-	                    _MaterialPanel2['default'],
-	                    { title: 'Favourites', subtitle: 'Applications added to your favourites' },
-	                    _react2['default'].createElement(_Chart2['default'], { chartConfig: config }),
-	                    _react2['default'].createElement(_Chart2['default'], { chartConfig: config2 })
-	                )
+	                _react2['default'].createElement(_MaterialPanel2['default'], { title: 'Favourites', subtitle: 'Applications added to your favourites' })
 	            );
 	        }
 	    }]);
@@ -60981,6 +60929,12 @@
 	            var _this = this;
 	
 	            var timeSeriesUrl = 'http://localhost:8090/api/timeseries/?appName=' + this.props.appName + '&timeScale=' + timeScale;
+	            $.ajaxSetup({
+	                headers: {
+	                    'Authorization': 'Bearer ' + localStorage.getItem('userToken')
+	                },
+	                cache: false
+	            });
 	            $.ajax({
 	                url: timeSeriesUrl,
 	                type: "GET",
@@ -64887,11 +64841,9 @@
 	    }, {
 	        key: 'setupAjax',
 	        value: function setupAjax() {
-	            _jquery2['default'].ajaxPrefilter({
-	                'beforeSend': function beforeSend(xhr) {
-	                    if (localStorage.getItem('userToken')) {
-	                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('userToken'));
-	                    }
+	            _jquery2['default'].ajaxSetup({
+	                headers: {
+	                    'Authorization': 'Bearer ' + localStorage.getItem('userToken')
 	                }
 	            });
 	        }
@@ -64966,20 +64918,27 @@
 	
 	var _utilsWebSocket2 = _interopRequireDefault(_utilsWebSocket);
 	
-	var NotificationDialog = (function (_React$Component) {
-	    _inherits(NotificationDialog, _React$Component);
+	var _reactRouter = __webpack_require__(161);
 	
-	    function NotificationDialog(props) {
+	var AlertNotificationDialog = (function (_React$Component) {
+	    _inherits(AlertNotificationDialog, _React$Component);
+	
+	    function AlertNotificationDialog(props) {
 	        var _this = this;
 	
-	        _classCallCheck(this, NotificationDialog);
+	        _classCallCheck(this, AlertNotificationDialog);
 	
-	        _get(Object.getPrototypeOf(NotificationDialog.prototype), 'constructor', this).call(this, props);
+	        _get(Object.getPrototypeOf(AlertNotificationDialog.prototype), 'constructor', this).call(this, props);
 	
 	        this.show = function (alert) {
+	            console.log("alert triggered");
 	            var incomingAlert = JSON.parse(alert.body);
 	            _this.setState({
-	                open: true
+	                open: true,
+	                appName: incomingAlert.appName,
+	                metric: incomingAlert.metric,
+	                condition: incomingAlert.condition,
+	                criteria: incomingAlert.criteria
 	            });
 	        };
 	
@@ -64987,6 +64946,10 @@
 	            _this.setState({
 	                open: false
 	            });
+	        };
+	
+	        this.goToAlerts = function () {
+	            _reactRouter.browserHistory.push("/alerts");
 	        };
 	
 	        this.state = {
@@ -64998,11 +64961,11 @@
 	        };
 	    }
 	
-	    _createClass(NotificationDialog, [{
+	    _createClass(AlertNotificationDialog, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            _utilsWebSocket2['default'].register([{
-	                route: '/jvmrt/alertNotification', callback: this.show
+	                route: '/jvmrt/alertnotification', callback: this.show
 	            }], "/alertnotification");
 	        }
 	    }, {
@@ -65012,26 +64975,30 @@
 	                label: 'OK',
 	                secondary: true,
 	                onTouchTap: this.handleClose
+	            }), _react2['default'].createElement(_materialUiLibFlatButton2['default'], {
+	                label: 'GO TO ALERTS PAGE',
+	                secondary: true,
+	                onTouchTap: this.goToAlerts
 	            })];
 	
 	            return _react2['default'].createElement(
 	                _materialUiLibDialog2['default'],
 	                {
-	                    title: this.props.title,
+	                    title: "New Alert Triggered!",
 	                    actions: actions,
 	                    modal: false,
 	                    open: this.state.open,
 	                    onRequestClose: this.handleClose
 	                },
-	                'An Alert you set has been triggered.'
+	                'An Alert you set has been triggered: \n\n                     ' + this.state.appName + ' ' + this.state.metric + ' ' + this.state.condition + ' ' + this.state.criteria
 	            );
 	        }
 	    }]);
 	
-	    return NotificationDialog;
+	    return AlertNotificationDialog;
 	})(_react2['default'].Component);
 	
-	exports['default'] = NotificationDialog;
+	exports['default'] = AlertNotificationDialog;
 	module.exports = exports['default'];
 
 /***/ },
@@ -66525,7 +66492,7 @@
 	
 	var _utilsWebSocket2 = _interopRequireDefault(_utilsWebSocket);
 	
-	var _storesClientApplicationStore = __webpack_require__(471);
+	var _storesClientApplicationStore = __webpack_require__(472);
 	
 	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
 	
@@ -66556,7 +66523,8 @@
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            _utilsWebSocket2['default'].register([{
-	                route: '/jvmrt/metricsUpdate', callback: _actionsAppActions2['default'].updateLatestApplicationMetadata
+	                route: '/jvmrt/metricsUpdate',
+	                callback: _actionsAppActions2['default'].updateLatestApplicationMetadata
 	            }], "/metricspoll");
 	        }
 	    }, {
@@ -66569,7 +66537,8 @@
 	                    return _react2['default'].createElement(_ClientApp2['default'], { key: index,
 	                        title: app.appName,
 	                        content: app.actuatorMetrics,
-	                        index: index });
+	                        containerId: app.containerId
+	                    });
 	                });
 	            } else {
 	                clientApps = _react2['default'].createElement(_materialUiLibCircularProgress2['default'], null);
@@ -66831,6 +66800,14 @@
 	
 	var _materialUiLibCardCardActions2 = _interopRequireDefault(_materialUiLibCardCardActions);
 	
+	var _jquery = __webpack_require__(364);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _NotificationSnackbar = __webpack_require__(471);
+	
+	var _NotificationSnackbar2 = _interopRequireDefault(_NotificationSnackbar);
+	
 	// CSS
 	__webpack_require__(434);
 	
@@ -66843,14 +66820,47 @@
 	        _get(Object.getPrototypeOf(ClientApp.prototype), 'constructor', this).call(this, props);
 	        this.state = {
 	            title: null,
-	            actuatorMetrics: null
+	            actuatorMetrics: null,
+	            events: null,
+	            exceptions: null,
+	            alerts: null,
+	            containerId: null
 	        };
 	    }
 	
 	    _createClass(ClientApp, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {}
+	    }, {
+	        key: 'killApp',
+	        value: function killApp() {
+	            var props = this.props;
+	            _jquery2['default'].post('http://localhost:8090/api/docker/kill/' + props.containerId).done(function () {
+	                console.log("Successfully killed docker container " + props.containerId);
+	            }).fail(function (error) {
+	                console.log("Error when killing docker container", error);
+	            });
+	            this.refs.appKilled.show();
+	        }
+	    }, {
+	        key: 'restartApp',
+	        value: function restartApp() {
+	            var props = this.props;
+	            _jquery2['default'].post('http://localhost:8090/api/docker/restart/' + props.containerId).done(function () {
+	                console.log("Successfully restarted docker container " + props.containerId);
+	            }).fail(function () {
+	                console.log("Error when restarting docker container", error);
+	            });
+	            this.refs.appRestarted.show();
+	        }
+	    }, {
+	        key: 'goToDrilldown',
+	        value: function goToDrilldown() {
+	            _reactRouter.browserHistory.push('/appdetail/' + this.props.title);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	
 	            return _react2['default'].createElement(
 	                'div',
 	                { className: 'col-lg-4 col-md-4 col-sm-4 col-xs-4' },
@@ -66912,12 +66922,21 @@
 	                        _materialUiLibCardCardActions2['default'],
 	                        null,
 	                        _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'More Details',
-	                            containerElement: _react2['default'].createElement(_reactRouter.Link, { to: '/appdetail/' + this.props.title }),
-	                            linkButton: true,
+	                            onClick: this.goToDrilldown.bind(this, this.props),
 	                            secondary: true }),
-	                        _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Add to Favourites', secondary: true })
+	                        _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Add to Favourites', secondary: true }),
+	                        _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Restart', secondary: true,
+	                            onClick: this.restartApp.bind(this, this.props) }),
+	                        _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'Kill', primary: true,
+	                            onClick: this.killApp.bind(this, this.props) })
 	                    )
-	                )
+	                ),
+	                _react2['default'].createElement(_NotificationSnackbar2['default'], { ref: 'appKilled',
+	                    message: this.props.title + ' Killed.'
+	                }),
+	                _react2['default'].createElement(_NotificationSnackbar2['default'], { ref: 'appRestarted',
+	                    message: this.props.title + ' Restarted.'
+	                })
 	            );
 	        }
 	    }]);
@@ -66930,6 +66949,83 @@
 
 /***/ },
 /* 471 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _materialUiLibSnackbar = __webpack_require__(460);
+	
+	var _materialUiLibSnackbar2 = _interopRequireDefault(_materialUiLibSnackbar);
+	
+	var NotificationSnackbar = (function (_React$Component) {
+	    _inherits(NotificationSnackbar, _React$Component);
+	
+	    function NotificationSnackbar(props) {
+	        var _this = this;
+	
+	        _classCallCheck(this, NotificationSnackbar);
+	
+	        _get(Object.getPrototypeOf(NotificationSnackbar.prototype), 'constructor', this).call(this, props);
+	
+	        this.show = function () {
+	            _this.setState({
+	                open: true
+	            });
+	        };
+	
+	        this.handleRequestClose = function () {
+	            _this.setState({
+	                open: false
+	            });
+	        };
+	
+	        this.state = {
+	            open: false
+	        };
+	    }
+	
+	    _createClass(NotificationSnackbar, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2['default'].createElement(
+	                'div',
+	                null,
+	                _react2['default'].createElement(_materialUiLibSnackbar2['default'], {
+	                    open: this.state.open,
+	                    message: this.props.message,
+	                    autoHideDuration: 4000,
+	                    onRequestClose: this.handleRequestClose
+	                })
+	            );
+	        }
+	    }]);
+	
+	    return NotificationSnackbar;
+	})(_react2['default'].Component);
+	
+	exports['default'] = NotificationSnackbar;
+	module.exports = exports['default'];
+
+/***/ },
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66956,7 +67052,7 @@
 	
 	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 	
-	var _altUtilsDecorators = __webpack_require__(472);
+	var _altUtilsDecorators = __webpack_require__(473);
 	
 	var _underscore = __webpack_require__(349);
 	
@@ -66967,7 +67063,8 @@
 	        _classCallCheck(this, _ClientApplicationStore);
 	
 	        this.state = {
-	            clientApplications: []
+	            clientApplications: [],
+	            favourites: []
 	        };
 	    }
 	
@@ -66992,7 +67089,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 472 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67102,7 +67199,7 @@
 	}
 
 /***/ },
-/* 473 */
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67189,11 +67286,11 @@
 	
 	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
 	
-	var _Alert = __webpack_require__(474);
+	var _Alert = __webpack_require__(475);
 	
 	var _Alert2 = _interopRequireDefault(_Alert);
 	
-	var _NewAlert = __webpack_require__(475);
+	var _NewAlert = __webpack_require__(476);
 	
 	var _NewAlert2 = _interopRequireDefault(_NewAlert);
 	
@@ -67327,7 +67424,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 474 */
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67382,6 +67479,18 @@
 	
 	var _utilsTimeDelta2 = _interopRequireDefault(_utilsTimeDelta);
 	
+	var _materialUiLibDialog = __webpack_require__(463);
+	
+	var _materialUiLibDialog2 = _interopRequireDefault(_materialUiLibDialog);
+	
+	var _materialUiLibFlatButton = __webpack_require__(319);
+	
+	var _materialUiLibFlatButton2 = _interopRequireDefault(_materialUiLibFlatButton);
+	
+	var _NotificationSnackbar = __webpack_require__(471);
+	
+	var _NotificationSnackbar2 = _interopRequireDefault(_NotificationSnackbar);
+	
 	var Alert = (function (_React$Component) {
 	    _inherits(Alert, _React$Component);
 	
@@ -67396,7 +67505,8 @@
 	            criteria: null,
 	            user: null,
 	            triggered: false,
-	            timeLastTriggered: null
+	            timeLastTriggered: null,
+	            open: false
 	        };
 	    }
 	
@@ -67405,6 +67515,7 @@
 	        value: function deleteAlert() {
 	            _jquery2['default'].post('http://localhost:8090/api/alerts/delete/' + this.props.id);
 	            _actionsAppActions2['default'].deleteAlert(this.props.id);
+	            this.refs.deleteAlert.show;
 	        }
 	    }, {
 	        key: 'resetAlert',
@@ -67413,10 +67524,17 @@
 	            this.setState({
 	                triggered: false
 	            });
+	            this.refs.resetAlert.show;
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	
+	            var resetButton;
+	            if (this.props.triggered) {
+	                resetButton = _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'RESET', onClick: this.resetAlert.bind(this, this.props) });
+	            }
+	
 	            return _react2['default'].createElement(
 	                _materialUiLibTableTableRow2['default'],
 	                null,
@@ -67448,8 +67566,9 @@
 	                _react2['default'].createElement(
 	                    _materialUiLibTableTableRowColumn2['default'],
 	                    null,
-	                    _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DELETE', primary: true, onClick: this.deleteAlert.bind(this, this.props) }),
-	                    _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'RESET', onClick: this.resetAlert.bind(this, this.props) })
+	                    _react2['default'].createElement(_materialUiLibRaisedButton2['default'], { label: 'DELETE', primary: true,
+	                        onClick: this.deleteAlert.bind(this, this.props) }),
+	                    resetButton
 	                ),
 	                _react2['default'].createElement(
 	                    _materialUiLibTableTableRowColumn2['default'],
@@ -67458,13 +67577,8 @@
 	                    _react2['default'].createElement(_materialUiLibCheckbox2['default'], { checked: this.props.triggered, disabled: true }),
 	                    ' '
 	                ),
-	                _react2['default'].createElement(
-	                    _materialUiLibTableTableRowColumn2['default'],
-	                    null,
-	                    ' ',
-	                    _utilsTimeDelta2['default'].timestampToDateTime(this.props.timeLastTriggered),
-	                    ' '
-	                )
+	                _react2['default'].createElement(_NotificationSnackbar2['default'], { ref: 'deleteAlert', message: 'Alert Deleted.' }),
+	                _react2['default'].createElement(_NotificationSnackbar2['default'], { ref: 'resetAlert', message: 'Alert Reset.' })
 	            );
 	        }
 	    }]);
@@ -67476,7 +67590,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 475 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67503,7 +67617,7 @@
 	
 	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
-	var _AlertDropdown = __webpack_require__(476);
+	var _AlertDropdown = __webpack_require__(477);
 	
 	var _AlertDropdown2 = _interopRequireDefault(_AlertDropdown);
 	
@@ -67531,7 +67645,7 @@
 	
 	var _materialUiLibTableTableBody2 = _interopRequireDefault(_materialUiLibTableTableBody);
 	
-	var _materialUiLibTextField = __webpack_require__(480);
+	var _materialUiLibTextField = __webpack_require__(481);
 	
 	var _materialUiLibTextField2 = _interopRequireDefault(_materialUiLibTextField);
 	
@@ -67543,7 +67657,7 @@
 	
 	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 	
-	var _NotificationSnackbar = __webpack_require__(490);
+	var _NotificationSnackbar = __webpack_require__(471);
 	
 	var _NotificationSnackbar2 = _interopRequireDefault(_NotificationSnackbar);
 	
@@ -67678,9 +67792,6 @@
 	                        secondary: true,
 	                        onClick: this.saveAlert.bind(this, this.props) })
 	                ),
-	                _react2['default'].createElement(_NotificationSnackbar2['default'], { ref: 'newAlert',
-	                    message: 'New Alert added.'
-	                }),
 	                _react2['default'].createElement(
 	                    _materialUiLibTableTableRowColumn2['default'],
 	                    null,
@@ -67690,7 +67801,8 @@
 	                    _materialUiLibTableTableRowColumn2['default'],
 	                    null,
 	                    'N/A'
-	                )
+	                ),
+	                _react2['default'].createElement(_NotificationSnackbar2['default'], { ref: 'newAlert', message: 'New Alert added.' })
 	            );
 	        }
 	    }]);
@@ -67702,7 +67814,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 476 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67729,7 +67841,7 @@
 	
 	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
-	var _materialUiLibSelectField = __webpack_require__(477);
+	var _materialUiLibSelectField = __webpack_require__(478);
 	
 	var _materialUiLibSelectField2 = _interopRequireDefault(_materialUiLibSelectField);
 	
@@ -67782,25 +67894,6 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 477 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _SelectField = __webpack_require__(478);
-	
-	var _SelectField2 = _interopRequireDefault(_SelectField);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _SelectField2.default;
-	module.exports = exports['default'];
-
-/***/ },
 /* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -67825,6 +67918,25 @@
 
 	'use strict';
 	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _SelectField = __webpack_require__(480);
+	
+	var _SelectField2 = _interopRequireDefault(_SelectField);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _SelectField2.default;
+	module.exports = exports['default'];
+
+/***/ },
+/* 480 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -67839,11 +67951,11 @@
 	
 	var _stylePropable2 = _interopRequireDefault(_stylePropable);
 	
-	var _textField = __webpack_require__(480);
+	var _textField = __webpack_require__(481);
 	
 	var _textField2 = _interopRequireDefault(_textField);
 	
-	var _DropDownMenu = __webpack_require__(487);
+	var _DropDownMenu = __webpack_require__(488);
 	
 	var _DropDownMenu2 = _interopRequireDefault(_DropDownMenu);
 	
@@ -68118,25 +68230,6 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 480 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _TextField = __webpack_require__(481);
-	
-	var _TextField2 = _interopRequireDefault(_TextField);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _TextField2.default;
-	module.exports = exports['default'];
-
-/***/ },
 /* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -68157,6 +68250,25 @@
 
 /***/ },
 /* 482 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _TextField = __webpack_require__(483);
+	
+	var _TextField2 = _interopRequireDefault(_TextField);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _TextField2.default;
+	module.exports = exports['default'];
+
+/***/ },
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -68191,7 +68303,7 @@
 	
 	var _uniqueId2 = _interopRequireDefault(_uniqueId);
 	
-	var _enhancedTextarea = __webpack_require__(483);
+	var _enhancedTextarea = __webpack_require__(484);
 	
 	var _enhancedTextarea2 = _interopRequireDefault(_enhancedTextarea);
 	
@@ -68203,15 +68315,15 @@
 	
 	var _contextPure2 = _interopRequireDefault(_contextPure);
 	
-	var _TextFieldHint = __webpack_require__(484);
+	var _TextFieldHint = __webpack_require__(485);
 	
 	var _TextFieldHint2 = _interopRequireDefault(_TextFieldHint);
 	
-	var _TextFieldLabel = __webpack_require__(485);
+	var _TextFieldLabel = __webpack_require__(486);
 	
 	var _TextFieldLabel2 = _interopRequireDefault(_TextFieldLabel);
 	
-	var _TextFieldUnderline = __webpack_require__(486);
+	var _TextFieldUnderline = __webpack_require__(487);
 	
 	var _TextFieldUnderline2 = _interopRequireDefault(_TextFieldUnderline);
 	
@@ -68722,7 +68834,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 483 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68928,7 +69040,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 484 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69006,7 +69118,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 485 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69118,7 +69230,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 486 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69256,7 +69368,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 487 */
+/* 488 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69265,7 +69377,7 @@
 	  value: true
 	});
 	
-	var _DropDownMenu = __webpack_require__(488);
+	var _DropDownMenu = __webpack_require__(489);
 	
 	var _DropDownMenu2 = _interopRequireDefault(_DropDownMenu);
 	
@@ -69275,7 +69387,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 488 */
+/* 489 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -69318,7 +69430,7 @@
 	
 	var _popover2 = _interopRequireDefault(_popover);
 	
-	var _popoverAnimationFromTop = __webpack_require__(489);
+	var _popoverAnimationFromTop = __webpack_require__(490);
 	
 	var _popoverAnimationFromTop2 = _interopRequireDefault(_popoverAnimationFromTop);
 	
@@ -69753,7 +69865,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 489 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69895,83 +70007,6 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 490 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _react = __webpack_require__(3);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _materialUiLibSnackbar = __webpack_require__(460);
-	
-	var _materialUiLibSnackbar2 = _interopRequireDefault(_materialUiLibSnackbar);
-	
-	var NotificationSnackbar = (function (_React$Component) {
-	    _inherits(NotificationSnackbar, _React$Component);
-	
-	    function NotificationSnackbar(props) {
-	        var _this = this;
-	
-	        _classCallCheck(this, NotificationSnackbar);
-	
-	        _get(Object.getPrototypeOf(NotificationSnackbar.prototype), 'constructor', this).call(this, props);
-	
-	        this.show = function () {
-	            _this.setState({
-	                open: true
-	            });
-	        };
-	
-	        this.handleRequestClose = function () {
-	            _this.setState({
-	                open: false
-	            });
-	        };
-	
-	        this.state = {
-	            open: false
-	        };
-	    }
-	
-	    _createClass(NotificationSnackbar, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2['default'].createElement(
-	                'div',
-	                null,
-	                _react2['default'].createElement(_materialUiLibSnackbar2['default'], {
-	                    open: this.state.open,
-	                    message: this.props.message,
-	                    autoHideDuration: 4000,
-	                    onRequestClose: this.handleRequestClose
-	                })
-	            );
-	        }
-	    }]);
-	
-	    return NotificationSnackbar;
-	})(_react2['default'].Component);
-	
-	exports['default'] = NotificationSnackbar;
-	module.exports = exports['default'];
-
-/***/ },
 /* 491 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -69999,7 +70034,7 @@
 	
 	var _actionsAppActions2 = _interopRequireDefault(_actionsAppActions);
 	
-	var _altUtilsDecorators = __webpack_require__(472);
+	var _altUtilsDecorators = __webpack_require__(473);
 	
 	var _underscore = __webpack_require__(349);
 	
@@ -70098,7 +70133,7 @@
 	
 	var _Chart2 = _interopRequireDefault(_Chart);
 	
-	var _storesClientApplicationStore = __webpack_require__(471);
+	var _storesClientApplicationStore = __webpack_require__(472);
 	
 	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
 	
@@ -70153,6 +70188,10 @@
 	var _ExceptionPanel = __webpack_require__(432);
 	
 	var _ExceptionPanel2 = _interopRequireDefault(_ExceptionPanel);
+	
+	var _AlertPanel = __webpack_require__(433);
+	
+	var _AlertPanel2 = _interopRequireDefault(_AlertPanel);
 	
 	var ClientAppDrilldown = (function (_React$Component) {
 	    _inherits(ClientAppDrilldown, _React$Component);
@@ -70227,20 +70266,7 @@
 	                    _react2['default'].createElement(
 	                        'div',
 	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
-	                        _react2['default'].createElement(
-	                            'div',
-	                            { className: 'panel panel-primary' },
-	                            _react2['default'].createElement(
-	                                'div',
-	                                { className: 'panel-heading' },
-	                                _react2['default'].createElement(
-	                                    'h3',
-	                                    { className: 'panel-title' },
-	                                    appName,
-	                                    ' Alerts'
-	                                )
-	                            )
-	                        )
+	                        _react2['default'].createElement(_AlertPanel2['default'], { appName: appName })
 	                    ),
 	                    _react2['default'].createElement(
 	                        'div',
@@ -70267,7 +70293,6 @@
 	                            _react2['default'].createElement(
 	                                'div',
 	                                { className: 'panel-body' },
-	                                '/* ',
 	                                _react2['default'].createElement(
 	                                    'table',
 	                                    { className: 'table' },
@@ -70323,8 +70348,7 @@
 	                                            )
 	                                        )
 	                                    )
-	                                ),
-	                                ' */'
+	                                )
 	                            )
 	                        )
 	                    ),
@@ -70414,7 +70438,7 @@
 	
 	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
 	
-	var _storesClientApplicationStore = __webpack_require__(471);
+	var _storesClientApplicationStore = __webpack_require__(472);
 	
 	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
 	
@@ -70566,7 +70590,7 @@
 	
 	var _MaterialPanel2 = _interopRequireDefault(_MaterialPanel);
 	
-	var _materialUiLibTextField = __webpack_require__(480);
+	var _materialUiLibTextField = __webpack_require__(481);
 	
 	var _materialUiLibTextField2 = _interopRequireDefault(_materialUiLibTextField);
 	
@@ -70582,7 +70606,7 @@
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _materialUiLibSelectField = __webpack_require__(477);
+	var _materialUiLibSelectField = __webpack_require__(478);
 	
 	var _materialUiLibSelectField2 = _interopRequireDefault(_materialUiLibSelectField);
 	

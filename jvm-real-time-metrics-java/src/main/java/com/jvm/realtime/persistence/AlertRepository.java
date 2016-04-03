@@ -12,4 +12,6 @@ public interface AlertRepository extends MongoRepository<AlertModel, String> {
     List<AlertModel> findByTriggeredIsFalse();
 
     List<AlertModel> findByTriggeredIsTrue();
+
+    List<AlertModel> findByAppNameAndTriggeredIsTrue(String appName);
 }

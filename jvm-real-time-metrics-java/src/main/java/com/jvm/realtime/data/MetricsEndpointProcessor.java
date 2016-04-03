@@ -98,6 +98,7 @@ public class MetricsEndpointProcessor implements DataProcessor {
             websocket.convertAndSend(WebSocketConfiguration.MESSAGE_PREFIX + "/metricsUpdate", currentClientAppSnapshots);
             LOGGER.info("Real time application snapshots transmitted over websocket at " + currentTime);
         } else {
+            websocket.convertAndSend(WebSocketConfiguration.MESSAGE_PREFIX + "/metricsUpdate", Collections.emptyList());
             LOGGER.warn("No docker hosts currently available at " + currentTime);
         }
     }

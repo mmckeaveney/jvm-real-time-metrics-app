@@ -2,7 +2,9 @@ package com.jvm.realtime.service;
 
 import com.jvm.realtime.model.AlertModel;
 import com.jvm.realtime.model.ClientAppSnapshot;
+import com.jvm.realtime.model.UserModel;
 import com.jvm.realtime.persistence.AlertRepository;
+import com.jvm.realtime.persistence.UserRepository;
 import com.jvm.realtime.websocket.WebSocketConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,15 +23,18 @@ public class AlertService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AlertService.class);
 
-    private AlertRepository alertRepository;
-    private EmailService emailService;
+    private final AlertRepository alertRepository;
+    private final EmailService emailService;
     private final SimpMessagingTemplate websocket;
+    private final UserRepository userRepository;
 
     @Autowired
-    public AlertService(AlertRepository alertRepository, EmailService emailService, SimpMessagingTemplate websocket) {
+    public AlertService(AlertRepository alertRepository, EmailService emailService,
+                        SimpMessagingTemplate websocket, UserRepository userRepository) {
         this.alertRepository = alertRepository;
         this.emailService = emailService;
         this.websocket = websocket;
+        this.userRepository = userRepository;
     }
 
     public void checkForAlerts(Map<String, Object> metrics) {
@@ -63,11 +68,13 @@ public class AlertService {
         alert.setTriggered(true);
         alert.setTimeLastTriggered(System.currentTimeMillis());
         alertRepository.save(alert);
+        UserModel userToAlert = userRepository.findByUsername(alert.getUser());
+        emailService.sendAlertEmail(userToAlert, alert);
         notifyAlertViaWebsocket(alert);
     }
 
     private void notifyAlertViaWebsocket(AlertModel alert) {
-        websocket.convertAndSend(WebSocketConfiguration.MESSAGE_PREFIX + "/alertNotification", alert);
+        websocket.convertAndSend(WebSocketConfiguration.MESSAGE_PREFIX + "/alertnotification", alert);
         LOGGER.info("Alert sent over websocket at " + System.currentTimeMillis());
     }
 }

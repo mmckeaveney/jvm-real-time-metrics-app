@@ -40,6 +40,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-starter-security</artifactId>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -72,16 +76,10 @@
 			<version>19.0</version>
 		</dependency>
 
-		<!-- OAuth -->
 		<dependency>
 			<groupId>com.auth0</groupId>
-			<artifactId>java-jwt</artifactId>
-			<version>2.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.4</version>
+			<artifactId>spring-security-auth0</artifactId>
+			<version>0.3</version>
 		</dependency>
 
 		<!-- AWS SDK -->
