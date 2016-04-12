@@ -1,6 +1,7 @@
 package com.jvm.realtime.controller;
 
 import com.jvm.realtime.data.UserProcessor;
+import com.jvm.realtime.model.ClientAppSnapshot;
 import com.jvm.realtime.model.ExceptionModel;
 import com.jvm.realtime.model.SettingsModel;
 import com.jvm.realtime.model.UserModel;
@@ -56,4 +57,17 @@ public class UserController {
         return userProcessor.changeUserSettings(userId, settings);
     }
 
+    @RequestMapping(value = "/user/favourites/save", method = RequestMethod.POST)
+    public void addFavouriteForUser(@RequestParam String userId,
+                                    @RequestBody String favourite) {
+       UserModel currentUser = userRepository.findByUserId(userId);
+       currentUser.getFavourites().add(favourite);
+       userRepository.save(currentUser);
+    }
+
+    @RequestMapping(value = "/user/favourites/find", method = RequestMethod.GET)
+    public Set<String> getFavouritesForUser(@RequestParam String userId) {
+        UserModel currentUser = userRepository.findByUserId(userId);
+        return currentUser.getFavourites();
+    }
 }
