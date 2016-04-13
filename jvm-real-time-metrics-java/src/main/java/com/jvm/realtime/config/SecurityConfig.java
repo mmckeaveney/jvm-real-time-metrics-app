@@ -14,6 +14,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import javax.servlet.Filter;
 
 @ComponentScan("com.auth0")
 @PropertySource("classpath:auth0.properties")
@@ -36,8 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String securedRoute;
 
     @Bean
-    CorsFilter simpleCORSFilter() {
-        return new CorsFilter();
+    Filter simpleCORSFilter() {
+        return new SimpleCORSFilter();
     }
 
     @Bean(name = "authenticationManager")

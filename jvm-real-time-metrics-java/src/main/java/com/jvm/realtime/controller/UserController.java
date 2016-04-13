@@ -59,7 +59,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/favourites/save", method = RequestMethod.POST)
     public void addFavouriteForUser(@RequestParam String userId,
-                                    @RequestBody String favourite) {
+                                    @RequestParam String favourite) {
        UserModel currentUser = userRepository.findByUserId(userId);
        currentUser.getFavourites().add(favourite);
        userRepository.save(currentUser);
