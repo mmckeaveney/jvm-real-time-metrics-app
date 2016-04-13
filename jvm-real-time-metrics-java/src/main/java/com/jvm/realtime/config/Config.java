@@ -1,37 +1,17 @@
 package com.jvm.realtime.config;
 
-import com.jvm.realtime.client.JvmrtExceptionHandler;
-import com.jvm.realtime.data.RealTimeDataClient;
-import com.jvm.realtime.email.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.jvm.realtime.client.IgnoreDuringScan;
+import com.jvm.realtime.client.SQLProfiler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 
+@ComponentScan(basePackages ="com.jvm.realtime.*", excludeFilters = @ComponentScan.Filter(value = IgnoreDuringScan.class))
 @Configuration
-@ComponentScan (
-    excludeFilters = @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE, value={JvmrtExceptionHandler.class})
-)
 public class Config {
-
-    @Autowired
-    private RealTimeDataClient realTimeDataClient;
-    @Autowired
-    private EmailService emailService;
-
-//    @Bean
-//    public Filter authFilter() {
-//        return new OAuthWebFilter();
-//    }
-
-    @Bean
-    public String sendEmailTest() {
-       emailService.sendEmail();
-        return "Email sent";
-    }
-
-
 
 }

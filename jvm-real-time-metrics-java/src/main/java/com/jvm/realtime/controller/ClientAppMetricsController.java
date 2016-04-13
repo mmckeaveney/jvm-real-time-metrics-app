@@ -1,6 +1,7 @@
 package com.jvm.realtime.controller;
 
 import com.google.common.collect.Lists;
+import com.jvm.realtime.data.DockerProcessor;
 import com.jvm.realtime.model.ClientAppSnapshot;
 import com.jvm.realtime.model.ClientAppTimeSeries;
 import com.jvm.realtime.persistence.ClientAppSnapshotRepository;
@@ -20,6 +21,19 @@ public class ClientAppMetricsController {
 
     @Autowired
     ClientAppSnapshotRepository clientAppSnapshotRepository;
+
+
+    @RequestMapping(value = "/clientapps/names/all", method = RequestMethod.GET)
+    public List<String> getAllClientApps() {
+        List<String> clientNames = new ArrayList<>();
+        List<ClientAppSnapshot> allClients = clientAppSnapshotRepository.findAll();
+        for (ClientAppSnapshot app : allClients) {
+            if (!clientNames.contains(app.getAppName())) {
+                clientNames.add(app.getAppName());
+            }
+        }
+        return clientNames;
+    }
 
     @RequestMapping(value = "/timeseries", method = RequestMethod.GET)
     public ClientAppTimeSeries getTimeSeriesDataForSingleApp(@RequestParam(value = "appName") String appName,
@@ -61,4 +75,8 @@ public class ClientAppMetricsController {
         }
         return new ClientAppTimeSeries(allTimeSeriesMetrics);
     }
+
+
+
+
 }

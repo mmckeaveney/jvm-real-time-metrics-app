@@ -55,11 +55,22 @@ public class DockerProcessor implements DataProcessor {
         Integer publicPort = container.getPorts()[0].getPublicPort();
         String appName = container.getImage();
 
+        currentAppModel.setContainerId(container.getId());
         currentAppModel.setPublicPort(publicPort);
         currentAppModel.setAppName(appName);
         currentAppModel.setTimeStamp(System.currentTimeMillis());
 
         return currentAppModel;
+    }
+
+    public void killApp(String containerId) {
+        LOGGER.info("Killing docker app with container ID {}", containerId);
+        dockerClient.killContainerCmd(containerId).exec();
+    }
+
+    public void restartApp(String containerId) {
+        LOGGER.info("Restarting docker app with container ID {}", containerId);
+        dockerClient.restartContainerCmd(containerId).exec();
     }
 
     private List<Container> fetchCurrentContainers() {

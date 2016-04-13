@@ -4,10 +4,8 @@ import com.jvm.realtime.model.ExceptionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 @Configuration
 @ControllerAdvice
 @EnableAutoConfiguration
+@IgnoreDuringScan
 public class JvmrtExceptionHandler implements HandlerExceptionResolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JvmrtExceptionHandler.class);
@@ -56,7 +55,7 @@ public class JvmrtExceptionHandler implements HandlerExceptionResolver {
 
         LOGGER.error("Uncaught Exception thrown of type {}. Sending to JVMRT Main app for processing", thrownException.toString());
 
-        String exceptionUrl = String.format("http://%s:%s/api/exception", "localhost", 8090);
+        String exceptionUrl = String.format("http://%s:%s/exception", "localhost", 8090);
 
         try {
             restTemplate.postForObject(exceptionUrl, thrownException, ExceptionModel.class);

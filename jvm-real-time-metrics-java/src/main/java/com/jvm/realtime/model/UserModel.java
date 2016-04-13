@@ -5,6 +5,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.springframework.data.annotation.Id;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserModel {
@@ -19,6 +20,8 @@ public class UserModel {
     private SettingsModel userSettings;
     @JsonProperty("alerts")
     private Set<AlertModel> alerts;
+    @JsonProperty("favourites")
+    private Set<String> favourites;
 
     public UserModel() {
     }
@@ -29,6 +32,7 @@ public class UserModel {
         this.email = email;
         this.userSettings = userSettings;
         this.alerts = alerts;
+        this.favourites = new HashSet<>();
     }
 
     public String getUserId() {
@@ -71,21 +75,12 @@ public class UserModel {
         this.alerts = alerts;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserModel userModel = (UserModel) o;
-        return Objects.equal(userId, userModel.userId) &&
-                Objects.equal(username, userModel.username) &&
-                Objects.equal(email, userModel.email) &&
-                Objects.equal(userSettings, userModel.userSettings) &&
-                Objects.equal(alerts, userModel.alerts);
+    public Set<String> getFavourites() {
+        return favourites;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(userId, username, email, userSettings, alerts);
+    public void setFavourites(Set<String> favourites) {
+        this.favourites = favourites;
     }
 
     @Override
@@ -96,6 +91,26 @@ public class UserModel {
                 .add("email", email)
                 .add("userSettings", userSettings)
                 .add("alerts", alerts)
+                .add("favourites", favourites)
                 .toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserModel userModel = (UserModel) o;
+        return Objects.equal(userId, userModel.userId) &&
+                Objects.equal(username, userModel.username) &&
+                Objects.equal(email, userModel.email) &&
+                Objects.equal(userSettings, userModel.userSettings) &&
+                Objects.equal(alerts, userModel.alerts) &&
+                Objects.equal(favourites, userModel.favourites);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(userId, username, email, userSettings, alerts, favourites);
+    }
+
 }

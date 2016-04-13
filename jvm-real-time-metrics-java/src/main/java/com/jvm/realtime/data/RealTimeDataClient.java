@@ -1,6 +1,7 @@
 package com.jvm.realtime.data;
 
 import com.google.common.collect.Sets;
+import com.jvm.realtime.client.JvmRealTimeSqlMonitor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

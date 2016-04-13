@@ -1,40 +1,41 @@
-package com.jvm.realtime.email;
-
-import java.io.IOException;
+package com.jvm.realtime.service;
 
 import com.amazonaws.services.simpleemail.*;
 import com.amazonaws.services.simpleemail.model.*;
 import com.amazonaws.regions.*;
-import org.springframework.stereotype.Component;
+import com.jvm.realtime.model.AlertModel;
+import com.jvm.realtime.model.UserModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class EmailService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 
     static final String FROM = "martinmckeaveney@gmail.com";  // Replace with your "From" address. This address must be verified.
-    static final String TO = "martyarsenal@hotmail.co.uk"; // Replace with a "To" address. If your account is still in the
-    // sandbox, this address must be verified.
-    static final String BODY = "This email was sent through Amazon SES by using the AWS SDK for Java.";
-    static final String SUBJECT = "Amazon SES test (AWS SDK for Java)";
 
-    public void sendEmail() {
+    public void sendAlertEmail(UserModel userToAlert, AlertModel alertModel) {
 
         // Construct an object to contain the recipient address.
-        Destination destination = new Destination().withToAddresses(new String[]{TO});
+        Destination destination = new Destination().withToAddresses(new String[]{userToAlert.getEmail()});
 
         // Create the subject and body of the message.
-        Content subject = new Content().withData(SUBJECT);
-        Content textBody = new Content().withData(BODY);
+        Content subject = new Content().withData("JVM Real Time Metrics System - Alert triggered for User " +
+                userToAlert.getUsername());
+        Content textBody = new Content().withData("An alert has been triggered in your environment. The alert is as follows -\n" +
+                alertModel.getAppName() + " " + alertModel.getMetric() + " " + alertModel.getCondition() + " " + alertModel.getCriteria());
         Body body = new Body().withText(textBody);
 
         // Create a message with the specified subject and body.
         Message message = new Message().withSubject(subject).withBody(body);
         try {
 
-            // Assemble the email.
+            // Assemble the service.
             SendEmailRequest request = new SendEmailRequest().withSource(FROM).withDestination(destination).withMessage(message);
 
-            System.out.println("Attempting to send an email through Amazon SES by using the AWS SDK for Java...");
+            System.out.println("Attempting to send an service through Amazon SES by using the AWS SDK for Java...");
 
             // Instantiate an Amazon SES client, which will make the service call. The service call requires your AWS credentials.
             // Because we're not providing an argument when instantiating the client, the SDK will attempt to find your AWS credentials
@@ -51,12 +52,11 @@ public class EmailService {
             Region REGION = Region.getRegion(Regions.US_WEST_2);
             client.setRegion(REGION);
 
-            // Send the email.
+            // Send the service.
             client.sendEmail(request);
-            System.out.println("Email sent!");
+            LOGGER.info("Email sent to {} for alert triggered", userToAlert.getEmail());
         } catch (Exception ex) {
-            System.out.println("The email was not sent.");
-            System.out.println("Error message: " + ex.getMessage());
+            LOGGER.error("Error sending alert email", ex);
         }
     }
 
