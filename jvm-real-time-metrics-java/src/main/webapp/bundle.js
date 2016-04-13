@@ -45125,9 +45125,9 @@
 	
 	            var url;
 	            if (criteria == "All") {
-	                url = "http://0.0.0.0:8090/api/events/all";
+	                url = "http://localhost:8090/api/events/all";
 	            } else {
-	                url = 'http://0.0.0.0:8090/api/events/?appName=' + criteria;
+	                url = 'http://localhost:8090/api/events/?appName=' + criteria;
 	            }
 	            _jquery2['default'].getJSON({ url: url,
 	                success: function success(events) {
@@ -46818,7 +46818,7 @@
 	            var self = this;
 	            _jquery2['default'].ajax({
 	                dataType: "json",
-	                url: "http://0.0.0.0:8090/api/alerts/all",
+	                url: "http://localhost:8090/api/alerts/all",
 	                success: function success(alerts) {
 	                    self.actions.updateLatestAlerts(alerts);
 	                },
@@ -46831,7 +46831,7 @@
 	        key: 'updateCurrentUser',
 	        value: function updateCurrentUser(profile) {
 	            _utilsAuthService2['default'].setupAjax();
-	            _jquery2['default'].post({ url: 'http://0.0.0.0:8090/api/usercheck?id=' + profile.user_id + '&uname=' + profile.nickname + '&email=' + profile.email }).done(function (user) {
+	            _jquery2['default'].post({ url: 'http://localhost:8090/api/usercheck?id=' + profile.user_id + '&uname=' + profile.nickname + '&email=' + profile.email }).done(function (user) {
 	                console.log("User successfully saved : " + user);
 	            }).fail(function (error) {
 	                console.log("Error when saving user", error);
@@ -64831,9 +64831,9 @@
 	
 	            var url;
 	            if (criteria == "All") {
-	                url = "http://0.0.0.0:8090/api/exception/all";
+	                url = "http://localhost:8090/api/exception/all";
 	            } else {
-	                url = 'http://0.0.0.0:8090/api/exception/?appName=' + criteria;
+	                url = 'http://localhost:8090/api/exception/?appName=' + criteria;
 	            }
 	            _jquery2['default'].getJSON({ url: url,
 	                success: function success(exceptions) {
@@ -65047,9 +65047,9 @@
 	
 	            var url;
 	            if (appName == "All") {
-	                url = "http://0.0.0.0:8090/api/alerts/triggered/all";
+	                url = "http://localhost:8090/api/alerts/triggered/all";
 	            } else {
-	                url = 'http://0.0.0.0:8090/api/alerts/triggered/?appName=' + appName;
+	                url = 'http://localhost:8090/api/alerts/triggered/?appName=' + appName;
 	            }
 	            _jquery2['default'].getJSON({ url: url,
 	                success: function success(alerts) {
@@ -65579,7 +65579,7 @@
 	        value: function componentDidMount() {
 	            var _this = this;
 	
-	            $.get('http://0.0.0.0:8090/api/user/favourites/find/?userId=' + _storesUserStore2['default'].getState().user.user_id).done(function (favourites) {
+	            $.get('http://localhost:8090/api/user/favourites/find/?userId=' + _storesUserStore2['default'].getState().user.user_id).done(function (favourites) {
 	                _this.setState({
 	                    favourites: favourites
 	                });
@@ -65860,7 +65860,7 @@
 	        value: function getTimeSeriesDataFromServer(timeScale) {
 	            var _this = this;
 	
-	            var timeSeriesUrl = 'http://0.0.0.0:8090/api/timeseries/?appName=' + this.props.appName + '&timeScale=' + timeScale;
+	            var timeSeriesUrl = 'http://localhost:8090/api/timeseries/?appName=' + this.props.appName + '&timeScale=' + timeScale;
 	            $.ajaxSetup({
 	                headers: {
 	                    'Authorization': 'Bearer ' + localStorage.getItem('userToken')
@@ -66597,7 +66597,7 @@
 	        key: 'killApp',
 	        value: function killApp() {
 	            var props = this.props;
-	            _jquery2['default'].post('http://0.0.0.0:8090/api/docker/kill/' + props.application.containerId).done(function () {
+	            _jquery2['default'].post('http://localhost:8090/api/docker/kill/' + props.application.containerId).done(function () {
 	                console.log("Successfully killed docker container " + props.application.containerId);
 	            }).fail(function (error) {
 	                console.log("Error when killing docker container", error);
@@ -73487,7 +73487,7 @@
 	    _createClass(Alert, [{
 	        key: 'deleteAlert',
 	        value: function deleteAlert() {
-	            _jquery2['default'].post('http://0.0.0.0:8090/api/alerts/delete/' + this.props.id);
+	            _jquery2['default'].post('http://localhost:8090/api/alerts/delete/' + this.props.id);
 	            _actionsAppActions2['default'].deleteAlert(this.props.id);
 	            this.refs.deleteAlert.show;
 	        }
@@ -73495,7 +73495,7 @@
 	        key: 'resetAlert',
 	        value: function resetAlert() {
 	            _actionsAppActions2['default'].resetAlert(this.props.id);
-	            _jquery2['default'].post('http://0.0.0.0:8090/api/alerts/reset/' + this.props.id);
+	            _jquery2['default'].post('http://localhost:8090/api/alerts/reset/' + this.props.id);
 	            this.setState({
 	                triggered: false
 	            });
@@ -73991,7 +73991,7 @@
 	                };
 	                var snackBar = this.refs.newAlert;
 	                _jquery2['default'].ajax({
-	                    url: 'http://0.0.0.0:8090/api/alerts/add',
+	                    url: 'http://localhost:8090/api/alerts/add',
 	                    type: "POST",
 	                    headers: {
 	                        'Accept': 'application/json',
@@ -76646,11 +76646,11 @@
 	                    console.log("Error loading the Profile", err);
 	                    return;
 	                }
-	                var url = 'http://0.0.0.0:8090/api/settings/?userId=' + profile.user_id;
+	                var url = 'http://localhost:8090/api/settings/?userId=' + profile.user_id;
 	                $.post({
 	                    url: url,
 	                    success: function success() {
-	                        $.post('http://0.0.0.0:8090/user/favourites/save/?userId=' + profile.user_id).done(function () {
+	                        $.post('http://localhost:8090/user/favourites/save/?userId=' + profile.user_id).done(function () {
 	                            console.log("Saved Favourite Successfully.");
 	                        }).fail(function () {
 	                            console.log("Error when saving favourite ", error);
@@ -76993,7 +76993,7 @@
 	    }, {
 	        key: 'saveSettingsForUser',
 	        value: function saveSettingsForUser() {
-	            var url = 'http://0.0.0.0:8090/api/settings/save/?userId=' + this.state.userId;
+	            var url = 'http://localhost:8090/api/settings/save/?userId=' + this.state.userId;
 	            _jquery2['default'].post({
 	                url: url,
 	                data: {
@@ -77011,7 +77011,7 @@
 	            var _this2 = this;
 	
 	            var profile = _storesUserStore2['default'].getState().user;
-	            var url = 'http://0.0.0.0:8090/api/settings/?userId=' + profile.user_id;
+	            var url = 'http://localhost:8090/api/settings/?userId=' + profile.user_id;
 	            _jquery2['default'].post({
 	                url: url,
 	                success: function success(settings) {
