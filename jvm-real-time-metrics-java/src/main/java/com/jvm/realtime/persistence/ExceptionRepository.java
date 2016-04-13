@@ -9,4 +9,6 @@ public interface ExceptionRepository extends MongoRepository<ExceptionModel, Str
 
     List<ExceptionModel> findByApplicationName(String appName);
 
+    ExceptionModel findTopByOrderByTimeDesc();
+
 }

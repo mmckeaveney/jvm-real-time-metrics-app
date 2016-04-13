@@ -1,5 +1,7 @@
 package com.jvm.realtime.controller;
 
+import com.google.common.collect.Lists;
+import com.jvm.realtime.client.JvmRealTimeSqlMonitor;
 import com.jvm.realtime.model.AlertModel;
 import com.jvm.realtime.model.DockerEvent;
 import com.jvm.realtime.persistence.AlertRepository;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RequestMapping(value = "/api")
@@ -42,6 +45,16 @@ public class AlertController {
     @RequestMapping(value = "/alerts/triggered", method = RequestMethod.GET)
     public List<AlertModel> getTriggeredAlerts(@RequestParam(value = "appName") String appName) {
         return alertRepository.findByAppNameAndTriggeredIsTrue(appName);
+    }
+
+    @RequestMapping(value = "/alerts/triggered/mostRecent", method = RequestMethod.GET)
+    public List<AlertModel> getMostRecentAlert() {
+        AlertModel alert = alertRepository.findTopByTriggeredIsTrueOrderByTimeLastTriggeredDesc();
+        if (alert == null) {
+            return Collections.emptyList();
+        } else {
+            return Lists.newArrayList(alert);
+        }
     }
 
     @RequestMapping(value = "/alerts/reset/{id}", method = RequestMethod.POST)

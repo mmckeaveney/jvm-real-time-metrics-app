@@ -1,5 +1,6 @@
 package com.jvm.realtime.controller;
 
+import com.google.common.collect.Lists;
 import com.jvm.realtime.data.ExceptionProcessor;
 import com.jvm.realtime.model.ExceptionModel;
 import com.jvm.realtime.persistence.ExceptionRepository;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api")
 public class ExceptionController {
 
     private ExceptionProcessor exceptionProcessor;
@@ -28,12 +28,17 @@ public class ExceptionController {
         return exceptionModel;
     }
 
-    @RequestMapping(value = "/exception/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/exception/all", method = RequestMethod.GET)
     public List<ExceptionModel> getAllExceptions() {
         return exceptionRepository.findAll();
     }
 
-    @RequestMapping(value = "/exception", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/exception/mostRecent", method = RequestMethod.GET)
+    public List<ExceptionModel> getMostRecentException() {
+        return Lists.newArrayList(exceptionRepository.findTopByOrderByTimeDesc());
+    }
+
+    @RequestMapping(value = "/api/exception", method = RequestMethod.GET)
     public List<ExceptionModel> getExceptionsForApp(@RequestParam(value = "appName") String appName) {
         return exceptionRepository.findByApplicationName(appName);
     }
