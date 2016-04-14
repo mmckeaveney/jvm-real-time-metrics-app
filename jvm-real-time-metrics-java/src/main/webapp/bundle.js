@@ -25334,10 +25334,12 @@
 	
 	var _materialUiLibSvgIconsActionSettings2 = _interopRequireDefault(_materialUiLibSvgIconsActionSettings);
 	
+	var _altUtilsConnectToStores = __webpack_require__(492);
+	
+	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
+	
 	// CSS
 	__webpack_require__(525);
-	
-	var menuItems = [{ route: '/', text: 'Home' }, { route: 'environment', text: 'Environment' }, { route: 'alerts', text: 'Alerts' }, { route: 'settings', text: 'Settings' }];
 	
 	// Component for the main Container Div of the application.
 	
@@ -65607,11 +65609,12 @@
 	    }
 	
 	    _createClass(Favourites, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
 	            var _this = this;
 	
-	            $.get('http://localhost:8090/api/user/favourites/find/?userId=' + _storesUserStore2['default'].getState().user.user_id).done(function (favourites) {
+	            var user = JSON.parse(localStorage.getItem("userProfile"));
+	            $.get('http://localhost:8090/api/user/favourites/find/?userId=' + user.user_id).done(function (favourites) {
 	                _this.setState({
 	                    favourites: favourites
 	                });
@@ -77035,6 +77038,10 @@
 	
 	var _storesClientApplicationStore2 = _interopRequireDefault(_storesClientApplicationStore);
 	
+	var _storesUserStore = __webpack_require__(499);
+	
+	var _storesUserStore2 = _interopRequireDefault(_storesUserStore);
+	
 	var _underscore = __webpack_require__(402);
 	
 	var _underscore2 = _interopRequireDefault(_underscore);
@@ -77111,24 +77118,18 @@
 	    _createClass(ClientAppDrilldown, [{
 	        key: 'addToFavourites',
 	        value: function addToFavourites() {
-	            // Store user data in a store
-	            _utilsAuthService2['default'].getLock().getProfile(localStorage.getItem('userToken'), (function (err, profile) {
-	                if (err) {
-	                    console.log("Error loading the Profile", err);
-	                    return;
+	            var profile = _storesUserStore2['default'].getState().user;
+	            var url = 'http://localhost:8090/api/settings/?userId=' + profile.user_id;
+	            $.post({
+	                url: url,
+	                success: function success() {
+	                    $.post('http://localhost:8090/user/favourites/save/?userId=' + profile.user_id).done(function () {
+	                        console.log("Saved Favourite Successfully.");
+	                    }).fail(function () {
+	                        console.log("Error when saving favourite ", error);
+	                    });
 	                }
-	                var url = 'http://localhost:8090/api/settings/?userId=' + profile.user_id;
-	                $.post({
-	                    url: url,
-	                    success: function success() {
-	                        $.post('http://localhost:8090/user/favourites/save/?userId=' + profile.user_id).done(function () {
-	                            console.log("Saved Favourite Successfully.");
-	                        }).fail(function () {
-	                            console.log("Error when saving favourite ", error);
-	                        });
-	                    }
-	                });
-	            }).bind(this));
+	            });
 	        }
 	    }, {
 	        key: 'goBack',
@@ -77292,6 +77293,14 @@
 	
 	var _materialUiLibFontIcon2 = _interopRequireDefault(_materialUiLibFontIcon);
 	
+	var _altUtilsConnectToStores = __webpack_require__(492);
+	
+	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
+	
+	var _NotificationSnackbar = __webpack_require__(501);
+	
+	var _NotificationSnackbar2 = _interopRequireDefault(_NotificationSnackbar);
+	
 	var items = [_react2['default'].createElement(_materialUiLibMenusMenuItem2['default'], { key: 1, value: 1, primaryText: 'Light Theme' }), _react2['default'].createElement(_materialUiLibMenusMenuItem2['default'], { key: 2, value: 2, primaryText: 'Dark Theme' })];
 	
 	var Settings = (function (_React$Component) {
@@ -77300,9 +77309,9 @@
 	    function Settings(props) {
 	        var _this = this;
 	
-	        _classCallCheck(this, Settings);
+	        _classCallCheck(this, _Settings);
 	
-	        _get(Object.getPrototypeOf(Settings.prototype), 'constructor', this).call(this, props);
+	        _get(Object.getPrototypeOf(_Settings.prototype), 'constructor', this).call(this, props);
 	
 	        this.handleDockerHost = function (event) {
 	            _this.setState({
@@ -77331,7 +77340,7 @@
 	    _createClass(Settings, [{
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
-	            this.getSettingsForUser();
+	            this.getSettings();
 	        }
 	    }, {
 	        key: 'selectStep',
@@ -77382,28 +77391,40 @@
 	            return currentStep < this.state.lastActiveStep;
 	        }
 	    }, {
-	        key: 'saveSettingsForUser',
-	        value: function saveSettingsForUser() {
-	            var url = 'http://localhost:8090/api/settings/save/?userId=' + this.state.userId;
-	            _jquery2['default'].post({
+	        key: 'saveSettings',
+	        value: function saveSettings() {
+	            var url = 'http://localhost:8090/api/settings/save';
+	            var snackBar = this.refs.settingsSaved;
+	            _jquery2['default'].ajax({
 	                url: url,
-	                data: {
+	                type: "POST",
+	                headers: {
+	                    'Accept': 'application/json',
+	                    'Content-Type': 'application/json'
+	                },
+	                data: JSON.stringify({
 	                    dockerHost: this.state.dockerHost,
 	                    dockerPort: this.state.dockerPort
-	                },
-	                success: function success(settings) {
+	                }),
+	                dataType: 'json',
+	                success: function success(alert) {
 	                    console.log("settings saved.");
+	                    console.log(alert);
+	                    snackBar.show();
+	                },
+	                error: function error(_error) {
+	                    console.log("error when saving settings", _error);
 	                }
 	            });
 	        }
 	    }, {
-	        key: 'getSettingsForUser',
-	        value: function getSettingsForUser() {
+	        key: 'getSettings',
+	        value: function getSettings() {
 	            var _this2 = this;
 	
-	            var profile = _storesUserStore2['default'].getState().user;
-	            var url = 'http://localhost:8090/api/settings/?userId=' + profile.user_id;
-	            _jquery2['default'].post({
+	            var profile = this.props.user;
+	            var url = 'http://localhost:8090/api/settings';
+	            _jquery2['default'].get({
 	                url: url,
 	                success: function success(settings) {
 	                    _this2.setState({
@@ -77454,14 +77475,27 @@
 	                    ),
 	                    _react2['default'].createElement(
 	                        _materialUiLibStepperVerticalStep2['default'],
-	                        { orderStepLabel: '4', stepLabel: 'Save Settings', actions: [_react2['default'].createElement(_materialUiLibRaisedButton2['default'], { key: 0, label: 'Finish', 'default': true })] },
+	                        { orderStepLabel: '4', stepLabel: 'Save Settings', actions: [_react2['default'].createElement(_materialUiLibRaisedButton2['default'], { key: 0, label: 'Save', 'default': true, onClick: this.saveSettings.bind(this, this.props) })] },
 	                        'You\'re all done. Click save to save your settings.'
 	                    )
-	                )
+	                ),
+	                _react2['default'].createElement(_NotificationSnackbar2['default'], { ref: 'settingsSaved', message: 'Settings Saved.' })
 	            );
+	        }
+	    }], [{
+	        key: 'getStores',
+	        value: function getStores(props) {
+	            return [_storesUserStore2['default']];
+	        }
+	    }, {
+	        key: 'getPropsFromStores',
+	        value: function getPropsFromStores(props) {
+	            return _storesUserStore2['default'].getState();
 	        }
 	    }]);
 	
+	    var _Settings = Settings;
+	    Settings = (0, _altUtilsConnectToStores2['default'])(Settings) || Settings;
 	    return Settings;
 	})(_react2['default'].Component);
 	

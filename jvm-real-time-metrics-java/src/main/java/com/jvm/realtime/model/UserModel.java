@@ -16,8 +16,6 @@ public class UserModel {
     private String username;
     @JsonProperty("email")
     private String email;
-    @JsonProperty("userSettings")
-    private SettingsModel userSettings;
     @JsonProperty("alerts")
     private Set<AlertModel> alerts;
     @JsonProperty("favourites")
@@ -26,11 +24,10 @@ public class UserModel {
     public UserModel() {
     }
 
-    public UserModel(String userId, String username, String email, SettingsModel userSettings, Set<AlertModel> alerts) {
+    public UserModel(String userId, String username, String email, Set<AlertModel> alerts) {
         this.userId = userId;
         this.username = username;
         this.email = email;
-        this.userSettings = userSettings;
         this.alerts = alerts;
         this.favourites = new HashSet<>();
     }
@@ -59,14 +56,6 @@ public class UserModel {
         this.email = email;
     }
 
-    public SettingsModel getUserSettings() {
-        return userSettings;
-    }
-
-    public void setUserSettings(SettingsModel userSettings) {
-        this.userSettings = userSettings;
-    }
-
     public Set<AlertModel> getAlerts() {
         return alerts;
     }
@@ -89,7 +78,6 @@ public class UserModel {
                 .add("userId", userId)
                 .add("username", username)
                 .add("email", email)
-                .add("userSettings", userSettings)
                 .add("alerts", alerts)
                 .add("favourites", favourites)
                 .toString();
@@ -103,14 +91,13 @@ public class UserModel {
         return Objects.equal(userId, userModel.userId) &&
                 Objects.equal(username, userModel.username) &&
                 Objects.equal(email, userModel.email) &&
-                Objects.equal(userSettings, userModel.userSettings) &&
                 Objects.equal(alerts, userModel.alerts) &&
                 Objects.equal(favourites, userModel.favourites);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(userId, username, email, userSettings, alerts, favourites);
+        return Objects.hashCode(userId, username, email, alerts, favourites);
     }
 
 }
