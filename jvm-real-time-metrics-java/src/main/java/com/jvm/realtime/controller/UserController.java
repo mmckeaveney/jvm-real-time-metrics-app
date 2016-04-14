@@ -45,17 +45,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/settings", method = RequestMethod.POST)
-    public SettingsModel checkIfUserExistsAndBootstrap(@RequestParam String userId) {
-        return userProcessor.getSettingsForUser(userId);
-    }
 
-
-    @RequestMapping(value = "/settings/save", method = RequestMethod.POST)
-    public SettingsModel changeUserSettings(@RequestParam String userId,
-                                            @RequestBody SettingsModel settings) {
-        return userProcessor.changeUserSettings(userId, settings);
-    }
 
     @RequestMapping(value = "/user/favourites/save", method = RequestMethod.POST)
     public void addFavouriteForUser(@RequestParam String userId,

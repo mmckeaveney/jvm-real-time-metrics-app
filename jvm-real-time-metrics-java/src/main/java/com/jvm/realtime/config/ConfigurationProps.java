@@ -1,15 +1,40 @@
 package com.jvm.realtime.config;
 
+import com.jvm.realtime.model.SettingsModel;
+import com.jvm.realtime.persistence.SettingsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-//@ConfigurationProperties
 public class ConfigurationProps {
 
-    private String dockerHost = "localhost";
-    private int dockerPort = 2376;
-    private String dockerCertsPath = "/Users/martinmckeaveney/.docker/machine/certs";
+    private SettingsRepository settingsRepository;
+    private String dockerHost;
+    private int dockerPort;
+
+    @Autowired
+    public ConfigurationProps(SettingsRepository settingsRepository) {
+        this.settingsRepository = settingsRepository;
+        provisionSettings();
+        SettingsModel currentSettings = settingsRepository.findOne("defaultSettings");
+        this.dockerHost = currentSettings.getDockerHost();
+        this.dockerPort = currentSettings.getDockerPort();
+    }
+
+    private void provisionSettings() {
+        if (settingsRepository.findAll().isEmpty()) {
+            settingsRepository.save(new SettingsModel("localhost", 2376));
+        }
+    }
+
+    public SettingsRepository getSettingsRepository() {
+        return settingsRepository;
+    }
+
+    public void setSettingsRepository(SettingsRepository settingsRepository) {
+        this.settingsRepository = settingsRepository;
+    }
 
     public String getDockerHost() {
         return dockerHost;
@@ -25,13 +50,5 @@ public class ConfigurationProps {
 
     public void setDockerPort(int dockerPort) {
         this.dockerPort = dockerPort;
-    }
-
-    public String getDockerCertsPath() {
-        return dockerCertsPath;
-    }
-
-    public void setDockerCertsPath(String dockerCertsPath) {
-        this.dockerCertsPath = dockerCertsPath;
     }
 }

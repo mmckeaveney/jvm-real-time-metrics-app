@@ -15,7 +15,7 @@ public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfig
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/metricspoll", "/eventspoll", "/alertnotification", "exceptionspoll").withSockJS();
+        registry.addEndpoint("/metricspoll", "/eventspoll", "/alertnotification", "exceptionspoll", "querytimepoll").withSockJS();
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.google.common.base.Objects;
 
 public class SettingsModel {
 
+    private String id;
     @JsonProperty("dockerHost")
     private String dockerHost;
     @JsonProperty("dockerPort")
@@ -15,7 +16,11 @@ public class SettingsModel {
         LIGHT_THEME
     }
 
+    public SettingsModel() {
+    }
+
     public SettingsModel(String dockerHost, int dockerPort) {
+        this.id = "defaultSettings";
         this.dockerHost = dockerHost;
         this.dockerPort = dockerPort;
     }
@@ -41,13 +46,14 @@ public class SettingsModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SettingsModel that = (SettingsModel) o;
-        return Objects.equal(dockerHost, that.dockerHost) &&
-                Objects.equal(dockerPort, that.dockerPort);
+        return dockerPort == that.dockerPort &&
+                Objects.equal(id, that.id) &&
+                Objects.equal(dockerHost, that.dockerHost);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(dockerHost, dockerPort);
+        return Objects.hashCode(id, dockerHost, dockerPort);
     }
 
     @Override
