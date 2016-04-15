@@ -39,7 +39,7 @@ public class TimeSeriesMetricsProcessor implements DataProcessor {
         }, 1000, 24*60*60*1000);
     }
 
-    private void saveDailyMetricsSnapshot(Set<ClientAppSnapshot> currentClientAppSnapshots) {
+    void saveDailyMetricsSnapshot(Set<ClientAppSnapshot> currentClientAppSnapshots) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String currentTime = sdf.format(cal.getTime());

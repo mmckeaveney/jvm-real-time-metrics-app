@@ -32,7 +32,7 @@ public class DockerProcessor implements DataProcessor {
         this.configurationProps = configurationProps;
         DockerClientConfig config = DockerClientConfig.createDefaultConfigBuilder()
                 .withVersion("1.18")
-                .withUri(String.format("http://%s:%s", configurationProps.getDockerHost() , configurationProps.getDockerPort()))
+                .withUri(String.format("http://%s:%s", configurationProps.getDockerHost(), configurationProps.getDockerPort()))
                 .build();
         this.dockerClient = DockerClientBuilder.getInstance(config).build();
         this.currentContainers = Collections.emptyList();

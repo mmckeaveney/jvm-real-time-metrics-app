@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface ClientAppSnapshotRepository extends MongoRepository<ClientAppSnapshot, String> {
 
-    List<ClientAppSnapshot> findTop7ByAppName(String appName, Sort sort);
-    List<ClientAppSnapshot> findTop31ByAppName(String appName, Sort sort);
-    List<ClientAppSnapshot> findTop186ByAppName(String appName, Sort sort);
+    List<ClientAppSnapshot> findTop7ByAppNameOrderByTimeStampDesc(String appName);
+    List<ClientAppSnapshot> findTop31ByAppNameOrderByTimeStampDesc(String appName);
+    List<ClientAppSnapshot> findTop186ByAppNameOrderByTimeStampDesc(String appName);
 }
