@@ -27,10 +27,11 @@ public class UserProcessor {
     }
 
     public UserModel provisionUser(String userId, String userName, String email) {
+        UserModel userModel;
         if (!userRepository.exists(userId)) {
             LOGGER.info("User " + userName + " doesn't exist, provisioning...");
 
-            UserModel userModel = new UserModel(
+            userModel = new UserModel(
                     userId,
                     userName,
                     email,
@@ -39,7 +40,9 @@ public class UserProcessor {
 
             userRepository.save(userModel);
             LOGGER.info("User " + userName + " provisioned with default settings.");
+            return userModel;
         }
-        return new UserModel();
+
+        return null;
     }
 }

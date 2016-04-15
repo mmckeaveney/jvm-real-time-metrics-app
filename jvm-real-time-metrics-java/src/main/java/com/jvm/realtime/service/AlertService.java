@@ -63,7 +63,7 @@ public class AlertService {
         }
     }
 
-    private void triggerAlert(AlertModel alert) {
+    void triggerAlert(AlertModel alert) {
         LOGGER.info("Alert Triggered" + alert.toString());
         alert.setTriggered(true);
         alert.setTimeLastTriggered(System.currentTimeMillis());

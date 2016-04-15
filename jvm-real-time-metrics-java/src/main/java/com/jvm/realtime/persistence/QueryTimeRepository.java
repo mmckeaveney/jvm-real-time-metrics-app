@@ -9,5 +9,5 @@ public interface QueryTimeRepository extends MongoRepository<QueryTimeModel, Str
 
     List<QueryTimeModel> findByApplicationName(String appName);
 
-    QueryTimeModel findTopByOrderByTimeExecuted();
+    QueryTimeModel findTopByOrderByTimeExecutedDesc();
 }

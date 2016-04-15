@@ -28,7 +28,7 @@ public class QueryTimeController {
     }
     @RequestMapping(value = "/api/querytime/mostRecent", method = RequestMethod.GET)
     public List<QueryTimeModel> getMostRecentQueryTime() {
-        return Lists.newArrayList(queryTimeRepository.findTopByOrderByTimeExecuted());
+        return Lists.newArrayList(queryTimeRepository.findTopByOrderByTimeExecutedDesc());
     }
 
     @RequestMapping(value = "/api/querytime", method = RequestMethod.GET)

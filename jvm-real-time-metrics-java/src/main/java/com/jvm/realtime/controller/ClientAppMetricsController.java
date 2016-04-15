@@ -41,13 +41,13 @@ public class ClientAppMetricsController {
         List<ClientAppSnapshot> queryResults;
         switch (timeScale) {
             case "week":
-                queryResults = clientAppSnapshotRepository.findTop7ByAppName(appName, new Sort(Sort.Direction.DESC, "time"));
+                queryResults = clientAppSnapshotRepository.findTop7ByAppNameOrderByTimeStampDesc(appName);
                 return getTimeSeriesFromQuery(queryResults);
             case "month":
-                queryResults = clientAppSnapshotRepository.findTop31ByAppName(appName, new Sort(Sort.Direction.DESC, "time"));
+                queryResults = clientAppSnapshotRepository.findTop31ByAppNameOrderByTimeStampDesc(appName);
                 return getTimeSeriesFromQuery(queryResults);
             case "sixmonths":
-                queryResults = clientAppSnapshotRepository.findTop186ByAppName(appName, new Sort(Sort.Direction.DESC, "time"));
+                queryResults = clientAppSnapshotRepository.findTop186ByAppNameOrderByTimeStampDesc(appName);
                 return getTimeSeriesFromQuery(queryResults);
         }
         return null;
@@ -73,7 +73,7 @@ public class ClientAppMetricsController {
                 }
             }
         }
-        return new ClientAppTimeSeries(allTimeSeriesMetrics);
+        return new ClientAppTimeSeries(allTimeSeriesMetrics, clientAppSnapshots);
     }
 
 

@@ -1,0 +1,31 @@
+{
+  "id": "id",
+  "appName": "frankblizzard/jvmrtclientone",
+  "actuatorMetrics": {
+    "instanceuptime": 1377,
+    "gcps_marksweeptime": 59,
+    "gcps_scavengecount": 7,
+    "classes": 5650,
+    "heapcommitted": 340480,
+    "threads": 13,
+    "threadstotalStarted": 16,
+    "processors": 6,
+    "heapinit": 129024,
+    "httpsessionsmax": -1,
+    "uptime": 6854,
+    "memfree": 179042,
+    "systemloadaverage": 3.16,
+    "classesloaded": 5650,
+    "gcps_marksweepcount": 1,
+    "httpsessionsactive": 0,
+    "gcps_scavengetime": 148,
+    "mem": 340480,
+    "threadspeak": 13,
+    "classesunloaded": 0,
+    "threadsdaemon": 11,
+    "heap": 1813504,
+    "heapused": 161437
+  },
+  "publicPort": 8080,
+  "timeStamp": 1459520065807
+}

@@ -9,7 +9,6 @@ import org.springframework.data.annotation.Id;
  */
 public class ExceptionModel {
 
-    @Id
     private String id;
     @JsonProperty("exceptionType")
     private String exceptionType;

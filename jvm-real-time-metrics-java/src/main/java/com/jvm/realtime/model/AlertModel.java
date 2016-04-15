@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 
 public class AlertModel {
 
-    @Id
     private String id;
     @JsonProperty("appName")
     private String appName;
