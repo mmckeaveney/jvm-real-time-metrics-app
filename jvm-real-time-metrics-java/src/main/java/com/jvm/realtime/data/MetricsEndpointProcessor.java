@@ -51,7 +51,9 @@ public class MetricsEndpointProcessor implements DataProcessor {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
+                // Get the metrics from each application running in the environment.
                 Set<ClientAppSnapshot> currentApplicationMetrics = retrieveActuatorMetricsFromDockerHosts();
+                // Send the latest data over the websocket.
                 transmitLatestSnapshotOverWebsocket(currentApplicationMetrics);
             }
         }, new Date(), 3000);
