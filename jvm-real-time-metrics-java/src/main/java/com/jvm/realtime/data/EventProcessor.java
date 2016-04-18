@@ -28,9 +28,14 @@ public class EventProcessor implements DataProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventProcessor.class);
 
+    /**
+     *
+     * @param eventRepository The persistence layer for storing events.
+     * @param websocket The websocket connection for sending real time data.
+     * @param configurationProps Dynamic configuration properties for connecting to docker.
+     */
     @Autowired
     public EventProcessor(EventRepository eventRepository, SimpMessagingTemplate websocket, ConfigurationProps configurationProps) {
-        //TODO: Settings and configurations page for changing docker hosts.
         this.configurationProps = configurationProps;
         DockerClientConfig config = DockerClientConfig.createDefaultConfigBuilder()
                 .withVersion("1.18")
