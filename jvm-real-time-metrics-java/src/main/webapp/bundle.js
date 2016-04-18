@@ -74509,6 +74509,10 @@
 	
 	var _materialUiLibRaisedButton2 = _interopRequireDefault(_materialUiLibRaisedButton);
 	
+	var _CustomButton = __webpack_require__(502);
+	
+	var _CustomButton2 = _interopRequireDefault(_CustomButton);
+	
 	var _AlertDropdown = __webpack_require__(548);
 	
 	var _AlertDropdown2 = _interopRequireDefault(_AlertDropdown);
@@ -74688,6 +74692,9 @@
 	                _react2['default'].createElement(
 	                    _materialUiLibTableTableRowColumn2['default'],
 	                    null,
+	                    _react2['default'].createElement(_CustomButton2['default'], { label: 'Save',
+	                        icon: '',
+	                        onClick: this.deleteAlert.bind(this, this.props) }),
 	                    _react2['default'].createElement(
 	                        _materialUiLibFloatingActionButton2['default'],
 	                        { mini: true, onClick: this.saveAlert.bind(this, this.props) },
@@ -77708,13 +77715,15 @@
 	
 	var _utilsAuthService2 = _interopRequireDefault(_utilsAuthService);
 	
+	//@connectToStores
+	
 	var ClientAppDrilldown = (function (_React$Component) {
 	    _inherits(ClientAppDrilldown, _React$Component);
 	
 	    function ClientAppDrilldown(props) {
-	        _classCallCheck(this, _ClientAppDrilldown);
+	        _classCallCheck(this, ClientAppDrilldown);
 	
-	        _get(Object.getPrototypeOf(_ClientAppDrilldown.prototype), 'constructor', this).call(this, props);
+	        _get(Object.getPrototypeOf(ClientAppDrilldown.prototype), 'constructor', this).call(this, props);
 	    }
 	
 	    _createClass(ClientAppDrilldown, [{
@@ -77803,8 +77812,6 @@
 	        }
 	    }]);
 	
-	    var _ClientAppDrilldown = ClientAppDrilldown;
-	    ClientAppDrilldown = (0, _altUtilsConnectToStores2['default'])(ClientAppDrilldown) || ClientAppDrilldown;
 	    return ClientAppDrilldown;
 	})(_react2['default'].Component);
 	

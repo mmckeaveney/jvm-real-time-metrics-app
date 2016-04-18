@@ -56,6 +56,9 @@ public class EventProcessor implements DataProcessor {
         }, 0, 5000);
     }
 
+    /**
+     * Update the docker events every time they come in, by sending them over the websocket.
+     */
     private void updateDockerEvents() {
         EventsCallback eventCallback = new EventsCallback();
         try {
@@ -68,6 +71,10 @@ public class EventProcessor implements DataProcessor {
         }
     }
 
+    /**
+     * The callback that is executed every time a new Docker event comes in.
+     * The event gets saved to the database and then sent over the websocket to update the user interface.
+     */
     private class EventsCallback extends EventsResultCallback {
         public void onNext(Event event) {
             DockerEvent currentEvent = new DockerEvent(
