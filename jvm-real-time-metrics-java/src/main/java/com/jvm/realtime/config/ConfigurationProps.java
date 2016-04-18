@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+// Dynamic configuration settings that update when the user saves new settings from the UI.
 @Component
 public class ConfigurationProps {
 

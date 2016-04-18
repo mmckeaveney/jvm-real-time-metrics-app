@@ -53,7 +53,11 @@ public class ClientAppMetricsController {
         return null;
     }
 
-    // Needs wildly refactored
+    /**
+     * Gets the timeseries data for metrics required to draw a graph.
+     * @param clientAppSnapshots the list of clientAppSnapshots to create the timeseries data with.
+     * @return the ClientAppTimeSeries object used to draw a timeseries graph.
+     */
     private ClientAppTimeSeries getTimeSeriesFromQuery(List<ClientAppSnapshot> clientAppSnapshots) {
         Map<String, List<Object>> allTimeSeriesMetrics = new HashMap();
 
