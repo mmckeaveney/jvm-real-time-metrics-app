@@ -61,7 +61,9 @@ public class ClientAppMetricsController {
     private ClientAppTimeSeries getTimeSeriesFromQuery(List<ClientAppSnapshot> clientAppSnapshots) {
         Map<String, List<Object>> allTimeSeriesMetrics = new HashMap();
 
+        // For each application in the environment
         for (ClientAppSnapshot clientAppSnapshot : clientAppSnapshots) {
+            // For each of the metrics in that application
             for(Map.Entry<String, Object> metric : clientAppSnapshot.getActuatorMetrics().entrySet()) {
 
                 Long timeStamp = clientAppSnapshot.getTimeStamp();
@@ -69,14 +71,17 @@ public class ClientAppMetricsController {
                 String metricName = metric.getKey();
                 List<Object> timeSeries = Lists.newArrayList(timeStamp, metricValue);
 
+                // Create a map of the timeseries metrics with the relevant appnames if it doesnt exist.
                 if (allTimeSeriesMetrics.containsKey(metricName)) {
                     allTimeSeriesMetrics.get(metricName).add(timeSeries);
                 } else {
+                    // Simply add the timeseries metrics to the map because it already exists.
                     allTimeSeriesMetrics.put(metricName, new ArrayList<>());
                     allTimeSeriesMetrics.get(metricName).add(timeSeries);
                 }
             }
         }
+        // Return the timeseries data in one object back to the client.
         return new ClientAppTimeSeries(allTimeSeriesMetrics, clientAppSnapshots);
     }
 
