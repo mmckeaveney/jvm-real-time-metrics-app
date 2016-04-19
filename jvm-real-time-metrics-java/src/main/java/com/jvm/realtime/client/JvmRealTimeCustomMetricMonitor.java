@@ -5,17 +5,26 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.metrics.CounterService;
 
 /**
  * Class to be used for the developer API of the metrics system, allowing the user to add their own custom metrics.
  */
 public abstract class JvmRealTimeCustomMetricMonitor {
 
+    private final CounterService counterService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JvmRealTimeCustomMetricMonitor.class);
+
+    @Autowired
+    public JvmRealTimeCustomMetricMonitor(CounterService counterService) {
+        this.counterService = counterService;
+    }
 
     /**
      * Pointcuts tell AspectJ where in the code to run the aspect.
-     * This one is for the custom @JvmRealTimeSqlMonitor annotation.
+     * This one is for the custom @JvmRealTimeCustomMetric annotation.
      */
     @Pointcut("within(@com.jvm.realtime.client.JvmRealTimeCustomMetric *)")
     public void beanAnnotatedWithMonitor() {}
