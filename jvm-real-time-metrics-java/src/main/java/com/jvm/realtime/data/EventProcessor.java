@@ -28,9 +28,14 @@ public class EventProcessor implements DataProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventProcessor.class);
 
+    /**
+     *
+     * @param eventRepository The persistence layer for storing events.
+     * @param websocket The websocket connection for sending real time data.
+     * @param configurationProps Dynamic configuration properties for connecting to docker.
+     */
     @Autowired
     public EventProcessor(EventRepository eventRepository, SimpMessagingTemplate websocket, ConfigurationProps configurationProps) {
-        //TODO: Settings and configurations page for changing docker hosts.
         this.configurationProps = configurationProps;
         DockerClientConfig config = DockerClientConfig.createDefaultConfigBuilder()
                 .withVersion("1.18")
@@ -51,6 +56,9 @@ public class EventProcessor implements DataProcessor {
         }, 0, 5000);
     }
 
+    /**
+     * Update the docker events every time they come in, by sending them over the websocket.
+     */
     private void updateDockerEvents() {
         EventsCallback eventCallback = new EventsCallback();
         try {
@@ -63,6 +71,10 @@ public class EventProcessor implements DataProcessor {
         }
     }
 
+    /**
+     * The callback that is executed every time a new Docker event comes in.
+     * The event gets saved to the database and then sent over the websocket to update the user interface.
+     */
     private class EventsCallback extends EventsResultCallback {
         public void onNext(Event event) {
             DockerEvent currentEvent = new DockerEvent(

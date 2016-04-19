@@ -32,18 +32,20 @@ public class JvmrtExceptionHandler implements HandlerExceptionResolver {
     @Autowired
     private Environment environment;
 
+    // Catches exceptions in client applications and sends them to the main JVMRT app for processing.
     @ExceptionHandler(Exception.class)
     public ModelAndView resolveException(HttpServletRequest request,
                                          HttpServletResponse response,
                                          Object handler, Exception exception) {
 
+        // Get the relevant attributes from the exception
         String applicationName = environment.getProperty("docker.image.name");
         String exceptionMessage = exception.getMessage();
         String exceptionMethod = exception.getStackTrace()[0].getMethodName();
         String exceptionClass = exception.getStackTrace()[0].getClassName();
         String exceptionType = exception.getClass().getSimpleName();
 
-
+        // Create an exception model from them with a timestamp
         ExceptionModel thrownException = new ExceptionModel(
                 exceptionMessage,
                 applicationName,
@@ -58,6 +60,7 @@ public class JvmrtExceptionHandler implements HandlerExceptionResolver {
         String exceptionUrl = String.format("http://%s:%s/exception", "localhost", 8090);
 
         try {
+            // POST the object to the JVMRT main application
             restTemplate.postForObject(exceptionUrl, thrownException, ExceptionModel.class);
         } catch (RestClientException e) {
             LOGGER.error("JVMRT seems to be down at the moment, cannot send exception to main app.", e);

@@ -35,4 +35,9 @@ public class QueryTimeController {
     public List<QueryTimeModel> getQueryTimesForApp(@RequestParam(value = "appName") String appName) {
         return queryTimeRepository.findByApplicationName(appName);
     }
+
+    @RequestMapping(value = "/api/querytime/all", method = RequestMethod.GET)
+    public List<QueryTimeModel> getQueryTimesForAllApps() {
+        return queryTimeRepository.findAll();
+    }
 }

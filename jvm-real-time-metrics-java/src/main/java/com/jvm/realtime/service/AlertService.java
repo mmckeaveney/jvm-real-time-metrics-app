@@ -37,6 +37,11 @@ public class AlertService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Check each of the metrics against the current alerts in the database. If one is triggered,
+     * send an email to the relevant user.
+     * @param metrics the metrics to check for alerts.
+     */
     public void checkForAlerts(Map<String, Object> metrics) {
         List<AlertModel> currentAlerts = alertRepository.findByTriggeredIsFalse();
 
@@ -63,6 +68,10 @@ public class AlertService {
         }
     }
 
+    /**
+     * Trigger an alert when a metric breaks the threshold set for that alert.
+     * @param alert the alert to trigger from the database.
+     */
     void triggerAlert(AlertModel alert) {
         LOGGER.info("Alert Triggered" + alert.toString());
         alert.setTriggered(true);

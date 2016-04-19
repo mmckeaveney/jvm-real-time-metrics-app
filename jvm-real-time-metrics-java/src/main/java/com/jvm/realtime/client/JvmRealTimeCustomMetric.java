@@ -7,9 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-// Annotation to tell the application to time a particular query or method.
-@Target(value = {ElementType.METHOD, ElementType.TYPE})
+// Used to annotate a custom metric for a user.
+@Target(value = {ElementType.METHOD, ElementType.TYPE, ElementType.FIELD})
 @Retention(value = RetentionPolicy.RUNTIME)
 @Component
-public @interface JvmRealTimeSqlMonitor {
+public @interface JvmRealTimeCustomMetric {
 }

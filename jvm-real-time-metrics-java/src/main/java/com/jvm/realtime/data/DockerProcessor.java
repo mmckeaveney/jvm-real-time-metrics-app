@@ -22,13 +22,16 @@ public class DockerProcessor implements DataProcessor {
 
     private DockerClient dockerClient;
     private List<Container> currentContainers;
-    private final SimpMessagingTemplate websocket;
     private ConfigurationProps configurationProps;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DockerProcessor.class);
 
+    /**
+     * Constructor.
+     * @param configurationProps the dynamic configuration properties for connecting to docker.
+     */
     @Autowired
-    public DockerProcessor(SimpMessagingTemplate websocket, ConfigurationProps configurationProps) {
+    public DockerProcessor(ConfigurationProps configurationProps) {
         this.configurationProps = configurationProps;
         DockerClientConfig config = DockerClientConfig.createDefaultConfigBuilder()
                 .withVersion("1.18")
@@ -36,7 +39,6 @@ public class DockerProcessor implements DataProcessor {
                 .build();
         this.dockerClient = DockerClientBuilder.getInstance(config).build();
         this.currentContainers = Collections.emptyList();
-        this.websocket = websocket;
     }
 
     public void poll() {
@@ -49,6 +51,12 @@ public class DockerProcessor implements DataProcessor {
 
     }
 
+    /**
+     * Get all the information required from the docker containers to create application snapshots to
+     * be stored in MongoDB.
+     * @param container The docker container to extract information from.
+     * @return The ClientAppSnapshot object created from the docker container.
+     */
     public ClientAppSnapshot getDockerApplicationMetaData(Container container) {
         ClientAppSnapshot currentAppModel = new ClientAppSnapshot();
 
@@ -73,6 +81,10 @@ public class DockerProcessor implements DataProcessor {
         dockerClient.restartContainerCmd(containerId).exec();
     }
 
+    /**
+     * Get all the current docker containers running in the docker environment and update the current list.
+     * @return The list of docker containers currently running.
+     */
     private List<Container> fetchCurrentContainers() {
         try {
             setCurrentContainers(this.dockerClient.listContainersCmd().exec());

@@ -28,6 +28,13 @@ public class MetricsEndpointProcessor implements DataProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetricsEndpointProcessor.class);
 
+    /**
+     * Constructor.
+     * @param dockerPoller The docker processor to get the current docker applications from.
+     * @param websocket Websocket connection for sending real time data.
+     * @param configurationProps Dynamic configuration properties for connecting to docker.
+     * @param alertService The alertService to check for alerts on the latest metrics.
+     */
     @Autowired
     public MetricsEndpointProcessor(DockerProcessor dockerPoller,
                                     SimpMessagingTemplate websocket,
@@ -44,7 +51,9 @@ public class MetricsEndpointProcessor implements DataProcessor {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
+                // Get the metrics from each application running in the environment.
                 Set<ClientAppSnapshot> currentApplicationMetrics = retrieveActuatorMetricsFromDockerHosts();
+                // Send the latest data over the websocket.
                 transmitLatestSnapshotOverWebsocket(currentApplicationMetrics);
             }
         }, new Date(), 3000);
@@ -74,9 +83,10 @@ public class MetricsEndpointProcessor implements DataProcessor {
                     formattedMetricsMap.put(metric.getKey().replace(".", ""), metric.getValue());
                 }
 
+                // Set the latest metrics on the clientAppSnapshot object.
                 currentAppModel.setActuatorMetrics(formattedMetricsMap);
+                // Check if any of the latest metrics trigger any alerts set by the user.
                 alertService.checkForAlerts(formattedMetricsMap);
-
 
                 currentClientAppSnapshots.add(currentAppModel);
 
@@ -88,6 +98,10 @@ public class MetricsEndpointProcessor implements DataProcessor {
         return currentClientAppSnapshots;
     }
 
+    /**
+     * Send the latest client application data over the websocket to update the front end of the application.
+     * @param currentClientAppSnapshots List of ClientAppSnapshot objects, sent as JSON.
+     */
     private void transmitLatestSnapshotOverWebsocket(Set<ClientAppSnapshot> currentClientAppSnapshots) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
