@@ -84,9 +84,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .addFilterAfter(auth0AuthenticationFilter(auth0AuthenticationEntryPoint()), SecurityContextPersistenceFilter.class)
+                // Filter the requests to the server. Check for JSON Web Token and put through CORS Filter.
                 .addFilterBefore(simpleCORSFilter(), Auth0AuthenticationFilter.class)
                 .authorizeRequests()
+                // Any requests to /api
                 .antMatchers(securedRoute)
+                // Make sure they are authenticated
                 .authenticated();
     }
 }
