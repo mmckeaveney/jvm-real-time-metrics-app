@@ -41809,11 +41809,11 @@
 	
 	            var url;
 	            if (criteria == "All") {
-	                url = "http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/events/all";
+	                url = "http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/events/all";
 	            } else if (criteria == "mostRecent") {
-	                url = "http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/events/mostRecent";
+	                url = "http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/events/mostRecent";
 	            } else {
-	                url = 'http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/events/?appName=' + criteria;
+	                url = 'http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/events/?appName=' + criteria;
 	            }
 	            _jquery2['default'].getJSON({ url: url,
 	                success: function success(events) {
@@ -46290,7 +46290,7 @@
 	            var self = this;
 	            _jquery2['default'].ajax({
 	                dataType: "json",
-	                url: "http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/alerts/all",
+	                url: "http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/alerts/all",
 	                success: function success(alerts) {
 	                    self.actions.updateLatestAlerts(alerts);
 	                },
@@ -46303,7 +46303,7 @@
 	        key: 'updateCurrentUser',
 	        value: function updateCurrentUser(profile) {
 	            _utilsAuthService2['default'].setupAjax();
-	            _jquery2['default'].post({ url: 'http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/usercheck?id=' + profile.user_id + '&uname=' + profile.nickname + '&email=' + profile.email }).done(function (user) {
+	            _jquery2['default'].post({ url: 'http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/usercheck?id=' + profile.user_id + '&uname=' + profile.nickname + '&email=' + profile.email }).done(function (user) {
 	                console.log("User successfully saved : " + user);
 	            }).fail(function (error) {
 	                console.log("Error when saving user", error);
@@ -64570,11 +64570,11 @@
 	
 	            var url;
 	            if (criteria == "All") {
-	                url = "http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/exception/all";
+	                url = "http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/exception/all";
 	            } else if (criteria == "mostRecent") {
-	                url = "http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/exception/mostRecent";
+	                url = "http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/exception/mostRecent";
 	            } else {
-	                url = 'http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/exception/?appName=' + criteria;
+	                url = 'http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/exception/?appName=' + criteria;
 	            }
 	            _jquery2['default'].getJSON({ url: url,
 	                success: function success(exceptions) {
@@ -64792,11 +64792,11 @@
 	
 	            var url;
 	            if (appName == "All") {
-	                url = "http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/alerts/triggered/all";
+	                url = "http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/alerts/triggered/all";
 	            } else if (appName == "mostRecent") {
-	                url = "http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/alerts/triggered/mostRecent";
+	                url = "http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/alerts/triggered/mostRecent";
 	            } else {
-	                url = 'http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/alerts/triggered/?appName=' + appName;
+	                url = 'http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/alerts/triggered/?appName=' + appName;
 	            }
 	            _jquery2['default'].getJSON({ url: url,
 	                success: function success(alerts) {
@@ -64990,11 +64990,11 @@
 	
 	            var url;
 	            if (criteria == "All") {
-	                url = "http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/querytime/all";
+	                url = "http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/querytime/all";
 	            } else if (criteria == "mostRecent") {
-	                url = "http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/querytime/mostRecent";
+	                url = "http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/querytime/mostRecent";
 	            } else {
-	                url = 'http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/querytime/?appName=' + criteria;
+	                url = 'http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/querytime/?appName=' + criteria;
 	            }
 	            _jquery2['default'].getJSON({ url: url,
 	                success: function success(queryTimes) {
@@ -65546,7 +65546,7 @@
 	            var _this = this;
 	
 	            var user = JSON.parse(localStorage.getItem("userProfile"));
-	            $.get('http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/user/favourites/find/?userId=' + user.user_id).done(function (favourites) {
+	            $.get('http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/user/favourites/find/?userId=' + user.user_id).done(function (favourites) {
 	                _this.setState({
 	                    favourites: favourites
 	                });
@@ -66285,7 +66285,7 @@
 	        value: function getTimeSeriesDataFromServer(timeScale) {
 	            var _this = this;
 	
-	            var timeSeriesUrl = 'http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/timeseries/?appName=' + this.props.appName + '&timeScale=' + timeScale;
+	            var timeSeriesUrl = 'http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/timeseries/?appName=' + this.props.appName + '&timeScale=' + timeScale;
 	            $.ajaxSetup({
 	                headers: {
 	                    'Authorization': 'Bearer ' + localStorage.getItem('userToken')
@@ -67018,7 +67018,7 @@
 	        key: 'killApp',
 	        value: function killApp() {
 	            var props = this.props;
-	            _jquery2['default'].post('http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/docker/kill/' + props.application.containerId).done(function () {
+	            _jquery2['default'].post('http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/docker/kill/' + props.application.containerId).done(function () {
 	                console.log("Successfully killed docker container " + props.application.containerId);
 	            }).fail(function (error) {
 	                console.log("Error when killing docker container", error);
@@ -67029,7 +67029,7 @@
 	        key: 'restartApp',
 	        value: function restartApp() {
 	            var props = this.props;
-	            _jquery2['default'].post('http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/docker/restart/' + props.application.containerId).done(function () {
+	            _jquery2['default'].post('http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/docker/restart/' + props.application.containerId).done(function () {
 	                console.log("Successfully restarted docker container " + props.application.containerId);
 	            }).fail(function () {
 	                console.log("Error when restarting docker container", error);
@@ -67046,7 +67046,7 @@
 	        value: function addToFavourites() {
 	            // Store user data in a store
 	            var profile = _storesUserStore2['default'].getState().user;
-	            var url = 'http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/user/favourites/save/?userId=' + profile.user_id + '&favourite=' + this.props.application.containerId;
+	            var url = 'http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/user/favourites/save/?userId=' + profile.user_id + '&favourite=' + this.props.application.containerId;
 	            _jquery2['default'].post({
 	                url: url
 	            }).done(function () {
@@ -74288,7 +74288,7 @@
 	    _createClass(Alert, [{
 	        key: 'deleteAlert',
 	        value: function deleteAlert() {
-	            _jquery2['default'].post('http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/alerts/delete/' + this.props.id);
+	            _jquery2['default'].post('http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/alerts/delete/' + this.props.id);
 	            _actionsAppActions2['default'].deleteAlert(this.props.id);
 	            this.refs.deleteAlert.show;
 	        }
@@ -74296,7 +74296,7 @@
 	        key: 'resetAlert',
 	        value: function resetAlert() {
 	            _actionsAppActions2['default'].resetAlert(this.props.id);
-	            _jquery2['default'].post('http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/alerts/reset/' + this.props.id);
+	            _jquery2['default'].post('http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/alerts/reset/' + this.props.id);
 	            this.setState({
 	                triggered: false
 	            });
@@ -74771,7 +74771,7 @@
 	            var _this2 = this;
 	
 	            _jquery2['default'].getJSON({
-	                url: "http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/users/all",
+	                url: "http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/users/all",
 	                success: function success(users) {
 	                    _this2.setState({
 	                        users: users
@@ -74780,7 +74780,7 @@
 	            });
 	
 	            _jquery2['default'].getJSON({
-	                url: "http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/clientapps/names/all",
+	                url: "http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/clientapps/names/all",
 	                success: function success(clientApps) {
 	                    _this2.setState({
 	                        apps: clientApps
@@ -74807,7 +74807,7 @@
 	                };
 	                var snackBar = this.refs.newAlert;
 	                _jquery2['default'].ajax({
-	                    url: 'http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/alerts/add',
+	                    url: 'http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/alerts/add',
 	                    type: "POST",
 	                    headers: {
 	                        'Accept': 'application/json',
@@ -77895,11 +77895,11 @@
 	        key: 'addToFavourites',
 	        value: function addToFavourites() {
 	            var profile = _storesUserStore2['default'].getState().user;
-	            var url = 'http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/settings/?userId=' + profile.user_id;
+	            var url = 'http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/settings/?userId=' + profile.user_id;
 	            $.post({
 	                url: url,
 	                success: function success() {
-	                    $.post('http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/user/favourites/save/?userId=' + profile.user_id).done(function () {
+	                    $.post('http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/user/favourites/save/?userId=' + profile.user_id).done(function () {
 	                        console.log("Saved Favourite Successfully.");
 	                    }).fail(function () {
 	                        console.log("Error when saving favourite ", error);
@@ -78169,7 +78169,7 @@
 	    }, {
 	        key: 'saveSettings',
 	        value: function saveSettings() {
-	            var url = 'http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/settings/save';
+	            var url = 'http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/settings/save';
 	            var snackBar = this.refs.settingsSaved;
 	            _jquery2['default'].ajax({
 	                url: url,
@@ -78199,7 +78199,7 @@
 	            var _this2 = this;
 	
 	            var profile = this.props.user;
-	            var url = 'http://ec2-52-37-135-212.us-west-2.compute.amazonaws.com:8090/api/settings';
+	            var url = 'http://ec2-52-37-214-242.us-west-2.compute.amazonaws.com:8090/api/settings';
 	            _jquery2['default'].get({
 	                url: url,
 	                success: function success(settings) {
