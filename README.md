@@ -13,7 +13,7 @@ Your docker daemon must be running on a TCP port. Run the docker daemon using th
 
 Then run your docker images using the typical docker run command. Now that you have the environment up and running, you can now use the JVM Real Time Metrics System.
 
-- run mvn spring-boot:run in the jvm-real-time-metrics-app directory.
+- run mvn spring-boot:run in the jvm-real-time-metrics-java directory.
 - Go to localhost:8090 in the browser. (obviously this won't be localhost if cloud hosted)
 
 You are ready to go! Enjoy using the JVM Real Time Metrics System.
