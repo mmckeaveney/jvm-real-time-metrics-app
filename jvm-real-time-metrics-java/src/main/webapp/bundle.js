@@ -39784,7 +39784,7 @@
 	        value: function render() {
 	            return _react2['default'].createElement(
 	                'div',
-	                { className: 'col-lg-5 col-md-5 col-sm-5 col-xs-5', id: 'whats-new', style: { marginTop: "10px" } },
+	                { className: 'col-lg-6 col-md-6 col-sm-12 col-xs-12', id: 'whats-new', style: { marginTop: "10px" } },
 	                _react2['default'].createElement(
 	                    _MaterialPanel2['default'],
 	                    { title: 'Latest', subtitle: 'The Latest From Your Environment', icon: 'whatshot' },
@@ -65230,7 +65230,7 @@
 	                        { key: index },
 	                        _react2['default'].createElement(
 	                            _materialUiLibTableTableRowColumn2['default'],
-	                            null,
+	                            { style: { wordWrap: 'break-word', whiteSpace: 'normal' } },
 	                            exception.applicationName
 	                        ),
 	                        _react2['default'].createElement(
@@ -65240,7 +65240,7 @@
 	                        ),
 	                        _react2['default'].createElement(
 	                            _materialUiLibTableTableRowColumn2['default'],
-	                            null,
+	                            { style: { wordWrap: 'break-word', whiteSpace: 'normal' } },
 	                            exception.exceptionClass
 	                        ),
 	                        _react2['default'].createElement(
@@ -65650,12 +65650,12 @@
 	                        { key: index },
 	                        _react2['default'].createElement(
 	                            _materialUiLibTableTableRowColumn2['default'],
-	                            null,
+	                            { style: { wordWrap: 'break-word', whiteSpace: 'normal' } },
 	                            queryTime.applicationName
 	                        ),
 	                        _react2['default'].createElement(
 	                            _materialUiLibTableTableRowColumn2['default'],
-	                            null,
+	                            { style: { wordWrap: 'break-word', whiteSpace: 'normal' } },
 	                            queryTime.className
 	                        ),
 	                        _react2['default'].createElement(
@@ -66217,7 +66217,7 @@
 	
 	            return _react2['default'].createElement(
 	                'div',
-	                { className: 'col-lg-7 col-md-7 col-sm-7 col-xs-7', id: 'article-panel-container', style: { marginTop: "10px" } },
+	                { className: 'col-lg-6 col-md-6 col-sm-12 col-xs-12', id: 'article-panel-container', style: { marginTop: "10px" } },
 	                _react2['default'].createElement(
 	                    _MaterialPanel2['default'],
 	                    { title: 'Favourites', subtitle: 'Applications added to your favourites', icon: 'star' },
@@ -67837,7 +67837,7 @@
 	                    { className: 'material-icons', color: "white" },
 	                    this.props.icon
 	                ),
-	                backgroundColor: "#4527A0",
+	                backgroundColor: this.props.backgroundColor ? this.props.backgroundColor : "#4527A0",
 	                hoverColor: "#B39DDB",
 	                style: style,
 	                onClick: this.props.onClick
@@ -78437,6 +78437,10 @@
 	
 	var _materialUiLibIconButton2 = _interopRequireDefault(_materialUiLibIconButton);
 	
+	var _CustomButton = __webpack_require__(508);
+	
+	var _CustomButton2 = _interopRequireDefault(_CustomButton);
+	
 	var _materialUiLibSvgIconsNavigationArrowBack = __webpack_require__(547);
 	
 	var _materialUiLibSvgIconsNavigationArrowBack2 = _interopRequireDefault(_materialUiLibSvgIconsNavigationArrowBack);
@@ -78563,32 +78567,34 @@
 	                _react2['default'].createElement(
 	                    _MaterialPanel2['default'],
 	                    { title: appName + ' Details ',
-	                        subtitle: _react2['default'].createElement(_materialUiLibFlatButton2['default'], { label: 'Back', labelPosition: 'after', primary: true, onClick: this.goBack.bind(this, this.props),
-	                            icon: _react2['default'].createElement(_materialUiLibSvgIconsNavigationArrowBack2['default'], null) }) },
+	                        subtitle: _react2['default'].createElement(_CustomButton2['default'], { label: 'Back',
+	                            backgroundColor: '#000000',
+	                            onClick: this.goBack.bind(this, this.props),
+	                            icon: 'arrow_back' }) },
 	                    _react2['default'].createElement(
 	                        'div',
-	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
+	                        { className: 'col-lg-4 col-md-4 col-sm-12 col-xs-12' },
 	                        _react2['default'].createElement(_EventPanel2['default'], { appName: appName })
 	                    ),
 	                    _react2['default'].createElement(
 	                        'div',
-	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
+	                        { className: 'col-lg-8 col-md-8 col-sm-12 col-xs-12' },
 	                        _react2['default'].createElement(_ExceptionPanel2['default'], { appName: appName })
 	                    ),
 	                    _react2['default'].createElement(
 	                        'div',
-	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
+	                        { className: 'col-lg-8 col-md-8 col-sm-12 col-xs-12' },
 	                        _react2['default'].createElement(_AlertPanel2['default'], { appName: appName })
 	                    ),
 	                    _react2['default'].createElement(
 	                        'div',
-	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
+	                        { className: 'col-lg-8 col-md-8 col-sm-12 col-xs-12' },
 	                        _react2['default'].createElement(_RealTimeMetricsPanel2['default'], { appName: appName,
 	                            actuatorMetrics: actuatorMetrics })
 	                    ),
 	                    _react2['default'].createElement(
 	                        'div',
-	                        { className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6' },
+	                        { className: 'col-lg-8 col-md-8 col-sm-12 col-xs-12' },
 	                        _react2['default'].createElement(_QueryTimePanel2['default'], { appName: appName })
 	                    ),
 	                    _react2['default'].createElement(_Chart2['default'], { appName: appName }),

@@ -51,8 +51,10 @@ public class UserController {
     public void addFavouriteForUser(@RequestParam String userId,
                                     @RequestParam String favourite) {
        UserModel currentUser = userRepository.findByUserId(userId);
-       currentUser.getFavourites().add(favourite);
-       userRepository.save(currentUser);
+       if (!currentUser.getFavourites().contains(favourite)) {
+           currentUser.getFavourites().add(favourite);
+           userRepository.save(currentUser);
+       }
     }
 
     @RequestMapping(value = "/user/favourites/find", method = RequestMethod.GET)
