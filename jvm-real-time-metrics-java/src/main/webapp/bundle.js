@@ -73209,7 +73209,7 @@
 	                {
 	                    iconButtonElement: _react2['default'].createElement(
 	                        _materialUiLibIconButton2['default'],
-	                        null,
+	                        { style: { color: "white" } },
 	                        _react2['default'].createElement(_materialUiLibSvgIconsNavigationMoreVert2['default'], null)
 	                    ),
 	                    targetOrigin: { horizontal: 'right', vertical: 'top' },
@@ -73222,7 +73222,7 @@
 	            if (this.props.user) {
 	                currentUser = _react2['default'].createElement(
 	                    'div',
-	                    null,
+	                    { style: { color: "white" } },
 	                    _react2['default'].createElement(_materialUiLibAvatar2['default'], { src: this.props.user.picture }),
 	                    ' ',
 	                    this.props.user.nickname,
@@ -73232,7 +73232,7 @@
 	                var profile = JSON.parse(localStorage.getItem("userProfile"));
 	                currentUser = _react2['default'].createElement(
 	                    'div',
-	                    null,
+	                    { style: { color: "white" } },
 	                    'Profile Loading..',
 	                    userIconMenu
 	                );
@@ -79076,7 +79076,7 @@
 	                success: function success(alert) {
 	                    console.log("settings saved.");
 	                    console.log(alert);
-	                    AppActions.openSnackbar("Settings Saved.");
+	                    _actionsAppActions2['default'].openSnackbar("Settings Saved.");
 	                },
 	                error: function error(_error) {
 	                    console.log("error when saving settings", _error);
@@ -79107,7 +79107,7 @@
 	        value: function render() {
 	            return _react2['default'].createElement(
 	                _MaterialPanel2['default'],
-	                { title: 'Settings for user ' + this.state.username, icon: 'build' },
+	                { title: 'Settings for user ' + this.props.user.nickname, icon: 'build' },
 	                _react2['default'].createElement(
 	                    _materialUiLibStepperStepper2['default'],
 	                    { activeStep: this.state.activeStep, onStepHeaderTouch: this.selectStep.bind(this),
