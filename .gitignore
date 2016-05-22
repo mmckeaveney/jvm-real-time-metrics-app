@@ -10,3 +10,7 @@
 .mvn
 target/
 
+# webapp folder
+webapp/bundle.js
+webapp/bundle.js.map
+
