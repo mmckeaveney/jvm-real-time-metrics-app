@@ -58080,7 +58080,7 @@
 	var AjaxUrl = function AjaxUrl() {
 	    _classCallCheck(this, AjaxUrl);
 	
-	    this.url = "localhost";
+	    this.url = "ec2-52-39-188-51.us-west-2.compute.amazonaws.com";
 	};
 	
 	exports["default"] = new AjaxUrl();
